@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Reports | Expense Tracker</title>
+
+    <!-- Font Awesome -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <!-- Main CSS -->
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Chart.js -->
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+    <!-- Reports page styles -->
+
+    <style>
+
+        .reports-page {
+            max-width: 1280px;
+        }
+
+
+        /* FILTER SECTION */
+
+        .reports-filter-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr))
+                auto
+                auto;
+
+            gap: 14px;
+
+            align-items: end;
+
+        }
+
+
+        .reports-filter-grid button {
+
+            width: auto;
+
+            min-width: 135px;
+
+            height: 48px;
+
+            padding: 0 18px;
+
+        }
+
+
+        .report-reset-btn {
+
+            background: #e8f5e9;
+
+            color: #2e7d32;
+
+            border: 1px solid #c8e6c9;
+
+        }
+
+
+        .report-reset-btn:hover {
+
+            background: #c8e6c9;
+
+            color: #1b5e20;
+
+        }
+
+
+
+        /* SUMMARY CARDS */
+
+        .report-summary-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 18px;
+
+            margin-bottom: 24px;
+
+        }
+
+
+        .report-summary-card {
+
+            min-height: 155px;
+
+            padding: 22px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            justify-content: center;
+
+            text-align: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #eef8f0,
+                    #d9efdc
+                );
+
+            border-radius: 18px;
+
+            border: 1px solid rgba(255, 255, 255, 0.8);
+
+            box-shadow:
+                0 10px 28px
+                rgba(28, 78, 38, 0.08);
+
+        }
+
+
+        .report-summary-card h3 {
+
+            margin: 12px 0 0;
+
+            color: #2e7d32;
+
+            font-size: 15px;
+
+        }
+
+
+        .report-summary-card h2 {
+
+            margin: 12px 0 0;
+
+            color: #145c21;
+
+            font-size: 28px;
+
+        }
+
+
+        .report-summary-icon {
+
+            width: 44px;
+
+            height: 44px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 12px;
+
+            font-size: 18px;
+
+        }
+
+
+        .report-income-icon {
+
+            background: #dcfce7;
+
+            color: #15803d;
+
+        }
+
+
+        .report-expense-icon {
+
+            background: #fee2e2;
+
+            color: #dc2626;
+
+        }
+
+
+        .report-balance-icon {
+
+            background: #dbeafe;
+
+            color: #2563eb;
+
+        }
+
+
+        .report-savings-icon {
+
+            background: #fef3c7;
+
+            color: #b45309;
+
+        }
+
+
+
+        /* CHARTS */
+
+        .reports-chart-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+
+            gap: 24px;
+
+            margin-bottom: 24px;
+
+        }
+
+
+        .report-chart-card {
+
+            margin-bottom: 0;
+
+            min-width: 0;
+
+        }
+
+
+        .report-chart-wrapper {
+
+            position: relative;
+
+            width: 100%;
+
+            min-height: 320px;
+
+        }
+
+
+        .report-wide-chart {
+
+            margin-bottom: 24px;
+
+        }
+
+
+        .report-wide-chart
+        .report-chart-wrapper {
+
+            min-height: 360px;
+
+        }
+
+
+
+        /* TABLE */
+
+        .reports-table-header {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 18px;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .reports-table-header h2 {
+
+            margin: 0;
+
+            color: #1b5e20;
+
+        }
+
+
+        .reports-table-header p {
+
+            margin: 6px 0 0;
+
+            color: #6b7280;
+
+        }
+
+
+        .export-report-btn {
+
+            width: auto;
+
+            min-width: 150px;
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 9px;
+
+        }
+
+
+        .transaction-type {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            min-width: 80px;
+
+            padding: 6px 10px;
+
+            border-radius: 999px;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+        }
+
+
+        .transaction-type.income {
+
+            color: #15803d;
+
+            background: #dcfce7;
+
+        }
+
+
+        .transaction-type.expense {
+
+            color: #dc2626;
+
+            background: #fee2e2;
+
+        }
+
+
+        .report-positive {
+
+            color: #15803d;
+
+            font-weight: 700;
+
+        }
+
+
+        .report-negative {
+
+            color: #dc2626;
+
+            font-weight: 700;
+
+        }
+
+
+        .report-empty-state {
+
+            padding: 35px;
+
+            color: #6b7280;
+
+            text-align: center;
+
+        }
+
+
+        .report-period-label {
+
+            margin-top: -14px;
+
+            margin-bottom: 22px;
+
+            color: #6b7280;
+
+            text-align: center;
+
+            font-size: 14px;
+
+        }
+
+
+
+        /* RESPONSIVE */
+
+        @media (max-width: 1100px) {
+
+            .reports-filter-grid {
+
+                grid-template-columns:
+                    repeat(3, minmax(0, 1fr));
+
+            }
+
+
+            .reports-filter-grid button {
+
+                width: 100%;
+
+            }
+
+
+            .report-summary-grid {
+
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+
+            }
+
+        }
+
+
+        @media (max-width: 800px) {
+
+            .reports-chart-grid {
+
+                grid-template-columns: 1fr;
+
+            }
+
+
+            .reports-filter-grid {
+
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+
+            }
+
+
+            .reports-table-header {
+
+                flex-direction: column;
+
+                align-items: flex-start;
+
+            }
+
+
+            .export-report-btn {
+
+                width: 100%;
+
+            }
+
+        }
+
+
+        @media (max-width: 550px) {
+
+            .reports-filter-grid,
+            .report-summary-grid {
+
+                grid-template-columns: 1fr;
+
+            }
+
+
+            .report-chart-wrapper,
+            .report-wide-chart
+            .report-chart-wrapper {
+
+                min-height: 260px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+
+<!-- ==========================
+     SIDEBAR
+========================== -->
+
+<div class="sidebar" id="sidebar">
+
+
+    <div class="sidebar-brand">
+
+
+        <div class="brand-icon">
+
+            <i class="fa-solid fa-wallet"></i>
+
+        </div>
+
+
+        <div class="brand-text">
+
+            <h2>
+                Expense Tracker
+            </h2>
+
+            <p>
+                Track every peso
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+
+
+    <div class="sidebar-profile">
+
+
+        <div class="profile-avatar">
+
+            <i class="fa-solid fa-user"></i>
+
+        </div>
+
+
+        <div class="profile-details">
+
+            <span class="profile-label">
+                Welcome
+            </span>
+
+            <strong id="sidebarUsername">
+                User
+            </strong>
+
+        </div>
+
+
+    </div>
+
+
+
+
+    <nav class="sidebar-menu">
+
+
+        <a
+            href="index.html"
+            class="menu-link"
+        >
+
+            <i class="fa-solid fa-house"></i>
+
+            <span>
+                Dashboard
+            </span>
+
+        </a>
+
+
+
+        <a
+            href="expenses.html"
+            class="menu-link"
+        >
+
+            <i class="fa-solid fa-receipt"></i>
+
+            <span>
+                Expenses
+            </span>
+
+        </a>
+
+
+
+        <a
+            href="income.html"
+            class="menu-link"
+        >
+
+            <i class="fa-solid fa-coins"></i>
+
+            <span>
+                Income
+            </span>
+
+        </a>
+
+
+
+        <a
+            href="reports.html"
+            class="menu-link"
+        >
+
+            <i class="fa-solid fa-chart-pie"></i>
+
+            <span>
+                Reports
+            </span>
+
+        </a>
+
+
+
+        <a
+            href="settings.html"
+            class="menu-link"
+        >
+
+            <i class="fa-solid fa-gear"></i>
+
+            <span>
+                Settings
+            </span>
+
+        </a>
+
+
+    </nav>
+
+
+
+
+    <div class="sidebar-footer">
+
+
+        <button
+            type="button"
+            class="logout-btn"
+            onclick="logout()"
+        >
+
+            <i class="fa-solid fa-right-from-bracket"></i>
+
+            <span>
+                Logout
+            </span>
+
+        </button>
+
+
+        <p class="app-version">
+            Expense Tracker v1.0
+        </p>
+
+
+    </div>
+
+
+</div>
+
+
+
+
+
+<!-- OVERLAY -->
+
+<div
+    class="overlay"
+    id="overlay"
+    onclick="closeSidebar()"
+></div>
+
+
+
+
+
+<!-- ==========================
+     MAIN CONTAINER
+========================== -->
+
+<div class="container reports-page">
+
+
+
+
+
+<!-- HEADER -->
+
+<div class="header">
+
+
+    <button
+        type="button"
+        class="menu-btn"
+        onclick="openSidebar()"
+        aria-label="Open navigation menu"
+    >
+
+        <i class="fa-solid fa-bars"></i>
+
+    </button>
+
+
+
+    <div class="page-heading">
+
+        <h1>
+            Reports
+        </h1>
+
+        <p>
+            Review and analyze your financial activity.
+        </p>
+
+    </div>
+
+
+
+    <div class="user-area">
+
+        <span id="welcomeUser"></span>
+
+    </div>
+
+
+</div>
+
+
+
+<p
+    class="report-period-label"
+    id="reportPeriodLabel"
+>
+    Showing all available records
+</p>
+
+
+
+
+
+<!-- ==========================
+     REPORT FILTERS
+========================== -->
+
+<section class="content-card">
+
+
+    <div class="section-heading">
+
+
+        <div>
+
+            <h2>
+                Report Filters
+            </h2>
+
+            <p>
+                Select a date range and transaction type.
+            </p>
+
+        </div>
+
+
+        <div class="section-icon">
+
+            <i class="fa-solid fa-filter"></i>
+
+        </div>
+
+
+    </div>
+
+
+
+
+    <div class="reports-filter-grid">
+
+
+        <div class="form-group">
+
+            <label for="reportStartDate">
+                Start Date
+            </label>
+
+            <input
+                type="date"
+                id="reportStartDate"
+            >
+
+        </div>
+
+
+
+        <div class="form-group">
+
+            <label for="reportEndDate">
+                End Date
+            </label>
+
+            <input
+                type="date"
+                id="reportEndDate"
+            >
+
+        </div>
+
+
+
+        <div class="form-group">
+
+            <label for="reportType">
+                Transaction Type
+            </label>
+
+            <select id="reportType">
+
+                <option value="all">
+                    All Transactions
+                </option>
+
+                <option value="income">
+                    Income Only
+                </option>
+
+                <option value="expense">
+                    Expenses Only
+                </option>
+
+            </select>
+
+        </div>
+
+
+
+        <button
+            type="button"
+            onclick="applyReportFilters()"
+        >
+
+            <i class="fa-solid fa-magnifying-glass-chart"></i>
+
+            Apply
+
+        </button>
+
+
+
+        <button
+            type="button"
+            class="report-reset-btn"
+            onclick="resetReportFilters()"
+        >
+
+            <i class="fa-solid fa-rotate-left"></i>
+
+            Reset
+
+        </button>
+
+
+    </div>
+
+
+</section>
+
+
+
+
+
+<!-- ==========================
+     SUMMARY
+========================== -->
+
+<div class="report-summary-grid">
+
+
+    <div class="report-summary-card">
+
+
+        <div class="report-summary-icon report-income-icon">
+
+            <i class="fa-solid fa-arrow-trend-up"></i>
+
+        </div>
+
+
+        <h3>
+            Total Income
+        </h3>
+
+
+        <h2 id="reportTotalIncome">
+            ₱0.00
+        </h2>
+
+
+    </div>
+
+
+
+
+    <div class="report-summary-card">
+
+
+        <div class="report-summary-icon report-expense-icon">
+
+            <i class="fa-solid fa-arrow-trend-down"></i>
+
+        </div>
+
+
+        <h3>
+            Total Expenses
+        </h3>
+
+
+        <h2 id="reportTotalExpenses">
+            ₱0.00
+        </h2>
+
+
+    </div>
+
+
+
+
+    <div class="report-summary-card">
+
+
+        <div class="report-summary-icon report-balance-icon">
+
+            <i class="fa-solid fa-scale-balanced"></i>
+
+        </div>
+
+
+        <h3>
+            Net Balance
+        </h3>
+
+
+        <h2 id="reportBalance">
+            ₱0.00
+        </h2>
+
+
+    </div>
+
+
+
+
+    <div class="report-summary-card">
+
+
+        <div class="report-summary-icon report-savings-icon">
+
+            <i class="fa-solid fa-piggy-bank"></i>
+
+        </div>
+
+
+        <h3>
+            Savings Rate
+        </h3>
+
+
+        <h2 id="reportSavingsRate">
+            0.0%
+        </h2>
+
+
+    </div>
+
+
+</div>
+
+
+
+
+
+<!-- ==========================
+     CHARTS
+========================== -->
+
+<div class="reports-chart-grid">
+
+
+
+    <section class="content-card report-chart-card">
+
+
+        <div class="section-heading">
+
+
+            <div>
+
+                <h2>
+                    Income vs Expenses
+                </h2>
+
+                <p>
+                    Compare received and spent money.
+                </p>
+
+            </div>
+
+
+            <div class="section-icon">
+
+                <i class="fa-solid fa-chart-column"></i>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="report-chart-wrapper">
+
+            <canvas id="reportIncomeExpenseChart"></canvas>
+
+        </div>
+
+
+    </section>
+
+
+
+
+
+    <section class="content-card report-chart-card">
+
+
+        <div class="section-heading">
+
+
+            <div>
+
+                <h2>
+                    Expenses by Category
+                </h2>
+
+                <p>
+                    See where most of your money was spent.
+                </p>
+
+            </div>
+
+
+            <div class="section-icon">
+
+                <i class="fa-solid fa-chart-pie"></i>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="report-chart-wrapper">
+
+            <canvas id="reportCategoryChart"></canvas>
+
+        </div>
+
+
+    </section>
+
+
+</div>
+
+
+
+
+
+<section class="content-card report-wide-chart">
+
+
+    <div class="section-heading">
+
+
+        <div>
+
+            <h2>
+                Monthly Financial Trend
+            </h2>
+
+            <p>
+                Track income and expenses over time.
+            </p>
+
+        </div>
+
+
+        <div class="section-icon">
+
+            <i class="fa-solid fa-chart-line"></i>
+
+        </div>
+
+
+    </div>
+
+
+    <div class="report-chart-wrapper">
+
+        <canvas id="reportMonthlyChart"></canvas>
+
+    </div>
+
+
+</section>
+
+
+
+
+
+<!-- ==========================
+     TRANSACTIONS TABLE
+========================== -->
+
+<section class="content-card">
+
+
+    <div class="reports-table-header">
+
+
+        <div>
+
+            <h2>
+                Transaction Details
+            </h2>
+
+            <p id="reportRecordCount">
+                0 records found
+            </p>
+
+        </div>
+
+
+        <button
+            type="button"
+            class="export-report-btn"
+            onclick="exportReportCSV()"
+        >
+
+            <i class="fa-solid fa-file-csv"></i>
+
+            Export CSV
+
+        </button>
+
+
+    </div>
+
+
+
+
+    <div class="table-responsive">
+
+
+        <table>
+
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Type
+                    </th>
+
+                    <th>
+                        Name / Source
+                    </th>
+
+                    <th>
+                        Category
+                    </th>
+
+                    <th>
+                        Amount
+                    </th>
+
+                    <th>
+                        Date
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+
+            <tbody id="reportTransactionList">
+
+                <tr>
+
+                    <td
+                        colspan="5"
+                        class="report-empty-state"
+                    >
+                        Loading report data...
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+
+        </table>
+
+
+    </div>
+
+
+</section>
+
+
+
+</div>
+
+
+
+
+
+<script src="reports.js"></script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Income | Expense Tracker</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"/>
+<link href="style.css" rel="stylesheet"/><style>
+        .income-page {
+            width: min(94%, 1280px);
+            max-width: 1280px;
+            margin: 24px auto;
+            padding: 28px;
+        }
+
+        .income-page .header {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: center;
+            gap: 18px;
+            margin-bottom: 24px;
+        }
+
+        .income-page .page-heading {
+            text-align: center;
+        }
+
+        .income-page .page-heading h1 {
+            text-align: center;
+            font-size: 30px;
+        }
+
+        .income-page .user-area {
+            min-width: 180px;
+        }
+
+        .income-summary {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+            margin-bottom: 24px;
+        }
+
+        .income-summary .card {
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 22px;
+        }
+
+        .income-summary .card h2 {
+            margin-top: 10px;
+            font-size: 28px;
+        }
+
+        .income-workspace {
+            display: grid;
+            grid-template-columns: minmax(320px, 0.8fr) minmax(0, 1.35fr);
+            gap: 24px;
+            align-items: start;
+        }
+
+        .income-form-card,
+        .income-history-card {
+            margin-bottom: 0;
+        }
+
+        .income-form-card {
+            position: sticky;
+            top: 24px;
+        }
+
+        .income-form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-bottom: 18px;
+        }
+
+        .income-form-card .primary-action-btn {
+            width: auto;
+            min-width: 180px;
+            padding: 12px 20px;
+            margin-left: auto;
+        }
+
+        .income-history-card table {
+            min-width: 760px;
+        }
+
+        .income-history-card th,
+        .income-history-card td {
+            text-align: left;
+        }
+
+        .income-history-card th:nth-child(3),
+        .income-history-card td:nth-child(3) {
+            text-align: right;
+        }
+
+        .income-history-card th:last-child,
+        .income-history-card td:last-child {
+            text-align: center;
+        }
+
+        .income-history-card td button {
+            min-width: 88px;
+        }
+
+        @media (max-width: 980px) {
+            .income-workspace {
+                grid-template-columns: 1fr;
+            }
+
+            .income-form-card {
+                position: static;
+            }
+
+            .income-form-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 760px) {
+            .income-page {
+                width: calc(100% - 20px);
+                margin: 10px auto;
+                padding: 18px;
+            }
+
+            .income-page .header {
+                grid-template-columns: auto 1fr;
+            }
+
+            .income-page .user-area {
+                grid-column: 1 / -1;
+                min-width: 0;
+                align-items: flex-start;
+            }
+
+            .income-summary {
+                grid-template-columns: 1fr;
+            }
+
+            .income-form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-box {
+                grid-template-columns: 1fr;
+            }
+
+            .income-form-card .primary-action-btn {
+                width: 100%;
+                margin-left: 0;
+            }
+        }
+</style>
+</head>
+<body>
+<!-- ==========================
+     SIDEBAR
+========================== -->
+<div class="sidebar" id="sidebar">
+<div class="sidebar-brand">
+<div class="brand-icon">
+<i class="fa-solid fa-wallet"></i>
+</div>
+<div class="brand-text">
+<h2>
+                Expense Tracker
+            </h2>
+<p>
+                Track every peso
+            </p>
+</div>
+</div>
+<div class="sidebar-profile">
+<div class="profile-avatar">
+<i class="fa-solid fa-user"></i>
+</div>
+<div class="profile-details">
+<span class="profile-label">
+                Welcome
+            </span>
+<strong id="sidebarUsername">
+                User
+            </strong>
+</div>
+</div>
+<nav class="sidebar-menu">
+<a class="menu-link" href="index.html">
+<i class="fa-solid fa-house"></i>
+<span>
+                Dashboard
+            </span>
+</a>
+<a class="menu-link" href="expenses.html">
+<i class="fa-solid fa-receipt"></i>
+<span>
+                Expenses
+            </span>
+</a>
+<a class="menu-link" href="income.html">
+<i class="fa-solid fa-coins"></i>
+<span>
+                Income
+            </span>
+</a>
+<a class="menu-link" href="reports.html">
+<i class="fa-solid fa-chart-pie"></i>
+<span>
+                Reports
+            </span>
+</a>
+<a class="menu-link" href="settings.html">
+<i class="fa-solid fa-gear"></i>
+<span>
+                Settings
+            </span>
+</a>
+</nav>
+<div class="sidebar-footer">
+<button class="logout-btn" onclick="logout()" type="button">
+<i class="fa-solid fa-right-from-bracket"></i>
+<span>
+                Logout
+            </span>
+</button>
+<p class="app-version">
+            Expense Tracker v1.0
+        </p>
+</div>
+</div>
+<!-- ==========================
+     OVERLAY
+========================== -->
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+<!-- ==========================
+     MAIN CONTAINER
+========================== -->
+<div class="container income-page">
+<!-- ==========================
+     HEADER
+========================== -->
+<div class="header">
+<button aria-label="Open navigation menu" class="menu-btn" onclick="openSidebar()" type="button">
+<i class="fa-solid fa-bars"></i>
+</button>
+<div class="page-heading">
+<h1>
+            Income
+        </h1>
+<p>
+            Add and manage your income records.
+        </p>
+</div>
+<div class="user-area">
+<span id="welcomeUser"></span>
+</div>
+</div>
+<!-- ==========================
+     INCOME SUMMARY
+========================== -->
+<div class="dashboard income-summary">
+<div class="card income-card">
+<div class="summary-icon income-summary-icon">
+<i class="fa-solid fa-peso-sign"></i>
+</div>
+<h3>
+            Total Income
+        </h3>
+<h2 id="totalIncome">
+            ₱0.00
+        </h2>
+</div>
+<div class="card income-card">
+<div class="summary-icon income-summary-icon">
+<i class="fa-solid fa-list"></i>
+</div>
+<h3>
+            Income Records
+        </h3>
+<h2 id="incomeCount">
+            0
+        </h2>
+</div>
+<div class="card income-card">
+<div class="summary-icon income-summary-icon">
+<i class="fa-solid fa-chart-line"></i>
+</div>
+<h3>
+            Average Income
+        </h3>
+<h2 id="averageIncome">
+            ₱0.00
+        </h2>
+</div>
+</div>
+<!-- ==========================
+     ADD INCOME
+========================== -->
+<div class="income-workspace"><section class="content-card income-form-card">
+<div class="section-heading">
+<div>
+<h2>
+                Add New Income
+            </h2>
+<p>
+                Enter the details of your income below.
+            </p>
+</div>
+<div class="section-icon income-section-icon">
+<i class="fa-solid fa-plus"></i>
+</div>
+</div>
+<div class="income-form-grid">
+<div class="form-group">
+<label for="incomeSource">
+                Income Source
+            </label>
+<input autocomplete="off" id="incomeSource" placeholder="Example: Salary" type="text"/>
+</div>
+<div class="form-group">
+<label for="incomeCategory">
+                Category
+            </label>
+<select id="incomeCategory">
+<option value="Salary">
+                    Salary
+                </option>
+<option value="Business">
+                    Business
+                </option>
+<option value="Freelance">
+                    Freelance
+                </option>
+<option value="Allowance">
+                    Allowance
+                </option>
+<option value="Investment">
+                    Investment
+                </option>
+<option value="Others">
+                    Others
+                </option>
+</select>
+</div>
+<div class="form-group">
+<label for="incomeAmount">
+                Amount
+            </label>
+<input id="incomeAmount" min="0" placeholder="0.00" step="0.01" type="number"/>
+</div>
+<div class="form-group">
+<label for="incomeDate">
+                Date
+            </label>
+<input id="incomeDate" type="date"/>
+</div>
+</div>
+<button class="primary-action-btn income-action-btn" onclick="addIncome()" type="button">
+<i class="fa-solid fa-plus"></i>
+
+        Add Income
+
+    </button>
+</section><section class="content-card income-history-card">
+<div class="section-heading">
+<div>
+<h2>
+                Income History
+            </h2>
+<p>
+                Search and filter your income records.
+            </p>
+</div>
+<div class="section-icon income-section-icon">
+<i class="fa-solid fa-clock-rotate-left"></i>
+</div>
+</div>
+<div class="filter-box">
+<div class="search-box">
+<i class="fa-solid fa-magnifying-glass"></i>
+<input autocomplete="off" id="searchIncome" oninput="filterIncomes()" placeholder="Search income..." type="text"/>
+</div>
+<select id="filterIncomeCategory" onchange="filterIncomes()">
+<option value="All">
+                All Categories
+            </option>
+<option value="Salary">
+                Salary
+            </option>
+<option value="Business">
+                Business
+            </option>
+<option value="Freelance">
+                Freelance
+            </option>
+<option value="Allowance">
+                Allowance
+            </option>
+<option value="Investment">
+                Investment
+            </option>
+<option value="Others">
+                Others
+            </option>
+</select>
+</div>
+<div class="table-responsive">
+<table>
+<thead>
+<tr>
+<th>
+                        Source
+                    </th>
+<th>
+                        Category
+                    </th>
+<th>
+                        Amount
+                    </th>
+<th>
+                        Date
+                    </th>
+<th>
+                        Action
+                    </th>
+</tr>
+</thead>
+<tbody id="incomeList"></tbody>
+</table>
+</div>
+</section></div>
+<!-- ==========================
+     INCOME HISTORY
+========================== -->
+
+</div>
+<!-- ==========================
+     PAGE JAVASCRIPT
+========================== -->
+<script>
+
+const username =
+    localStorage.getItem("username");
+
+
+if (!username) {
+
+    window.location.href = "login.html";
+
+}
+
+
+
+function displayLoggedInUser() {
+
+    const savedUsername =
+        localStorage.getItem("username") || "User";
+
+
+    const welcomeUser =
+        document.getElementById("welcomeUser");
+
+
+    const sidebarUsername =
+        document.getElementById("sidebarUsername");
+
+
+    if (welcomeUser) {
+
+        welcomeUser.textContent =
+            "Welcome, " + savedUsername;
+
+    }
+
+
+    if (sidebarUsername) {
+
+        sidebarUsername.textContent =
+            savedUsername;
+
+    }
+
+}
+
+
+
+function openSidebar() {
+
+    document
+        .getElementById("sidebar")
+        .classList.add("active");
+
+
+    document
+        .getElementById("overlay")
+        .classList.add("active");
+
+
+    document.body.style.overflow = "hidden";
+
+}
+
+
+
+function closeSidebar() {
+
+    document
+        .getElementById("sidebar")
+        .classList.remove("active");
+
+
+    document
+        .getElementById("overlay")
+        .classList.remove("active");
+
+
+    document.body.style.overflow = "";
+
+}
+
+
+
+function highlightCurrentPage() {
+
+    const currentPage =
+        window.location.pathname
+            .split("/")
+            .pop() || "index.html";
+
+
+    document
+        .querySelectorAll(".menu-link")
+        .forEach(function (link) {
+
+            link.classList.remove("active-page");
+
+
+            if (
+                link.getAttribute("href") ===
+                currentPage
+            ) {
+
+                link.classList.add("active-page");
+
+            }
+
+        });
+
+}
+
+
+
+function logout() {
+
+    const confirmed =
+        confirm("Are you sure you want to logout?");
+
+
+    if (!confirmed) {
+
+        return;
+
+    }
+
+
+    localStorage.removeItem("userId");
+
+    localStorage.removeItem("username");
+
+
+    window.location.href = "login.html";
+
+}
+
+
+
+document.addEventListener(
+    "keydown",
+    function (event) {
+
+        if (event.key === "Escape") {
+
+            closeSidebar();
+
+        }
+
+    }
+);
+
+
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        displayLoggedInUser();
+
+        highlightCurrentPage();
+
+    }
+);
+
+</script>
+<script src="income.js"></script>
+</body>
+</html>

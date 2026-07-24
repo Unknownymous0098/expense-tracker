@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Dashboard | Expense Tracker</title>
+
+
+    <!-- FONT AWESOME ICONS -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+
+    <!-- MAIN CSS -->
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+
+<!-- ==========================
+     SIDEBAR
+========================== -->
+
+<div class="sidebar" id="sidebar">
+
+
+    <div class="sidebar-brand">
+
+        <div class="brand-icon">
+
+            <i class="fa-solid fa-wallet"></i>
+
+        </div>
+
+
+        <div class="brand-text">
+
+            <h2>
+                Expense Tracker
+            </h2>
+
+            <p>
+                Track every peso
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+
+    <div class="sidebar-profile">
+
+        <div class="profile-avatar">
+
+            <i class="fa-solid fa-user"></i>
+
+        </div>
+
+
+        <div class="profile-details">
+
+            <span class="profile-label">
+                Welcome
+            </span>
+
+            <strong id="sidebarUsername">
+                User
+            </strong>
+
+        </div>
+
+    </div>
+
+
+
+
+    <nav class="sidebar-menu">
+
+
+        <a
+            href="index.html"
+            class="menu-link"
+        >
+
+            <i class="fa-solid fa-house"></i>
+
+            <span>
+                Dashboard
+            </span>
+
+        </a>
+
+
+
+        <a
+            href="expenses.html"
+            class="menu-link"
+        >
+
+            <i class="fa-solid fa-receipt"></i>
+
+            <span>
+                Expenses
+            </span>
+
+        </a>
+
+
+
+        <a
+            href="income.html"
+            class="menu-link"
+        >
+
+            <i class="fa-solid fa-coins"></i>
+
+            <span>
+                Income
+            </span>
+
+        </a>
+
+
+
+        <a
+            href="reports.html"
+            class="menu-link"
+        >
+
+            <i class="fa-solid fa-chart-pie"></i>
+
+            <span>
+                Reports
+            </span>
+
+        </a>
+
+
+
+        <a
+            href="settings.html"
+            class="menu-link"
+        >
+
+            <i class="fa-solid fa-gear"></i>
+
+            <span>
+                Settings
+            </span>
+
+        </a>
+
+
+    </nav>
+
+
+
+
+    <div class="sidebar-footer">
+
+        <button
+            type="button"
+            class="logout-btn"
+            onclick="logout()"
+        >
+
+            <i class="fa-solid fa-right-from-bracket"></i>
+
+            <span>
+                Logout
+            </span>
+
+        </button>
+
+
+        <p class="app-version">
+            Expense Tracker v1.0
+        </p>
+
+    </div>
+
+
+</div>
+
+
+
+
+
+<!-- ==========================
+     OVERLAY
+========================== -->
+
+<div
+    class="overlay"
+    id="overlay"
+    onclick="closeSidebar()"
+></div>
+
+
+
+
+
+<!-- ==========================
+     MAIN CONTAINER
+========================== -->
+
+<div class="container dashboard-page">
+
+
+
+
+
+<!-- ==========================
+     HEADER
+========================== -->
+
+<div class="header">
+
+
+    <button
+        type="button"
+        class="menu-btn"
+        id="menuButton"
+        onclick="openSidebar()"
+        aria-label="Open navigation menu"
+    >
+
+        <i class="fa-solid fa-bars"></i>
+
+    </button>
+
+
+
+    <div class="page-heading">
+
+        <h1>
+            Dashboard
+        </h1>
+
+        <p>
+            Here is an overview of your income, expenses and current balance.
+        </p>
+
+    </div>
+
+
+
+    <div class="user-area">
+
+        <span id="welcomeUser"></span>
+
+    </div>
+
+
+</div>
+
+
+
+
+
+<!-- ==========================
+     SUMMARY CARDS
+========================== -->
+
+<div class="dashboard">
+
+
+    <div class="card income-card">
+
+        <div class="summary-icon income-summary-icon">
+
+            <i class="fa-solid fa-arrow-trend-up"></i>
+
+        </div>
+
+        <h3>
+            Total Income
+        </h3>
+
+        <h2 id="totalIncome">
+            ₱0.00
+        </h2>
+
+    </div>
+
+
+
+    <div class="card expense-card">
+
+        <div class="summary-icon expense-summary-icon">
+
+            <i class="fa-solid fa-arrow-trend-down"></i>
+
+        </div>
+
+        <h3>
+            Total Expenses
+        </h3>
+
+        <h2 id="totalAmount">
+            ₱0.00
+        </h2>
+
+    </div>
+
+
+
+    <div class="card balance-card">
+
+        <div class="summary-icon balance-icon">
+
+            <i class="fa-solid fa-wallet"></i>
+
+        </div>
+
+        <h3>
+            Current Balance
+        </h3>
+
+        <h2 id="currentBalance">
+            ₱0.00
+        </h2>
+
+    </div>
+
+
+
+    <div class="card transaction-card">
+
+        <div class="summary-icon transaction-summary-icon">
+
+            <i class="fa-solid fa-arrow-right-arrow-left"></i>
+
+        </div>
+
+        <h3>
+            Transactions
+        </h3>
+
+        <h2 id="transactionCount">
+            0
+        </h2>
+
+    </div>
+
+
+</div>
+
+
+
+
+
+
+<!-- ==========================
+     MONTHLY ANALYTICS
+========================== -->
+
+<section class="content-card monthly-overview-section">
+
+    <div class="section-heading">
+
+        <div>
+
+            <h2>
+                Monthly Overview
+            </h2>
+
+            <p id="monthlyOverviewLabel">
+                Financial summary for the current month.
+            </p>
+
+        </div>
+
+        <div class="section-icon">
+
+            <i class="fa-solid fa-calendar-days"></i>
+
+        </div>
+
+    </div>
+
+
+    <div class="monthly-summary-grid">
+
+        <article class="monthly-stat-card">
+
+            <div class="monthly-stat-icon monthly-income-icon">
+
+                <i class="fa-solid fa-arrow-trend-up"></i>
+
+            </div>
+
+            <div>
+
+                <span>
+                    This Month's Income
+                </span>
+
+                <strong id="thisMonthIncome">
+                    ₱0.00
+                </strong>
+
+            </div>
+
+        </article>
+
+
+        <article class="monthly-stat-card">
+
+            <div class="monthly-stat-icon monthly-expense-icon">
+
+                <i class="fa-solid fa-arrow-trend-down"></i>
+
+            </div>
+
+            <div>
+
+                <span>
+                    This Month's Expenses
+                </span>
+
+                <strong id="thisMonthExpenses">
+                    ₱0.00
+                </strong>
+
+            </div>
+
+        </article>
+
+
+        <article class="monthly-stat-card">
+
+            <div class="monthly-stat-icon monthly-balance-icon">
+
+                <i class="fa-solid fa-scale-balanced"></i>
+
+            </div>
+
+            <div>
+
+                <span>
+                    Monthly Balance
+                </span>
+
+                <strong id="monthlyBalance">
+                    ₱0.00
+                </strong>
+
+            </div>
+
+        </article>
+
+
+        <article class="monthly-stat-card">
+
+            <div class="monthly-stat-icon monthly-savings-icon">
+
+                <i class="fa-solid fa-piggy-bank"></i>
+
+            </div>
+
+            <div>
+
+                <span>
+                    Savings Rate
+                </span>
+
+                <strong id="savingsRate">
+                    0.0%
+                </strong>
+
+            </div>
+
+        </article>
+
+
+        <article class="monthly-stat-card largest-category-card">
+
+            <div class="monthly-stat-icon monthly-category-icon">
+
+                <i class="fa-solid fa-tags"></i>
+
+            </div>
+
+            <div>
+
+                <span>
+                    Largest Expense Category
+                </span>
+
+                <strong id="largestExpenseCategory">
+                    No expenses yet
+                </strong>
+
+                <small id="largestExpenseCategoryAmount">
+                    ₱0.00
+                </small>
+
+            </div>
+
+        </article>
+
+    </div>
+
+
+    <div class="analytics-chart-grid">
+
+        <article class="analytics-chart-card">
+
+            <div class="analytics-chart-heading">
+
+                <div>
+
+                    <h3>
+                        Income vs Expenses
+                    </h3>
+
+                    <p>
+                        Compare this month's money in and money out.
+                    </p>
+
+                </div>
+
+                <i class="fa-solid fa-chart-column"></i>
+
+            </div>
+
+            <div class="analytics-chart-wrapper">
+
+                <canvas id="incomeExpenseChart"></canvas>
+
+            </div>
+
+        </article>
+
+
+        <article class="analytics-chart-card">
+
+            <div class="analytics-chart-heading">
+
+                <div>
+
+                    <h3>
+                        Daily Spending Trend
+                    </h3>
+
+                    <p>
+                        Track how your expenses change throughout the month.
+                    </p>
+
+                </div>
+
+                <i class="fa-solid fa-chart-line"></i>
+
+            </div>
+
+            <div class="analytics-chart-wrapper">
+
+                <canvas id="dailySpendingChart"></canvas>
+
+            </div>
+
+        </article>
+
+    </div>
+
+</section>
+
+
+
+
+
+<!-- ==========================
+     DASHBOARD GRID
+========================== -->
+
+<div class="dashboard-grid">
+
+
+
+    <!-- CATEGORY CHART -->
+
+    <section class="content-card dashboard-chart-card">
+
+
+        <div class="section-heading">
+
+
+            <div>
+
+                <h2>
+                    Expenses by Category
+                </h2>
+
+                <p>
+                    See where most of your money is being spent.
+                </p>
+
+            </div>
+
+
+            <div class="section-icon">
+
+                <i class="fa-solid fa-chart-pie"></i>
+
+            </div>
+
+
+        </div>
+
+
+
+        <div class="dashboard-chart-wrapper">
+
+            <canvas id="expenseChart"></canvas>
+
+        </div>
+
+
+    </section>
+
+
+
+
+
+    <!-- QUICK ACTION -->
+
+    <section class="content-card quick-action-card">
+
+
+        <div class="quick-action-icon">
+
+            <i class="fa-solid fa-receipt"></i>
+
+        </div>
+
+
+        <h2>
+            Manage Expenses
+        </h2>
+
+
+        <p>
+            Add new expenses, search records and manage your complete expense history.
+        </p>
+
+
+        <a
+            href="expenses.html"
+            class="dashboard-action-link"
+        >
+
+            Open Expenses
+
+            <i class="fa-solid fa-arrow-right"></i>
+
+        </a>
+
+
+    </section>
+
+
+</div>
+
+
+
+
+
+<!-- ==========================
+     RECENT EXPENSES
+========================== -->
+
+<section class="content-card recent-expenses-card">
+
+
+    <div class="section-heading">
+
+
+        <div>
+
+            <h2>
+                Recent Expenses
+            </h2>
+
+            <p>
+                Your five most recent expense records.
+            </p>
+
+        </div>
+
+
+        <a
+            href="expenses.html"
+            class="view-all-link"
+        >
+
+            View All
+
+            <i class="fa-solid fa-arrow-right"></i>
+
+        </a>
+
+
+    </div>
+
+
+
+    <div class="table-responsive">
+
+
+        <table>
+
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Expense
+                    </th>
+
+                    <th>
+                        Category
+                    </th>
+
+                    <th>
+                        Amount
+                    </th>
+
+                    <th>
+                        Date
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody id="recentExpenseList"></tbody>
+
+
+        </table>
+
+
+    </div>
+
+
+</section>
+
+
+
+</div>
+
+
+
+
+
+<!-- ==========================
+     PAGE JAVASCRIPT
+========================== -->
+
+<script>
+
+
+const username =
+    localStorage.getItem("username");
+
+
+if (!username) {
+
+    window.location.href = "login.html";
+
+}
+
+
+
+
+function displayLoggedInUser() {
+
+    const savedUsername =
+        localStorage.getItem("username") || "User";
+
+
+    const welcomeUser =
+        document.getElementById("welcomeUser");
+
+
+    const sidebarUsername =
+        document.getElementById("sidebarUsername");
+
+
+    if (welcomeUser) {
+
+        welcomeUser.textContent =
+            "Welcome, " + savedUsername;
+
+    }
+
+
+    if (sidebarUsername) {
+
+        sidebarUsername.textContent =
+            savedUsername;
+
+    }
+
+}
+
+
+
+
+function openSidebar() {
+
+    document
+        .getElementById("sidebar")
+        .classList.add("active");
+
+
+    document
+        .getElementById("overlay")
+        .classList.add("active");
+
+
+    document.body.style.overflow = "hidden";
+
+}
+
+
+
+
+function closeSidebar() {
+
+    document
+        .getElementById("sidebar")
+        .classList.remove("active");
+
+
+    document
+        .getElementById("overlay")
+        .classList.remove("active");
+
+
+    document.body.style.overflow = "";
+
+}
+
+
+
+
+function highlightCurrentPage() {
+
+    const currentPage =
+        window.location.pathname
+            .split("/")
+            .pop() || "index.html";
+
+
+    document
+        .querySelectorAll(".menu-link")
+        .forEach(function (link) {
+
+            link.classList.remove("active-page");
+
+
+            if (
+                link.getAttribute("href") ===
+                currentPage
+            ) {
+
+                link.classList.add("active-page");
+
+            }
+
+        });
+
+}
+
+
+
+
+function logout() {
+
+    const confirmed =
+        confirm("Are you sure you want to logout?");
+
+
+    if (!confirmed) {
+
+        return;
+
+    }
+
+
+    localStorage.removeItem("userId");
+
+    localStorage.removeItem("username");
+
+
+    window.location.href = "login.html";
+
+}
+
+
+
+
+document.addEventListener(
+    "keydown",
+    function (event) {
+
+        if (event.key === "Escape") {
+
+            closeSidebar();
+
+        }
+
+    }
+);
+
+
+
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        displayLoggedInUser();
+
+        highlightCurrentPage();
+
+    }
+);
+
+
+</script>
+
+
+
+
+<!-- CHART JS -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+
+<!-- APP SCRIPT -->
+
+<script src="script.js"></script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Create Account</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <h1>
+        Create Account
+    </h1>
+
+
+
+
+    <div class="expense-box">
+
+
+        <input 
+            type="text"
+            id="username"
+            placeholder="Username"
+        >
+
+
+
+        <input 
+            type="email"
+            id="email"
+            placeholder="Email"
+        >
+
+
+
+        <input 
+            type="password"
+            id="password"
+            placeholder="Password"
+        >
+
+
+
+
+        <button onclick="registerUser()">
+
+            Register
+
+        </button>
+
+
+
+    </div>
+
+
+
+
+    <p style="text-align:center;">
+
+        Already have an account?
+
+        <a href="login.html">
+            Login
+        </a>
+
+    </p>
+
+
+
+</div>
+
+
+
+
+
+
+<script>
+
+
+function registerUser(){
+
+
+    let username =
+    document.getElementById("username").value;
+
+
+
+    let email =
+    document.getElementById("email").value;
+
+
+
+    let password =
+    document.getElementById("password").value;
+
+
+
+
+
+    if(username=="" || email=="" || password==""){
+
+
+        alert("Please fill all fields");
+
+        return;
+
+
+    }
+
+
+
+
+
+    fetch("/register",{
+
+
+        method:"POST",
+
+
+        headers:{
+
+
+            "Content-Type":"application/json"
+
+
+        },
+
+
+        body:JSON.stringify({
+
+
+            username:username,
+
+            email:email,
+
+            password:password
+
+
+        })
+
+
+    })
+
+
+
+    .then(response=>response.json())
+
+
+
+    .then(data=>{
+
+
+        alert(data.message);
+
+
+
+        if(data.message=="Registration successful"){
+
+
+            window.location.href="login.html";
+
+
+        }
+
+
+    });
+
+
+
+}
+
+
+
+</script>
+
+
+
+</body>
+
+</html>

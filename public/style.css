@@ -1,0 +1,1813 @@
+/* =====================
+   GLOBAL
+===================== */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    position: relative;
+    isolation: isolate;
+
+    min-height: 100vh;
+
+    font-family: "Segoe UI", Arial, sans-serif;
+
+    margin: 0;
+    padding: 0;
+
+    color: #1f2937;
+
+    background:
+        radial-gradient(
+            circle at 10% 15%,
+            rgba(76, 175, 80, 0.23) 0,
+            rgba(76, 175, 80, 0) 32%
+        ),
+        radial-gradient(
+            circle at 88% 12%,
+            rgba(129, 199, 132, 0.28) 0,
+            rgba(129, 199, 132, 0) 30%
+        ),
+        radial-gradient(
+            circle at 78% 85%,
+            rgba(46, 125, 50, 0.18) 0,
+            rgba(46, 125, 50, 0) 34%
+        ),
+        linear-gradient(
+            135deg,
+            #eef8f0 0%,
+            #f8fcf8 48%,
+            #e3f3e6 100%
+        );
+
+    background-attachment: fixed;
+    overflow-x: hidden;
+}
+
+/* =====================
+   ANIMATED APP BACKGROUND
+===================== */
+
+body::before,
+body::after {
+    content: "";
+
+    position: fixed;
+
+    pointer-events: none;
+
+    z-index: -1;
+
+    border-radius: 50%;
+
+    filter: blur(12px);
+
+    opacity: 0.65;
+}
+
+body::before {
+    top: -180px;
+    right: -140px;
+
+    width: 520px;
+    height: 520px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(76, 175, 80, 0.32),
+            rgba(165, 214, 167, 0.08)
+        );
+
+    animation:
+        floatBackgroundOne 13s ease-in-out infinite;
+}
+
+body::after {
+    bottom: -220px;
+    left: -180px;
+
+    width: 600px;
+    height: 600px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(46, 125, 50, 0.25),
+            rgba(200, 230, 201, 0.08)
+        );
+
+    animation:
+        floatBackgroundTwo 16s ease-in-out infinite;
+}
+
+@keyframes floatBackgroundOne {
+
+    0%,
+    100% {
+        transform:
+            translate3d(0, 0, 0)
+            scale(1);
+    }
+
+    50% {
+        transform:
+            translate3d(-55px, 45px, 0)
+            scale(1.08);
+    }
+
+}
+
+@keyframes floatBackgroundTwo {
+
+    0%,
+    100% {
+        transform:
+            translate3d(0, 0, 0)
+            scale(1);
+    }
+
+    50% {
+        transform:
+            translate3d(70px, -45px, 0)
+            scale(1.06);
+    }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    body::before,
+    body::after {
+        animation: none;
+    }
+
+}
+
+
+
+
+
+/* =====================
+   MAIN CONTAINER
+===================== */
+
+.container {
+    position: relative;
+    z-index: 1;
+
+    width: 90%;
+    max-width: 1100px;
+
+    margin: 40px auto;
+    padding: 30px;
+
+    background:
+        rgba(255, 255, 255, 0.82);
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.78);
+
+    border-radius: 22px;
+
+    box-shadow:
+        0 20px 55px
+        rgba(28, 78, 38, 0.13);
+
+    backdrop-filter:
+        blur(18px);
+
+    -webkit-backdrop-filter:
+        blur(18px);
+}
+
+h1 {
+    text-align: center;
+    color: #2e7d32;
+    margin-bottom: 30px;
+    font-size: 32px;
+}
+
+
+
+/* =====================
+   SIDEBAR
+===================== */
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -290px;
+
+    width: 280px;
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 24px 18px 18px;
+
+    background: linear-gradient(
+        180deg,
+        #2e7d32 0%,
+        #256b2a 100%
+    );
+
+    color: white;
+
+    z-index: 1001;
+
+    box-shadow: 8px 0 24px rgba(0, 0, 0, 0.2);
+
+    transition: left 0.3s ease;
+
+    overflow-y: auto;
+}
+
+.sidebar.active {
+    left: 0;
+}
+
+
+
+/* =====================
+   SIDEBAR BRAND
+===================== */
+
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 0 8px 22px;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.brand-icon {
+    width: 44px;
+    height: 44px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(255, 255, 255, 0.18);
+
+    border-radius: 12px;
+
+    color: white;
+    font-size: 20px;
+}
+
+.brand-text {
+    min-width: 0;
+}
+
+.sidebar-brand h2 {
+    margin: 0;
+
+    color: white;
+
+    text-align: left;
+
+    font-size: 19px;
+    line-height: 1.2;
+}
+
+.sidebar-brand p {
+    margin: 4px 0 0;
+
+    color: rgba(255, 255, 255, 0.72);
+
+    font-size: 12px;
+}
+
+
+
+/* =====================
+   SIDEBAR PROFILE
+===================== */
+
+.sidebar-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    margin: 18px 0;
+    padding: 13px;
+
+    background: rgba(255, 255, 255, 0.12);
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    border-radius: 14px;
+}
+
+.profile-avatar {
+    width: 42px;
+    height: 42px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: white;
+    color: #2e7d32;
+
+    font-size: 17px;
+}
+
+.profile-details {
+    display: flex;
+    flex-direction: column;
+
+    min-width: 0;
+}
+
+.profile-label {
+    color: rgba(255, 255, 255, 0.7);
+
+    font-size: 12px;
+}
+
+.profile-details strong {
+    margin-top: 2px;
+
+    color: white;
+
+    font-size: 15px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+
+/* =====================
+   SIDEBAR MENU
+===================== */
+
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.sidebar .menu-link {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    gap: 13px;
+
+    width: 100%;
+
+    margin: 0;
+    padding: 13px 14px;
+
+    color: rgba(255, 255, 255, 0.9);
+
+    text-decoration: none;
+
+    border-radius: 11px;
+
+    font-size: 15px;
+    font-weight: 500;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.sidebar .menu-link i {
+    width: 22px;
+
+    flex-shrink: 0;
+
+    color: inherit;
+
+    text-align: center;
+
+    font-size: 16px;
+}
+
+.sidebar .menu-link:hover {
+    background: rgba(255, 255, 255, 0.14);
+
+    color: white;
+
+    transform: translateX(4px);
+}
+
+.sidebar .menu-link.active-page {
+    background: white;
+
+    color: #2e7d32;
+
+    font-weight: 700;
+
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.13);
+}
+
+.sidebar .menu-link.active-page::before {
+    content: "";
+
+    position: absolute;
+    top: 50%;
+    left: -18px;
+
+    width: 5px;
+    height: 30px;
+
+    background: white;
+
+    border-radius: 0 6px 6px 0;
+
+    transform: translateY(-50%);
+}
+
+
+
+/* =====================
+   SIDEBAR FOOTER
+===================== */
+
+.sidebar-footer {
+    margin-top: auto;
+    padding-top: 20px;
+}
+
+.logout-btn {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    margin: 0;
+    padding: 13px;
+
+    background: #c62828;
+    color: white;
+
+    border: none;
+    border-radius: 11px;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.logout-btn:hover {
+    background: #a61f1f;
+
+    transform: translateY(-1px);
+}
+
+.app-version {
+    margin: 14px 0 0;
+
+    color: rgba(255, 255, 255, 0.55);
+
+    text-align: center;
+
+    font-size: 11px;
+}
+
+
+
+/* =====================
+   OVERLAY
+===================== */
+
+.overlay {
+    position: fixed;
+    inset: 0;
+
+    background: rgba(15, 25, 18, 0.55);
+
+    opacity: 0;
+    visibility: hidden;
+
+    z-index: 1000;
+
+    transition:
+        opacity 0.3s ease,
+        visibility 0.3s ease;
+}
+
+.overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+
+/* =====================
+   HEADER
+===================== */
+
+.header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    margin-bottom: 25px;
+}
+
+.header h1 {
+    flex: 1;
+
+    margin: 0;
+
+    text-align: center;
+}
+
+.menu-btn {
+    width: 48px;
+    height: 48px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #4caf50;
+    color: white;
+
+    border: none;
+    border-radius: 11px;
+
+    padding: 0;
+
+    font-size: 20px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.menu-btn:hover {
+    background: #2e7d32;
+
+    transform: translateY(-1px);
+}
+
+.user-area {
+    min-width: 160px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+#welcomeUser {
+    color: #2e7d32;
+
+    font-weight: bold;
+    font-size: 14px;
+}
+
+
+
+/* =====================
+   DASHBOARD CARDS
+===================== */
+
+.dashboard {
+    display: flex;
+    gap: 15px;
+
+    margin-bottom: 30px;
+}
+
+.card {
+    flex: 1;
+
+    background: linear-gradient(
+        135deg,
+        #e8f5e9,
+        #c8e6c9
+    );
+
+    padding: 20px;
+
+    border-radius: 18px;
+
+    text-align: center;
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.card h3 {
+    margin: 0;
+
+    color: #388e3c;
+
+    font-size: 15px;
+}
+
+.card h2 {
+    margin: 15px 0 0;
+
+    color: #1b5e20;
+
+    font-size: 25px;
+}
+
+
+
+/* =====================
+   INPUT AREA
+===================== */
+
+.expense-box {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    margin-bottom: 30px;
+}
+
+input,
+select {
+    width: 100%;
+
+    padding: 13px 15px;
+
+    border: 1px solid #ddd;
+    border-radius: 10px;
+
+    background: white;
+
+    font-size: 15px;
+
+    outline: none;
+}
+
+input:focus,
+select:focus {
+    border-color: #4caf50;
+
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.4);
+}
+
+
+
+/* =====================
+   PASSWORD EYE
+===================== */
+
+.password-box {
+    position: relative;
+
+    width: 100%;
+}
+
+.password-box input {
+    width: 100%;
+
+    padding: 13px 45px 13px 15px;
+}
+
+.show-password {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+
+    width: auto;
+
+    padding: 0;
+
+    background: none;
+    color: #4caf50;
+
+    border: none;
+
+    font-size: 18px;
+
+    cursor: pointer;
+
+    transform: translateY(-50%);
+}
+
+.show-password:hover {
+    background: none;
+
+    transform: translateY(-50%) scale(1.1);
+}
+
+
+
+/* =====================
+   GENERAL BUTTON
+===================== */
+
+button {
+    width: 100%;
+
+    padding: 13px;
+
+    background: #4caf50;
+    color: white;
+
+    border: none;
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    font-size: 16px;
+
+    transition:
+        background 0.3s ease,
+        transform 0.3s ease;
+}
+
+button:hover {
+    background: #2e7d32;
+
+    transform: scale(1.01);
+}
+
+/* Prevent general button styles from damaging these buttons */
+
+.menu-btn {
+    width: 48px;
+}
+
+.logout-btn {
+    width: 100%;
+}
+
+
+
+/* =====================
+   CHART
+===================== */
+
+.chart-box {
+    margin: 30px 0;
+    padding: 25px;
+
+    background: #f9fff9;
+
+    border-radius: 18px;
+}
+
+.chart-box h2 {
+    color: #2e7d32;
+
+    text-align: center;
+}
+
+canvas {
+    max-height: 300px;
+}
+
+
+
+/* =====================
+   FILTER
+===================== */
+
+.filter-box {
+    display: flex;
+    gap: 12px;
+
+    margin-bottom: 25px;
+}
+
+.filter-box input,
+.filter-box select {
+    flex: 1;
+}
+
+
+
+/* =====================
+   TABLE
+===================== */
+
+.table-responsive {
+    width: 100%;
+
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+
+    border-collapse: collapse;
+}
+
+th {
+    padding: 13px;
+
+    background: #4caf50;
+    color: white;
+
+    white-space: nowrap;
+}
+
+td {
+    padding: 12px;
+
+    border-bottom: 1px solid #eee;
+
+    text-align: center;
+
+    white-space: nowrap;
+}
+
+tbody tr:hover {
+    background: #f1f8f3;
+}
+
+
+
+/* =====================
+   TABLE ACTION BUTTONS
+===================== */
+
+td button {
+    width: auto;
+
+    min-width: 100px;
+
+    padding: 10px 18px;
+}
+
+
+
+/* =====================
+   MOBILE
+===================== */
+
+@media (max-width: 700px) {
+
+    .container {
+        width: calc(100% - 24px);
+
+        margin: 12px auto;
+        padding: 18px;
+
+        border-radius: 16px;
+    }
+
+    .header {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 12px;
+    }
+
+    .header h1 {
+        padding-right: 48px;
+
+        font-size: 24px;
+    }
+
+    .user-area {
+        grid-column: 1 / -1;
+
+        min-width: 0;
+
+        align-items: center;
+    }
+
+    .dashboard {
+        flex-direction: column;
+    }
+
+    .filter-box {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: min(280px, 86vw);
+        left: min(-290px, -87vw);
+    }
+
+    .sidebar.active {
+        left: 0;
+    }
+
+    table {
+        min-width: 700px;
+
+        font-size: 13px;
+    }
+
+}
+
+
+
+@media (max-width: 420px) {
+
+    .sidebar {
+        padding: 20px 15px 16px;
+    }
+
+    .sidebar-brand h2 {
+        font-size: 17px;
+    }
+
+    .brand-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .header h1 {
+        font-size: 21px;
+    }
+
+    .menu-btn {
+        width: 44px;
+        height: 44px;
+    }
+
+}
+
+/* =====================
+   PAGE HEADING
+===================== */
+
+.page-heading {
+    flex: 1;
+    text-align: center;
+}
+
+.page-heading h1 {
+    margin: 0;
+}
+
+.page-heading p {
+    margin: 6px 0 0;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+
+
+/* =====================
+   CONTENT CARDS
+===================== */
+
+.content-card {
+    margin-bottom: 28px;
+    padding: 25px;
+
+    background: white;
+
+    border: 1px solid #edf1ee;
+    border-radius: 18px;
+
+    box-shadow: 0 5px 16px rgba(0, 0, 0, 0.05);
+}
+
+.section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+
+    margin-bottom: 22px;
+}
+
+.section-heading h2 {
+    margin: 0;
+    color: #1b5e20;
+    font-size: 22px;
+}
+
+.section-heading p {
+    margin: 6px 0 0;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.section-icon {
+    width: 44px;
+    height: 44px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #e8f5e9;
+    color: #2e7d32;
+
+    border-radius: 12px;
+}
+
+
+
+/* =====================
+   SUMMARY ICON
+===================== */
+
+.summary-icon {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0 auto 13px;
+
+    background: rgba(46, 125, 50, 0.12);
+    color: #2e7d32;
+
+    border-radius: 12px;
+
+    font-size: 18px;
+}
+
+
+
+/* =====================
+   EXPENSE FORM
+===================== */
+
+.expense-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+
+    margin-bottom: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    color: #374151;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.primary-action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+}
+
+
+
+/* =====================
+   SEARCH BOX
+===================== */
+
+.search-box {
+    position: relative;
+    flex: 1;
+}
+
+.search-box i {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+
+    color: #9ca3af;
+
+    transform: translateY(-50%);
+}
+
+.search-box input {
+    padding-left: 42px;
+}
+
+
+
+/* =====================
+   MOBILE EXPENSE PAGE
+===================== */
+
+@media (max-width: 700px) {
+
+    .page-heading {
+        text-align: left;
+    }
+
+    .page-heading p {
+        display: none;
+    }
+
+    .expense-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .content-card {
+        padding: 18px;
+    }
+
+    .section-heading h2 {
+        font-size: 19px;
+    }
+
+}
+
+/* =====================
+   INCOME PAGE
+===================== */
+
+.income-card {
+    background: linear-gradient(
+        135deg,
+        #e8f5e9,
+        #d8f3dc
+    );
+}
+
+.income-summary-icon,
+.income-section-icon {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.income-action-btn {
+    background: #2e7d32;
+}
+
+.income-action-btn:hover {
+    background: #1b5e20;
+}
+
+.income-amount-cell {
+    color: #15803d;
+    font-weight: 700;
+}
+
+.positive-balance {
+    color: #15803d;
+}
+
+.negative-balance {
+    color: #dc2626;
+}
+
+/* =====================
+   DASHBOARD LAYOUT
+===================== */
+
+.dashboard-page {
+    max-width: 1250px;
+}
+
+.dashboard {
+    display: grid;
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1.5fr)
+        minmax(260px, 0.75fr);
+    gap: 24px;
+    align-items: stretch;
+    margin-bottom: 28px;
+}
+
+.dashboard-grid .content-card {
+    margin-bottom: 0;
+}
+
+.dashboard-chart-wrapper {
+    position: relative;
+    min-height: 320px;
+}
+
+.quick-action-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.quick-action-icon {
+    width: 54px;
+    height: 54px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 18px;
+
+    background: #e8f5e9;
+    color: #2e7d32;
+
+    border-radius: 15px;
+
+    font-size: 22px;
+}
+
+.quick-action-card h2 {
+    margin: 0;
+    color: #1b5e20;
+}
+
+.quick-action-card p {
+    margin: 10px 0 22px;
+    color: #6b7280;
+    line-height: 1.6;
+}
+
+.dashboard-action-link,
+.view-all-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+
+    color: #2e7d32;
+
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.dashboard-action-link {
+    padding: 12px 16px;
+
+    background: #e8f5e9;
+
+    border-radius: 10px;
+}
+
+.dashboard-action-link:hover,
+.view-all-link:hover {
+    color: #1b5e20;
+}
+
+.expense-summary-icon {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.balance-icon {
+    background: #dbeafe;
+    color: #2563eb;
+}
+
+.transaction-summary-icon {
+    background: #f3e8ff;
+    color: #7e22ce;
+}
+
+
+/* =====================
+   MONTHLY ANALYTICS
+===================== */
+
+.monthly-overview-section {
+    margin-bottom: 28px;
+}
+
+.monthly-summary-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+    gap: 16px;
+
+    margin-bottom: 24px;
+}
+
+.monthly-stat-card {
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+    gap: 13px;
+
+    padding: 17px;
+
+    background: #f8faf9;
+
+    border: 1px solid #e5ece7;
+    border-radius: 14px;
+}
+
+.monthly-stat-icon {
+    width: 43px;
+    height: 43px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    font-size: 17px;
+}
+
+.monthly-stat-card div:last-child {
+    min-width: 0;
+}
+
+.monthly-stat-card span {
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: #6b7280;
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.monthly-stat-card strong {
+    display: block;
+
+    color: #1f2937;
+
+    font-size: 18px;
+    line-height: 1.25;
+
+    overflow-wrap: anywhere;
+}
+
+.monthly-stat-card small {
+    display: block;
+
+    margin-top: 5px;
+
+    color: #6b7280;
+
+    font-size: 12px;
+}
+
+.monthly-income-icon {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.monthly-expense-icon {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.monthly-balance-icon {
+    background: #dbeafe;
+    color: #2563eb;
+}
+
+.monthly-savings-icon {
+    background: #fef3c7;
+    color: #b45309;
+}
+
+.monthly-category-icon {
+    background: #f3e8ff;
+    color: #7e22ce;
+}
+
+.largest-category-card {
+    grid-column: span 4;
+}
+
+.analytics-chart-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.analytics-chart-card {
+    min-width: 0;
+
+    padding: 20px;
+
+    background: #fbfdfb;
+
+    border: 1px solid #e8eee9;
+    border-radius: 16px;
+}
+
+.analytics-chart-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 15px;
+
+    margin-bottom: 18px;
+}
+
+.analytics-chart-heading h3 {
+    margin: 0;
+
+    color: #1b5e20;
+
+    font-size: 17px;
+}
+
+.analytics-chart-heading p {
+    margin: 6px 0 0;
+
+    color: #6b7280;
+
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.analytics-chart-heading > i {
+    color: #2e7d32;
+    font-size: 19px;
+}
+
+.analytics-chart-wrapper {
+    position: relative;
+    min-height: 280px;
+}
+
+
+/* =====================
+   TABLE STATES
+===================== */
+
+.empty-table-message {
+    padding: 28px;
+    color: #6b7280;
+    text-align: center;
+}
+
+
+/* =====================
+   RESPONSIVE DASHBOARD
+===================== */
+
+@media (max-width: 980px) {
+
+    .dashboard {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .monthly-summary-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .largest-category-card {
+        grid-column: span 2;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+@media (max-width: 760px) {
+
+    .analytics-chart-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .analytics-chart-wrapper {
+        min-height: 250px;
+    }
+
+}
+
+@media (max-width: 520px) {
+
+    .dashboard,
+    .monthly-summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .largest-category-card {
+        grid-column: span 1;
+    }
+
+    .monthly-stat-card {
+        padding: 15px;
+    }
+
+    .monthly-overview-section {
+        padding: 17px;
+    }
+
+    .analytics-chart-card {
+        padding: 16px;
+    }
+
+}
+
+
+
+/* =====================
+   GLASS CARD FINISH
+===================== */
+
+.card,
+.content-card,
+.analytics-chart-card,
+.monthly-stat-card {
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.72);
+
+    box-shadow:
+        0 10px 28px
+        rgba(28, 78, 38, 0.08);
+
+    backdrop-filter:
+        blur(9px);
+
+    -webkit-backdrop-filter:
+        blur(9px);
+}
+
+.card:hover,
+.content-card:hover {
+    box-shadow:
+        0 16px 38px
+        rgba(28, 78, 38, 0.13);
+}
+
+
+
+/* =========================================================
+   UNIFORM PAGE LAYOUT
+   Keeps Dashboard, Expenses, Income, Reports and Settings
+   visually consistent.
+========================================================= */
+
+:root {
+    --app-container-width: 1280px;
+    --app-container-padding: 30px;
+    --app-section-gap: 24px;
+    --app-card-radius: 18px;
+    --app-card-min-height: 156px;
+}
+
+/* Same outer frame on every page */
+.container,
+.dashboard-page,
+.expenses-page,
+.income-page,
+.reports-page,
+.settings-page {
+    width: min(92%, var(--app-container-width)) !important;
+    max-width: var(--app-container-width) !important;
+    margin: 28px auto !important;
+    padding: var(--app-container-padding) !important;
+    box-sizing: border-box;
+}
+
+/* Same three-column header structure */
+.header,
+.expenses-page .header,
+.income-page .header {
+    display: grid !important;
+    grid-template-columns: 180px minmax(0, 1fr) 180px !important;
+    align-items: center !important;
+    gap: 18px !important;
+    margin-bottom: 26px !important;
+}
+
+/* Keep the menu button at the left */
+.header .menu-btn {
+    justify-self: start;
+}
+
+/* Center every page title and subtitle */
+.header .page-heading,
+.expenses-page .page-heading,
+.income-page .page-heading {
+    min-width: 0;
+    text-align: center !important;
+}
+
+.header .page-heading h1,
+.expenses-page .page-heading h1,
+.income-page .page-heading h1,
+.header > h1 {
+    margin: 0 !important;
+    text-align: center !important;
+    font-size: 32px !important;
+    line-height: 1.2;
+}
+
+.header .page-heading p,
+.expenses-page .page-heading p,
+.income-page .page-heading p {
+    margin: 7px 0 0 !important;
+    text-align: center !important;
+    color: #6b7280;
+}
+
+/* Same user area placement */
+.header .user-area,
+.expenses-page .user-area,
+.income-page .user-area {
+    min-width: 180px !important;
+    justify-self: end;
+    align-items: flex-end !important;
+    text-align: right;
+}
+
+/* Uniform summary card grids */
+.dashboard,
+.expense-summary,
+.income-summary {
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 18px !important;
+    margin-bottom: var(--app-section-gap) !important;
+}
+
+/* Pages with only three cards occupy equal space */
+.expense-summary,
+.income-summary {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+}
+
+/* Same summary card dimensions and typography */
+.dashboard > .card,
+.expense-summary .card,
+.income-summary .card,
+.income-card {
+    min-height: var(--app-card-min-height) !important;
+    padding: 22px !important;
+    border-radius: var(--app-card-radius) !important;
+    box-sizing: border-box;
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center !important;
+}
+
+.dashboard > .card h2,
+.expense-summary .card h2,
+.income-summary .card h2,
+.income-card h2 {
+    margin: 13px 0 0 !important;
+    font-size: clamp(24px, 2vw, 30px) !important;
+    line-height: 1.15;
+}
+
+.dashboard > .card h3,
+.expense-summary .card h3,
+.income-summary .card h3,
+.income-card h3 {
+    margin: 12px 0 0 !important;
+}
+
+/* Same section/card appearance */
+.content-card,
+.expense-form-card,
+.expense-history-card,
+.income-form-card,
+.income-history-card,
+.monthly-overview {
+    border-radius: 20px !important;
+    padding: 26px !important;
+    box-sizing: border-box;
+}
+
+/* Keep content aligned to the same width */
+.expense-workspace,
+.income-workspace,
+.dashboard-grid {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Desktop layout for expense and income work areas */
+.expense-workspace,
+.income-workspace {
+    display: grid;
+    grid-template-columns: minmax(330px, 0.8fr) minmax(0, 1.4fr);
+    gap: 24px;
+    align-items: start;
+}
+
+/* Prevent tables from pushing page width */
+.table-container,
+.expense-history-card,
+.income-history-card {
+    min-width: 0;
+    overflow-x: auto;
+}
+
+/* Tablet */
+@media (max-width: 1050px) {
+    .header,
+    .expenses-page .header,
+    .income-page .header {
+        grid-template-columns: 120px minmax(0, 1fr) 120px !important;
+    }
+
+    .dashboard {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+
+    .expense-workspace,
+    .income-workspace {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Mobile */
+@media (max-width: 720px) {
+    :root {
+        --app-container-padding: 18px;
+    }
+
+    .container,
+    .dashboard-page,
+    .expenses-page,
+    .income-page,
+    .reports-page,
+    .settings-page {
+        width: calc(100% - 20px) !important;
+        margin: 10px auto !important;
+    }
+
+    .header,
+    .expenses-page .header,
+    .income-page .header {
+        grid-template-columns: 52px minmax(0, 1fr) !important;
+        gap: 12px !important;
+    }
+
+    .header .user-area,
+    .expenses-page .user-area,
+    .income-page .user-area {
+        grid-column: 1 / -1;
+        justify-self: start;
+        align-items: flex-start !important;
+        min-width: 0 !important;
+        padding-left: 64px;
+        text-align: left;
+    }
+
+    .header .page-heading h1,
+    .expenses-page .page-heading h1,
+    .income-page .page-heading h1,
+    .header > h1 {
+        font-size: 27px !important;
+    }
+
+    .dashboard,
+    .expense-summary,
+    .income-summary {
+        grid-template-columns: 1fr !important;
+    }
+
+    .dashboard > .card,
+    .expense-summary .card,
+    .income-summary .card,
+    .income-card {
+        min-height: 140px !important;
+    }
+
+    .content-card,
+    .expense-form-card,
+    .expense-history-card,
+    .income-form-card,
+    .income-history-card,
+    .monthly-overview {
+        padding: 20px !important;
+    }
+}

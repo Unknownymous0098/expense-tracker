@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Expenses | Expense Tracker</title>
+
+
+    <!-- FONT AWESOME -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+
+    <!-- MAIN CSS -->
+
+    <link rel="stylesheet" href="style.css">
+
+
+    <style>
+        .expenses-page {
+            width: min(94%, 1280px);
+            max-width: 1280px;
+            margin: 24px auto;
+            padding: 28px;
+        }
+
+        .expenses-page .header {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: center;
+            gap: 18px;
+            margin-bottom: 24px;
+        }
+
+        .expenses-page .page-heading {
+            text-align: left;
+        }
+
+        .expenses-page .page-heading h1 {
+            text-align: left;
+            font-size: 30px;
+        }
+
+        .expenses-page .user-area {
+            min-width: 180px;
+        }
+
+        .expense-summary {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+            margin-bottom: 24px;
+        }
+
+        .expense-summary .card {
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 22px;
+        }
+
+        .expense-summary .card h2 {
+            margin-top: 10px;
+            font-size: 28px;
+        }
+
+        .expense-workspace {
+            display: grid;
+            grid-template-columns: minmax(320px, 0.8fr) minmax(0, 1.35fr);
+            gap: 24px;
+            align-items: start;
+        }
+
+        .expense-form-card,
+        .expense-history-card {
+            margin-bottom: 0;
+        }
+
+        .expense-form-card {
+            position: sticky;
+            top: 24px;
+        }
+
+        .expense-form-grid {
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-bottom: 18px;
+        }
+
+        .expense-form-card .primary-action-btn {
+            width: auto;
+            min-width: 180px;
+            padding: 12px 20px;
+            margin-left: auto;
+        }
+
+        .filter-box {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 220px;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .expense-history-card table {
+            min-width: 760px;
+        }
+
+        .expense-history-card th,
+        .expense-history-card td {
+            text-align: left;
+        }
+
+        .expense-history-card th:nth-child(3),
+        .expense-history-card td:nth-child(3) {
+            text-align: right;
+        }
+
+        .expense-history-card th:last-child,
+        .expense-history-card td:last-child {
+            text-align: center;
+        }
+
+        .expense-history-card td button {
+            min-width: 88px;
+        }
+
+        @media (max-width: 980px) {
+            .expense-workspace {
+                grid-template-columns: 1fr;
+            }
+
+            .expense-form-card {
+                position: static;
+            }
+
+            .expense-form-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 760px) {
+            .expenses-page {
+                width: calc(100% - 20px);
+                margin: 10px auto;
+                padding: 18px;
+            }
+
+            .expenses-page .header {
+                grid-template-columns: auto 1fr;
+            }
+
+            .expenses-page .page-heading {
+                text-align: left;
+            }
+
+            .expenses-page .user-area {
+                grid-column: 1 / -1;
+                min-width: 0;
+                align-items: flex-start;
+            }
+
+            .expense-summary {
+                grid-template-columns: 1fr;
+            }
+
+            .expense-form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-box {
+                grid-template-columns: 1fr;
+            }
+
+            .expense-form-card .primary-action-btn {
+                width: 100%;
+                margin-left: 0;
+            }
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+
+
+<!-- ==========================
+     SIDEBAR
+========================== -->
+
+<div class="sidebar" id="sidebar">
+
+
+    <div class="sidebar-brand">
+
+        <div class="brand-icon">
+
+            <i class="fa-solid fa-wallet"></i>
+
+        </div>
+
+
+        <div class="brand-text">
+
+            <h2>
+                Expense Tracker
+            </h2>
+
+            <p>
+                Track every peso
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+
+    <div class="sidebar-profile">
+
+        <div class="profile-avatar">
+
+            <i class="fa-solid fa-user"></i>
+
+        </div>
+
+
+        <div class="profile-details">
+
+            <span class="profile-label">
+                Welcome
+            </span>
+
+            <strong id="sidebarUsername">
+                User
+            </strong>
+
+        </div>
+
+    </div>
+
+
+
+
+    <nav class="sidebar-menu">
+
+
+        <a
+            href="index.html"
+            class="menu-link"
+        >
+
+            <i class="fa-solid fa-house"></i>
+
+            <span>
+                Dashboard
+            </span>
+
+        </a>
+
+
+
+        <a
+            href="expenses.html"
+            class="menu-link"
+        >
+
+            <i class="fa-solid fa-receipt"></i>
+
+            <span>
+                Expenses
+            </span>
+
+        </a>
+
+
+
+        <a
+            href="income.html"
+            class="menu-link"
+        >
+
+            <i class="fa-solid fa-coins"></i>
+
+            <span>
+                Income
+            </span>
+
+        </a>
+
+
+
+        <a
+            href="reports.html"
+            class="menu-link"
+        >
+
+            <i class="fa-solid fa-chart-pie"></i>
+
+            <span>
+                Reports
+            </span>
+
+        </a>
+
+
+
+        <a
+            href="settings.html"
+            class="menu-link"
+        >
+
+            <i class="fa-solid fa-gear"></i>
+
+            <span>
+                Settings
+            </span>
+
+        </a>
+
+
+    </nav>
+
+
+
+
+    <div class="sidebar-footer">
+
+        <button
+            type="button"
+            class="logout-btn"
+            onclick="logout()"
+        >
+
+            <i class="fa-solid fa-right-from-bracket"></i>
+
+            <span>
+                Logout
+            </span>
+
+        </button>
+
+
+        <p class="app-version">
+            Expense Tracker v1.0
+        </p>
+
+    </div>
+
+
+</div>
+
+
+
+
+
+<!-- ==========================
+     OVERLAY
+========================== -->
+
+<div
+    class="overlay"
+    id="overlay"
+    onclick="closeSidebar()"
+></div>
+
+
+
+
+
+<!-- ==========================
+     MAIN CONTAINER
+========================== -->
+
+<div class="container expenses-page">
+
+
+
+
+
+<!-- ==========================
+     HEADER
+========================== -->
+
+<div class="header">
+
+
+    <button
+        type="button"
+        class="menu-btn"
+        onclick="openSidebar()"
+        aria-label="Open navigation menu"
+    >
+
+        <i class="fa-solid fa-bars"></i>
+
+    </button>
+
+
+
+    <div class="page-heading">
+
+        <h1>
+            Expenses
+        </h1>
+
+        <p>
+            Add, search and manage your expense records.
+        </p>
+
+    </div>
+
+
+
+    <div class="user-area">
+
+        <span id="welcomeUser"></span>
+
+    </div>
+
+
+</div>
+
+
+
+
+
+<!-- ==========================
+     EXPENSE SUMMARY
+========================== -->
+
+<div class="dashboard expense-summary">
+
+    <div class="card">
+
+        <div class="summary-icon">
+
+            <i class="fa-solid fa-wallet"></i>
+
+        </div>
+
+        <h3>
+            Total Expenses
+        </h3>
+
+        <h2 id="totalAmount">
+            ₱0.00
+        </h2>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="summary-icon">
+
+            <i class="fa-solid fa-receipt"></i>
+
+        </div>
+
+        <h3>
+            Transactions
+        </h3>
+
+        <h2 id="transactionCount">
+            0
+        </h2>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="summary-icon">
+
+            <i class="fa-solid fa-chart-line"></i>
+
+        </div>
+
+        <h3>
+            Average Expense
+        </h3>
+
+        <h2 id="averageAmount">
+            ₱0.00
+        </h2>
+
+    </div>
+
+</div>
+
+
+
+
+
+<!-- ==========================
+     EXPENSE WORKSPACE
+========================== -->
+
+<div class="expense-workspace">
+
+
+    <!-- ADD EXPENSE -->
+
+    <section class="content-card expense-form-card">
+
+        <div class="section-heading">
+
+            <div>
+
+                <h2>
+                    Add New Expense
+                </h2>
+
+                <p>
+                    Record a new expense quickly.
+                </p>
+
+            </div>
+
+            <div class="section-icon">
+
+                <i class="fa-solid fa-plus"></i>
+
+            </div>
+
+        </div>
+
+
+        <div class="expense-form-grid">
+
+            <div class="form-group">
+
+                <label for="expenseName">
+                    Expense Name
+                </label>
+
+                <input
+                    type="text"
+                    id="expenseName"
+                    placeholder="Example: Lunch"
+                    autocomplete="off"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="expenseCategory">
+                    Category
+                </label>
+
+                <select id="expenseCategory">
+
+                    <option value="Food">
+                        Food
+                    </option>
+
+                    <option value="Transport">
+                        Transport
+                    </option>
+
+                    <option value="Bills">
+                        Bills
+                    </option>
+
+                    <option value="Shopping">
+                        Shopping
+                    </option>
+
+                    <option value="Others">
+                        Others
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="expenseAmount">
+                    Amount
+                </label>
+
+                <input
+                    type="number"
+                    id="expenseAmount"
+                    placeholder="0.00"
+                    min="0"
+                    step="0.01"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="expenseDate">
+                    Date
+                </label>
+
+                <input
+                    type="date"
+                    id="expenseDate"
+                >
+
+            </div>
+
+        </div>
+
+
+        <button
+            type="button"
+            class="primary-action-btn"
+            onclick="addExpense()"
+        >
+
+            <i class="fa-solid fa-plus"></i>
+
+            Add Expense
+
+        </button>
+
+    </section>
+
+
+
+    <!-- EXPENSE HISTORY -->
+
+    <section class="content-card expense-history-card">
+
+        <div class="section-heading">
+
+            <div>
+
+                <h2>
+                    Expense History
+                </h2>
+
+                <p>
+                    Search, filter and manage your records.
+                </p>
+
+            </div>
+
+            <div class="section-icon">
+
+                <i class="fa-solid fa-clock-rotate-left"></i>
+
+            </div>
+
+        </div>
+
+
+        <div class="filter-box">
+
+            <div class="search-box">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <input
+                    type="text"
+                    id="searchExpense"
+                    placeholder="Search expense..."
+                    oninput="filterExpenses()"
+                    autocomplete="off"
+                >
+
+            </div>
+
+
+            <select
+                id="filterCategory"
+                onchange="filterExpenses()"
+            >
+
+                <option value="All">
+                    All Categories
+                </option>
+
+                <option value="Food">
+                    Food
+                </option>
+
+                <option value="Transport">
+                    Transport
+                </option>
+
+                <option value="Bills">
+                    Bills
+                </option>
+
+                <option value="Shopping">
+                    Shopping
+                </option>
+
+                <option value="Others">
+                    Others
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="table-responsive">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Expense
+                        </th>
+
+                        <th>
+                            Category
+                        </th>
+
+                        <th>
+                            Amount
+                        </th>
+
+                        <th>
+                            Date
+                        </th>
+
+                        <th>
+                            Action
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="expenseList"></tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+</div>
+
+
+
+
+
+<!-- ==========================
+     PAGE JAVASCRIPT
+========================== -->
+
+<script>
+
+
+const username =
+    localStorage.getItem("username");
+
+
+if (!username) {
+
+    window.location.href = "login.html";
+
+}
+
+
+
+
+function displayLoggedInUser() {
+
+    const savedUsername =
+        localStorage.getItem("username") || "User";
+
+
+    const welcomeUser =
+        document.getElementById("welcomeUser");
+
+
+    const sidebarUsername =
+        document.getElementById("sidebarUsername");
+
+
+    if (welcomeUser) {
+
+        welcomeUser.textContent =
+            "Welcome, " + savedUsername;
+
+    }
+
+
+    if (sidebarUsername) {
+
+        sidebarUsername.textContent =
+            savedUsername;
+
+    }
+
+}
+
+
+
+
+function openSidebar() {
+
+    document
+        .getElementById("sidebar")
+        .classList.add("active");
+
+
+    document
+        .getElementById("overlay")
+        .classList.add("active");
+
+
+    document.body.style.overflow = "hidden";
+
+}
+
+
+
+
+function closeSidebar() {
+
+    document
+        .getElementById("sidebar")
+        .classList.remove("active");
+
+
+    document
+        .getElementById("overlay")
+        .classList.remove("active");
+
+
+    document.body.style.overflow = "";
+
+}
+
+
+
+
+function highlightCurrentPage() {
+
+    const currentPage =
+        window.location.pathname
+            .split("/")
+            .pop() || "index.html";
+
+
+    document
+        .querySelectorAll(".menu-link")
+        .forEach(function (link) {
+
+            link.classList.remove("active-page");
+
+
+            if (
+                link.getAttribute("href") ===
+                currentPage
+            ) {
+
+                link.classList.add("active-page");
+
+            }
+
+        });
+
+}
+
+
+
+
+function logout() {
+
+    const confirmed =
+        confirm("Are you sure you want to logout?");
+
+
+    if (!confirmed) {
+
+        return;
+
+    }
+
+
+    localStorage.removeItem("userId");
+
+    localStorage.removeItem("username");
+
+
+    window.location.href = "login.html";
+
+}
+
+
+
+
+document.addEventListener(
+    "keydown",
+    function (event) {
+
+        if (event.key === "Escape") {
+
+            closeSidebar();
+
+        }
+
+    }
+);
+
+
+
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        displayLoggedInUser();
+
+        highlightCurrentPage();
+
+    }
+);
+
+
+</script>
+
+
+
+<!-- APP SCRIPT -->
+
+<script src="script.js"></script>
+
+
+</body>
+
+</html>
