@@ -1134,6 +1134,136 @@ function logout() {
 
 
 
+
+
+// ==========================
+// DELETE ACCOUNT
+// ==========================
+
+async function deleteAccount(event) {
+
+    const deleteButton =
+        event?.currentTarget;
+
+    const passwordInput =
+        document.getElementById(
+            "deleteAccountPassword"
+        );
+
+    const password =
+        passwordInput?.value || "";
+
+    if (!password) {
+
+        showSettingsMessage(
+            "Enter your password before deleting your account.",
+            "error"
+        );
+
+        passwordInput?.focus();
+
+        return;
+    }
+
+    const firstConfirmation =
+        confirm(
+            "Delete your account permanently? All income and expense records will be removed."
+        );
+
+    if (!firstConfirmation) {
+        return;
+    }
+
+    const finalConfirmation =
+        confirm(
+            "This action cannot be undone. Continue with permanent account deletion?"
+        );
+
+    if (!finalConfirmation) {
+        return;
+    }
+
+    if (deleteButton) {
+
+        deleteButton.disabled = true;
+
+        deleteButton.innerHTML =
+            '<i class="fa-solid fa-spinner fa-spin"></i> Deleting...';
+
+    }
+
+    try {
+
+        const response =
+            await fetch(
+                "/delete-account",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        userId: settingsUserId,
+                        password
+                    })
+                }
+            );
+
+        let data = {};
+
+        try {
+            data = await response.json();
+        }
+        catch {
+            data = {};
+        }
+
+        if (!response.ok || !data.success) {
+
+            throw new Error(
+                data.message ||
+                "Unable to delete your account."
+            );
+
+        }
+
+        localStorage.clear();
+
+        alert(
+            "Your account and all financial records were deleted."
+        );
+
+        window.location.replace(
+            "register.html"
+        );
+
+    }
+    catch (error) {
+
+        showSettingsMessage(
+            error.message === "Failed to fetch"
+                ? "Unable to connect to the server."
+                : error.message,
+            "error"
+        );
+
+        if (deleteButton) {
+
+            deleteButton.disabled = false;
+
+            deleteButton.innerHTML =
+                '<i class="fa-solid fa-user-xmark"></i> Delete Account';
+
+        }
+
+    }
+
+}
+
+
 // ==========================
 // HELPER
 // ==========================

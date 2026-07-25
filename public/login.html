@@ -331,6 +331,26 @@
 
                 if (!response.ok || !data.success) {
 
+                    if (data.requiresVerification && data.email) {
+
+                        localStorage.setItem(
+                            "pendingVerificationEmail",
+                            data.email
+                        );
+
+                        showLoginMessage(
+                            data.message +
+                            " Redirecting to verification..."
+                        );
+
+                        window.setTimeout(function () {
+                            window.location.replace("register.html");
+                        }, 900);
+
+                        return;
+
+                    }
+
                     throw new Error(
                         data.message ||
                         "Unable to sign in. Please try again."

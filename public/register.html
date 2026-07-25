@@ -1,512 +1,320 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-    >
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#2e7d32">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-
-    <meta
-        name="apple-mobile-web-app-status-bar-style"
-        content="default"
-    >
-
     <link rel="manifest" href="/manifest.json">
-
     <title>Create Account | Expense Tracker</title>
-
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-    >
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <style>
+        .verification-panel {
+            display: none;
+            margin-top: 18px;
+            padding: 18px;
+            border: 1px solid #c8e6c9;
+            border-radius: 14px;
+            background: #f1f8f2;
+        }
+        .verification-panel.active { display: block; }
+        .verification-panel h2 { margin: 0 0 8px; color: #1b5e20; }
+        .verification-panel p { margin: 0 0 16px; color: #4b5563; line-height: 1.5; }
+        .verification-code-input {
+            text-align: center;
+            letter-spacing: 8px;
+            font-size: 22px;
+            font-weight: 700;
+        }
+        .verification-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+        }
+        .verification-actions button { flex: 1; }
+        @media (max-width: 520px) {
+            .verification-actions { flex-direction: column; }
+        }
+    </style>
 </head>
-
 <body class="auth-page">
+<main class="auth-shell">
+<section class="auth-card" aria-labelledby="registerTitle">
 
-    <main class="auth-shell">
+    <div class="auth-brand">
+        <div class="auth-brand-icon" aria-hidden="true">
+            <i class="fa-solid fa-wallet"></i>
+        </div>
+        <div>
+            <h1 id="registerTitle">Create Account</h1>
+            <p>Register to start tracking your income and expenses.</p>
+        </div>
+    </div>
 
-        <section
-            class="auth-card"
-            aria-labelledby="registerTitle"
-        >
+    <div class="auth-message" id="registerMessage" role="status" aria-live="polite"></div>
 
-            <div class="auth-brand">
+    <form class="auth-form" id="registerForm" novalidate>
+        <div class="form-group">
+            <label for="username">Username</label>
+            <div class="input-with-icon">
+                <i class="fa-solid fa-user" aria-hidden="true"></i>
+                <input type="text" id="username" name="username"
+                    placeholder="Enter your username" autocomplete="username"
+                    minlength="2" required>
+            </div>
+        </div>
 
-                <div class="auth-brand-icon" aria-hidden="true">
-                    <i class="fa-solid fa-wallet"></i>
-                </div>
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <div class="input-with-icon">
+                <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+                <input type="email" id="email" name="email"
+                    placeholder="Enter your email" autocomplete="email"
+                    inputmode="email" required>
+            </div>
+        </div>
 
-                <div>
-                    <h1 id="registerTitle">
-                        Create Account
-                    </h1>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <div class="password-box">
+                <i class="fa-solid fa-lock password-leading-icon" aria-hidden="true"></i>
+                <input type="password" id="password" name="password"
+                    placeholder="Create a password" autocomplete="new-password"
+                    minlength="6" required>
+                <button type="button" class="show-password"
+                    id="togglePasswordButton" aria-label="Show password">
+                    <i class="fa-solid fa-eye-slash" aria-hidden="true"></i>
+                </button>
+            </div>
+            <small class="form-help">Use at least 6 characters.</small>
+        </div>
 
-                    <p>
-                        Register to start tracking your income and expenses.
-                    </p>
-                </div>
+        <button type="submit" class="primary-action-btn auth-submit-btn" id="registerButton">
+            <span id="registerButtonText">Register</span>
+            <i class="fa-solid fa-user-plus" aria-hidden="true"></i>
+        </button>
+    </form>
 
+    <section class="verification-panel" id="verificationPanel">
+        <h2>Verify your email</h2>
+        <p id="verificationDescription">Enter the 6-digit code sent to your email.</p>
+
+        <form id="verificationForm" novalidate>
+            <div class="form-group">
+                <label for="verificationCode">Verification Code</label>
+                <input class="verification-code-input" type="text"
+                    id="verificationCode" inputmode="numeric"
+                    autocomplete="one-time-code" maxlength="6"
+                    placeholder="000000" required>
             </div>
 
-            <div
-                class="auth-message"
-                id="registerMessage"
-                role="status"
-                aria-live="polite"
-            ></div>
-
-            <form
-                class="auth-form"
-                id="registerForm"
-                novalidate
-            >
-
-                <div class="form-group">
-
-                    <label for="username">
-                        Username
-                    </label>
-
-                    <div class="input-with-icon">
-
-                        <i
-                            class="fa-solid fa-user"
-                            aria-hidden="true"
-                        ></i>
-
-                        <input
-                            type="text"
-                            id="username"
-                            name="username"
-                            placeholder="Enter your username"
-                            autocomplete="username"
-                            minlength="2"
-                            required
-                        >
-
-                    </div>
-
-                </div>
-
-                <div class="form-group">
-
-                    <label for="email">
-                        Email Address
-                    </label>
-
-                    <div class="input-with-icon">
-
-                        <i
-                            class="fa-solid fa-envelope"
-                            aria-hidden="true"
-                        ></i>
-
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            placeholder="Enter your email"
-                            autocomplete="email"
-                            inputmode="email"
-                            required
-                        >
-
-                    </div>
-
-                </div>
-
-                <div class="form-group">
-
-                    <label for="password">
-                        Password
-                    </label>
-
-                    <div class="password-box">
-
-                        <i
-                            class="fa-solid fa-lock password-leading-icon"
-                            aria-hidden="true"
-                        ></i>
-
-                        <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            placeholder="Create a password"
-                            autocomplete="new-password"
-                            minlength="6"
-                            required
-                        >
-
-                        <button
-                            type="button"
-                            class="show-password"
-                            id="togglePasswordButton"
-                            aria-label="Show password"
-                            aria-pressed="false"
-                        >
-
-                            <i
-                                class="fa-solid fa-eye-slash"
-                                aria-hidden="true"
-                            ></i>
-
-                        </button>
-
-                    </div>
-
-                    <small class="form-help">
-                        Use at least 6 characters.
-                    </small>
-
-                </div>
-
-                <button
-                    type="submit"
-                    class="primary-action-btn auth-submit-btn"
-                    id="registerButton"
-                >
-
-                    <span id="registerButtonText">
-                        Register
-                    </span>
-
-                    <i
-                        class="fa-solid fa-user-plus"
-                        aria-hidden="true"
-                    ></i>
-
+            <div class="verification-actions">
+                <button type="submit" class="primary-action-btn" id="verifyButton">
+                    <i class="fa-solid fa-circle-check"></i> Verify Email
                 </button>
 
-            </form>
+                <button type="button" class="secondary-settings-btn" id="resendButton">
+                    <i class="fa-solid fa-paper-plane"></i> Resend Code
+                </button>
+            </div>
+        </form>
+    </section>
 
-            <p class="auth-switch-text">
+    <p class="auth-switch-text">
+        Already have an account? <a href="login.html">Login</a>
+    </p>
 
-                Already have an account?
+</section>
+</main>
 
-                <a href="login.html">
-                    Login
-                </a>
+<script>
+"use strict";
 
-            </p>
+const registerForm = document.getElementById("registerForm");
+const verificationForm = document.getElementById("verificationForm");
+const verificationPanel = document.getElementById("verificationPanel");
+const verificationDescription = document.getElementById("verificationDescription");
+const usernameInput = document.getElementById("username");
+const emailInput = document.getElementById("email");
+const passwordInput = document.getElementById("password");
+const verificationCodeInput = document.getElementById("verificationCode");
+const togglePasswordButton = document.getElementById("togglePasswordButton");
+const registerButton = document.getElementById("registerButton");
+const registerButtonText = document.getElementById("registerButtonText");
+const verifyButton = document.getElementById("verifyButton");
+const resendButton = document.getElementById("resendButton");
+const registerMessage = document.getElementById("registerMessage");
 
-        </section>
+let pendingEmail = localStorage.getItem("pendingVerificationEmail") || "";
 
-    </main>
+if (localStorage.getItem("userId")) {
+    window.location.replace("index.html");
+}
 
-    <script>
-        "use strict";
+function showMessage(message, type = "error") {
+    registerMessage.textContent = message;
+    registerMessage.className = "auth-message " + type;
+}
 
-        const registerForm =
-            document.getElementById("registerForm");
+function clearMessage() {
+    registerMessage.textContent = "";
+    registerMessage.className = "auth-message";
+}
 
-        const usernameInput =
-            document.getElementById("username");
+function showVerification(email) {
+    pendingEmail = email;
+    localStorage.setItem("pendingVerificationEmail", email);
+    verificationDescription.textContent =
+        "Enter the 6-digit code sent to " + email + ".";
+    verificationPanel.classList.add("active");
+    verificationCodeInput.focus();
+}
 
-        const emailInput =
-            document.getElementById("email");
+togglePasswordButton.addEventListener("click", function () {
+    const hidden = passwordInput.type === "password";
+    passwordInput.type = hidden ? "text" : "password";
+    togglePasswordButton.querySelector("i").className =
+        hidden ? "fa-solid fa-eye" : "fa-solid fa-eye-slash";
+});
 
-        const passwordInput =
-            document.getElementById("password");
+registerForm.addEventListener("submit", async function (event) {
+    event.preventDefault();
+    clearMessage();
 
-        const togglePasswordButton =
-            document.getElementById("togglePasswordButton");
+    const username = usernameInput.value.trim();
+    const email = emailInput.value.trim();
+    const password = passwordInput.value;
 
-        const registerButton =
-            document.getElementById("registerButton");
+    if (!username || !email || !password) {
+        showMessage("Please complete all required fields.");
+        return;
+    }
 
-        const registerButtonText =
-            document.getElementById("registerButtonText");
+    if (username.length < 2) {
+        showMessage("Username must contain at least 2 characters.");
+        return;
+    }
 
-        const registerMessage =
-            document.getElementById("registerMessage");
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        showMessage("Please enter a valid email address.");
+        return;
+    }
 
+    if (password.length < 6) {
+        showMessage("Password must contain at least 6 characters.");
+        return;
+    }
 
-        if (localStorage.getItem("userId")) {
-            window.location.replace("index.html");
+    registerButton.disabled = true;
+    registerButtonText.textContent = "Creating account...";
+
+    try {
+        const response = await fetch("/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, email, password })
+        });
+
+        const data = await response.json().catch(function () { return {}; });
+
+        if (!response.ok || !data.success) {
+            throw new Error(data.message || "Registration failed.");
         }
 
-
-        function showRegisterMessage(
-            message,
-            type = "error"
-        ) {
-
-            registerMessage.textContent = message;
-
-            registerMessage.className =
-                "auth-message " + type;
-
-        }
-
-
-        function clearRegisterMessage() {
-
-            registerMessage.textContent = "";
-
-            registerMessage.className =
-                "auth-message";
-
-        }
-
-
-        function setRegisterLoading(isLoading) {
-
-            registerButton.disabled = isLoading;
-
-            registerButton.setAttribute(
-                "aria-busy",
-                String(isLoading)
-            );
-
-            registerButtonText.textContent =
-                isLoading
-                    ? "Creating account..."
-                    : "Register";
-
-        }
-
-
-        function togglePasswordVisibility() {
-
-            const isHidden =
-                passwordInput.type === "password";
-
-            passwordInput.type =
-                isHidden
-                    ? "text"
-                    : "password";
-
-            const icon =
-                togglePasswordButton.querySelector("i");
-
-            icon.classList.toggle(
-                "fa-eye",
-                isHidden
-            );
-
-            icon.classList.toggle(
-                "fa-eye-slash",
-                !isHidden
-            );
-
-            togglePasswordButton.setAttribute(
-                "aria-label",
-                isHidden
-                    ? "Hide password"
-                    : "Show password"
-            );
-
-            togglePasswordButton.setAttribute(
-                "aria-pressed",
-                String(isHidden)
-            );
-
-        }
-
-
-        function isValidEmail(email) {
-
-            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-
-        }
-
-
-        async function registerUser(event) {
-
-            event.preventDefault();
-
-            clearRegisterMessage();
-
-            const username =
-                usernameInput.value.trim();
-
-            const email =
-                emailInput.value.trim();
-
-            const password =
-                passwordInput.value;
-
-            if (!username || !email || !password) {
-
-                showRegisterMessage(
-                    "Please complete all required fields."
-                );
-
-                if (!username) {
-                    usernameInput.focus();
-                }
-                else if (!email) {
-                    emailInput.focus();
-                }
-                else {
-                    passwordInput.focus();
-                }
-
-                return;
-            }
-
-            if (username.length < 2) {
-
-                showRegisterMessage(
-                    "Username must contain at least 2 characters."
-                );
-
-                usernameInput.focus();
-
-                return;
-            }
-
-            if (!isValidEmail(email)) {
-
-                showRegisterMessage(
-                    "Please enter a valid email address."
-                );
-
-                emailInput.focus();
-
-                return;
-            }
-
-            if (password.length < 6) {
-
-                showRegisterMessage(
-                    "Password must contain at least 6 characters."
-                );
-
-                passwordInput.focus();
-
-                return;
-            }
-
-            setRegisterLoading(true);
-
-            try {
-
-                const response =
-                    await fetch("/register", {
-
-                        method: "POST",
-
-                        headers: {
-                            "Content-Type":
-                                "application/json"
-                        },
-
-                        body: JSON.stringify({
-                            username,
-                            email,
-                            password
-                        })
-
-                    });
-
-                let data = {};
-
-                try {
-                    data = await response.json();
-                }
-                catch {
-                    data = {};
-                }
-
-                if (!response.ok) {
-
-                    throw new Error(
-                        data.message ||
-                        "Registration failed. Please try again."
-                    );
-
-                }
-
-                const registrationSucceeded =
-                    data.success === true ||
-                    data.message ===
-                        "Registration successful";
-
-                if (!registrationSucceeded) {
-
-                    throw new Error(
-                        data.message ||
-                        "Registration failed. Please try again."
-                    );
-
-                }
-
-                showRegisterMessage(
-                    data.message ||
-                    "Registration successful. Redirecting to login...",
-                    "success"
-                );
-
-                registerForm.reset();
-
-                window.setTimeout(function () {
-                    window.location.replace("login.html");
-                }, 800);
-
-            }
-            catch (error) {
-
-                showRegisterMessage(
-                    error.message === "Failed to fetch"
-                        ? "Unable to connect to the server."
-                        : error.message
-                );
-
-                setRegisterLoading(false);
-
-            }
-
-        }
-
-
-        togglePasswordButton.addEventListener(
-            "click",
-            togglePasswordVisibility
+        showMessage(data.message, "success");
+        showVerification(data.email || email);
+        registerForm.reset();
+    } catch (error) {
+        showMessage(
+            error.message === "Failed to fetch"
+                ? "Unable to connect to the server."
+                : error.message
         );
+    } finally {
+        registerButton.disabled = false;
+        registerButtonText.textContent = "Register";
+    }
+});
 
-        registerForm.addEventListener(
-            "submit",
-            registerUser
-        );
+verificationForm.addEventListener("submit", async function (event) {
+    event.preventDefault();
+    clearMessage();
 
+    const code = verificationCodeInput.value.trim();
 
-        if ("serviceWorker" in navigator) {
+    if (!pendingEmail || !/^\d{6}$/.test(code)) {
+        showMessage("Enter the complete 6-digit verification code.");
+        return;
+    }
 
-            window.addEventListener(
-                "load",
-                function () {
+    verifyButton.disabled = true;
 
-                    navigator.serviceWorker
-                        .register("/service-worker.js")
-                        .then(function () {
-                            console.log(
-                                "Service worker registered."
-                            );
-                        })
-                        .catch(function (error) {
-                            console.error(
-                                "Service worker registration failed:",
-                                error
-                            );
-                        });
+    try {
+        const response = await fetch("/verify-email", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: pendingEmail, code })
+        });
 
-                }
-            );
+        const data = await response.json().catch(function () { return {}; });
 
+        if (!response.ok || !data.success) {
+            throw new Error(data.message || "Unable to verify your email.");
         }
-    </script>
 
+        localStorage.removeItem("pendingVerificationEmail");
+        showMessage(data.message, "success");
+
+        setTimeout(function () {
+            window.location.replace("login.html");
+        }, 1000);
+    } catch (error) {
+        showMessage(error.message);
+    } finally {
+        verifyButton.disabled = false;
+    }
+});
+
+resendButton.addEventListener("click", async function () {
+    clearMessage();
+
+    if (!pendingEmail) {
+        showMessage("Register first before requesting another code.");
+        return;
+    }
+
+    resendButton.disabled = true;
+
+    try {
+        const response = await fetch("/resend-verification", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: pendingEmail })
+        });
+
+        const data = await response.json().catch(function () { return {}; });
+
+        if (!response.ok || !data.success) {
+            throw new Error(data.message || "Unable to resend the code.");
+        }
+
+        showMessage(data.message, "success");
+    } catch (error) {
+        showMessage(error.message);
+    } finally {
+        resendButton.disabled = false;
+    }
+});
+
+verificationCodeInput.addEventListener("input", function () {
+    verificationCodeInput.value =
+        verificationCodeInput.value.replace(/\D/g, "").slice(0, 6);
+});
+
+if (pendingEmail) {
+    showVerification(pendingEmail);
+    showMessage("Enter the verification code sent to your email.", "success");
+}
+</script>
 </body>
-
 </html>

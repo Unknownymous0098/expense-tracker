@@ -160,6 +160,28 @@
         }
 
 
+
+        .delete-account-field {
+            width: 100%;
+            margin-bottom: 14px;
+        }
+
+        .delete-account-field label {
+            display: block;
+            margin-bottom: 8px;
+            color: #374151;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .delete-account-field input {
+            width: 100%;
+        }
+
+        body.dark-mode .delete-account-field label {
+            color: #dcfce7;
+        }
+
         .settings-option {
 
     display: grid;
@@ -1724,38 +1746,48 @@ ABOUT CARD
 
                 <div class="data-action-box">
 
-
                     <div class="data-action-icon danger-data-icon">
 
-                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <i class="fa-solid fa-user-xmark"></i>
 
                     </div>
 
-
                     <h3>
-                        Account Security
+                        Delete Account
                     </h3>
 
-
                     <p>
-                        Log out of your current session on this browser.
+                        Permanently delete your account, income records, and expense records. This cannot be undone.
                     </p>
 
+                    <div class="delete-account-field">
+
+                        <label for="deleteAccountPassword">
+                            Confirm Password
+                        </label>
+
+                        <input
+                            type="password"
+                            id="deleteAccountPassword"
+                            autocomplete="current-password"
+                            placeholder="Enter your password"
+                        >
+
+                    </div>
 
                     <button
                         type="button"
                         class="settings-action-btn danger-settings-btn"
-                        onclick="logout()"
+                        onclick="deleteAccount(event)"
                     >
 
-                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <i class="fa-solid fa-user-xmark"></i>
 
-                        Logout Account
+                        Delete Account
 
                     </button>
 
-
-                </div>
+                </div>                </div>
 
 
             </div>

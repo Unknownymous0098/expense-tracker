@@ -1,7 +1,7 @@
 {
   "name": "expensetracker",
   "version": "1.0.0",
-  "description": "Personal Expense Tracker using Node.js and PostgreSQL",
+  "description": "Personal Expense Tracker using Node.js, Express and SQLite",
   "main": "server.js",
   "engines": {
     "node": "22.x"
@@ -14,7 +14,8 @@
     "expense",
     "tracker",
     "nodejs",
-    "postgresql"
+    "express",
+    "sqlite"
   ],
   "author": "",
   "license": "ISC",
@@ -24,7 +25,8 @@
     "express": "^5.2.1",
     "express-session": "^1.19.0",
     "pg": "^8.16.3",
-    "sqlite3": "^5.1.7"
+    "sqlite3": "^5.1.7",
+    "nodemailer": "^7.0.3"
   },
   "devDependencies": {
     "nodemon": "^3.1.14"
