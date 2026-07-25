@@ -1,447 +1,414 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    >
+
+    <meta name="theme-color" content="#2e7d32">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta
+        name="apple-mobile-web-app-status-bar-style"
+        content="default"
+    >
 
     <link rel="manifest" href="/manifest.json">
 
-<meta name="theme-color" content="#2e7d32">
-
-<meta name="mobile-web-app-capable" content="yes">
-
-<meta name="apple-mobile-web-app-capable" content="yes">
-
-<meta
-  name="apple-mobile-web-app-status-bar-style"
-  content="default"
->
-
-    <title>Login</title>
+    <title>Login | Expense Tracker</title>
 
     <link rel="stylesheet" href="style.css">
 
-    <!-- Font Awesome Icons -->
-    <link 
-    rel="stylesheet" 
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    >
 </head>
 
+<body class="auth-page">
+
+    <main class="auth-shell">
+
+        <section
+            class="auth-card"
+            aria-labelledby="loginTitle"
+        >
 
-<body>
+            <div class="auth-brand">
+
+                <div class="auth-brand-icon" aria-hidden="true">
+                    <i class="fa-solid fa-wallet"></i>
+                </div>
+
+                <div>
+                    <h1 id="loginTitle">Welcome Back</h1>
+
+                    <p>
+                        Sign in to continue managing your finances.
+                    </p>
+                </div>
+
+            </div>
 
+            <div
+                class="auth-message"
+                id="loginMessage"
+                role="status"
+                aria-live="polite"
+            ></div>
 
-<div class="container">
+            <form
+                class="auth-form"
+                id="loginForm"
+                novalidate
+            >
 
+                <div class="form-group">
 
-<h1>
-    Login
-</h1>
+                    <label for="email">
+                        Email Address
+                    </label>
 
+                    <div class="input-with-icon">
 
+                        <i
+                            class="fa-solid fa-envelope"
+                            aria-hidden="true"
+                        ></i>
 
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="Enter your email"
+                            autocomplete="email"
+                            inputmode="email"
+                            required
+                        >
 
-<div class="expense-box">
+                    </div>
 
+                </div>
 
+                <div class="form-group">
 
-<input
-    type="email"
-    id="email"
-    placeholder="Email"
->
+                    <label for="password">
+                        Password
+                    </label>
 
+                    <div class="password-box">
 
+                        <i
+                            class="fa-solid fa-lock password-leading-icon"
+                            aria-hidden="true"
+                        ></i>
 
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                        >
 
+                        <button
+                            type="button"
+                            class="show-password"
+                            id="togglePasswordButton"
+                            aria-label="Show password"
+                            aria-pressed="false"
+                        >
 
-<!-- PASSWORD INPUT WITH EYE ICON -->
+                            <i
+                                class="fa-solid fa-eye-slash"
+                                aria-hidden="true"
+                            ></i>
 
-<div class="password-box">
+                        </button>
 
+                    </div>
 
-    <input
-        type="password"
-        id="password"
-        placeholder="Password"
-    >
+                </div>
 
+                <button
+                    type="submit"
+                    class="primary-action-btn auth-submit-btn"
+                    id="loginButton"
+                >
 
-    <span 
-        class="show-password"
-        onclick="togglePassword()">
+                    <span id="loginButtonText">
+                        Login
+                    </span>
 
-        <i class="fa-solid fa-eye-slash"></i>
+                    <i
+                        class="fa-solid fa-arrow-right-to-bracket"
+                        aria-hidden="true"
+                    ></i>
 
-    </span>
+                </button>
 
+            </form>
 
-</div>
+            <p class="auth-switch-text">
+                Don't have an account?
 
+                <a href="register.html">
+                    Register
+                </a>
+            </p>
 
+        </section>
 
+    </main>
 
+    <script>
+        "use strict";
 
+        const loginForm =
+            document.getElementById("loginForm");
 
+        const emailInput =
+            document.getElementById("email");
 
+        const passwordInput =
+            document.getElementById("password");
 
-<button onclick="loginUser()">
+        const togglePasswordButton =
+            document.getElementById("togglePasswordButton");
 
-    Login
+        const loginButton =
+            document.getElementById("loginButton");
 
-</button>
+        const loginButtonText =
+            document.getElementById("loginButtonText");
 
+        const loginMessage =
+            document.getElementById("loginMessage");
 
 
+        if (localStorage.getItem("userId")) {
+            window.location.replace("index.html");
+        }
 
-</div>
 
+        function showLoginMessage(message, type = "error") {
 
+            loginMessage.textContent = message;
 
-
-
-
-
-
-<p style="text-align:center;">
-
-Don't have an account?
-
-<a href="register.html">
-
-Register
-
-</a>
-
-</p>
-
-
-
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
-<script>
-
-
-// ======================
-// CHECK EXISTING LOGIN
-// ======================
-
-
-if(localStorage.getItem("userId")){
-
-    window.location.href="index.html";
-
-}
-
-
-
-
-
-
-
-// ======================
-// SHOW / HIDE PASSWORD
-// ======================
-
-
-function togglePassword(){
-
-
-    let password = 
-    document.getElementById("password");
-
-
-
-    let icon = 
-    document.querySelector(".show-password i");
-
-
-
-
-    if(password.type === "password"){
-
-
-        password.type = "text";
-
-
-        // OPEN EYE
-
-        icon.classList.remove("fa-eye-slash");
-
-        icon.classList.add("fa-eye");
-
-
-    }
-
-    else{
-
-
-        password.type = "password";
-
-
-        // CLOSED EYE
-
-        icon.classList.remove("fa-eye");
-
-        icon.classList.add("fa-eye-slash");
-
-
-    }
-
-
-}
-
-
-
-
-
-
-
-
-
-// ======================
-// LOGIN
-// ======================
-
-
-function loginUser(){
-
-
-
-    let email = 
-
-    document.getElementById("email")
-    .value
-    .trim();
-
-
-
-
-
-    let password = 
-
-    document.getElementById("password")
-    .value
-    .trim();
-
-
-
-
-
-
-
-    if(email === "" || password === ""){
-
-
-        alert("Please enter email and password");
-
-
-        return;
-
-
-    }
-
-
-
-
-
-
-
-
-    fetch("/login",{
-
-
-        method:"POST",
-
-
-        headers:{
-
-
-            "Content-Type":"application/json"
-
-
-        },
-
-
-        body:JSON.stringify({
-
-
-            email:email,
-
-
-            password:password
-
-
-        })
-
-
-    })
-
-
-
-
-
-
-
-
-
-    .then(response=>response.json())
-
-
-
-
-
-
-
-
-    .then(data=>{
-
-
-
-
-
-        if(data.success){
-
-
-
-
-
-            localStorage.setItem(
-
-                "userId",
-
-                data.userId
-
-            );
-
-
-
-
-
-
-            localStorage.setItem(
-
-                "username",
-
-                data.username
-
-            );
-
-
-
-
-
-
-
-            alert(
-
-                "Welcome, " + data.username
-
-            );
-
-
-
-
-
-
-
-            window.location.href="index.html";
-
-
-
-
-
+            loginMessage.className =
+                "auth-message " + type;
 
         }
 
 
-        else{
+        function clearLoginMessage() {
 
+            loginMessage.textContent = "";
 
-
-
-
-            alert(
-
-                data.message
-
-            );
-
-
-
-
+            loginMessage.className =
+                "auth-message";
 
         }
 
 
+        function setLoadingState(isLoading) {
+
+            loginButton.disabled = isLoading;
+
+            loginButton.setAttribute(
+                "aria-busy",
+                String(isLoading)
+            );
+
+            loginButtonText.textContent =
+                isLoading
+                    ? "Signing in..."
+                    : "Login";
+
+        }
 
 
-    })
+        function togglePasswordVisibility() {
+
+            const isPasswordHidden =
+                passwordInput.type === "password";
+
+            passwordInput.type =
+                isPasswordHidden
+                    ? "text"
+                    : "password";
+
+            const icon =
+                togglePasswordButton.querySelector("i");
+
+            icon.classList.toggle(
+                "fa-eye",
+                isPasswordHidden
+            );
+
+            icon.classList.toggle(
+                "fa-eye-slash",
+                !isPasswordHidden
+            );
+
+            togglePasswordButton.setAttribute(
+                "aria-label",
+                isPasswordHidden
+                    ? "Hide password"
+                    : "Show password"
+            );
+
+            togglePasswordButton.setAttribute(
+                "aria-pressed",
+                String(isPasswordHidden)
+            );
+
+        }
 
 
+        async function loginUser(event) {
+
+            event.preventDefault();
+
+            clearLoginMessage();
+
+            const email =
+                emailInput.value.trim();
+
+            const password =
+                passwordInput.value;
+
+            if (!email || !password) {
+
+                showLoginMessage(
+                    "Please enter your email and password."
+                );
+
+                if (!email) {
+                    emailInput.focus();
+                }
+                else {
+                    passwordInput.focus();
+                }
+
+                return;
+            }
+
+            setLoadingState(true);
+
+            try {
+
+                const response =
+                    await fetch("/login", {
+
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            email,
+                            password
+                        })
+
+                    });
+
+                let data = {};
+
+                try {
+                    data = await response.json();
+                }
+                catch {
+                    data = {};
+                }
+
+                if (!response.ok || !data.success) {
+
+                    throw new Error(
+                        data.message ||
+                        "Unable to sign in. Please try again."
+                    );
+
+                }
+
+                localStorage.setItem(
+                    "userId",
+                    String(data.userId)
+                );
+
+                localStorage.setItem(
+                    "username",
+                    data.username || "User"
+                );
+
+                showLoginMessage(
+                    "Login successful. Redirecting...",
+                    "success"
+                );
+
+                window.setTimeout(function () {
+                    window.location.replace("index.html");
+                }, 500);
+
+            }
+            catch (error) {
+
+                showLoginMessage(
+                    error.message === "Failed to fetch"
+                        ? "Unable to connect to the server."
+                        : error.message
+                );
+
+                setLoadingState(false);
+
+            }
+
+        }
 
 
+        togglePasswordButton.addEventListener(
+            "click",
+            togglePasswordVisibility
+        );
 
-
-
-    .catch(()=>{
-
-
-
-
-
-        alert(
-
-            "Server connection error"
-
+        loginForm.addEventListener(
+            "submit",
+            loginUser
         );
 
 
+        if ("serviceWorker" in navigator) {
 
+            window.addEventListener(
+                "load",
+                function () {
 
+                    navigator.serviceWorker
+                        .register("/service-worker.js")
+                        .then(function () {
+                            console.log(
+                                "Service worker registered."
+                            );
+                        })
+                        .catch(function (error) {
+                            console.error(
+                                "Service worker registration failed:",
+                                error
+                            );
+                        });
 
-    });
+                }
+            );
 
-
-
-
-
-}
-
-
-
-</script>
-
-
-
-<script>
-    if ("serviceWorker" in navigator) {
-        window.addEventListener("load", function () {
-            navigator.serviceWorker
-                .register("/service-worker.js")
-                .then(function () {
-                    console.log("Service worker registered.");
-                })
-                .catch(function (error) {
-                    console.error(
-                        "Service worker registration failed:",
-                        error
-                    );
-                });
-        });
-    }
-</script>
+        }
+    </script>
 
 </body>
 

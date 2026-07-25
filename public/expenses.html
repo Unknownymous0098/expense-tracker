@@ -1,793 +1,490 @@
 <!DOCTYPE html>
 <html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+  <meta content="#2e7d32" name="theme-color"/>
+  <meta content="yes" name="mobile-web-app-capable"/>
+  <meta content="yes" name="apple-mobile-web-app-capable"/>
+  <meta content="default" name="apple-mobile-web-app-status-bar-style"/>
+  <link href="/manifest.json" rel="manifest"/>
+  <title>
+   Expenses | Expense Tracker
+  </title>
+  <!-- FONT AWESOME -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"/>
+  <!-- MAIN CSS -->
+  <link href="style.css" rel="stylesheet"/>
+  
+<style>
+    /* Keep the Expenses page visually consistent with the Dashboard. */
 
-<head>
+    .expenses-page {
+        width: min(92%, var(--app-container-width));
+        max-width: var(--app-container-width);
+        margin: 28px auto;
+        padding: var(--app-container-padding);
+    }
 
-    <link rel="manifest" href="/manifest.json">
+    .expenses-page .header {
+        display: grid;
+        grid-template-columns: 180px minmax(0, 1fr) 180px;
+        align-items: center;
+        gap: 18px;
+        margin-bottom: 26px;
+    }
 
-<meta name="theme-color" content="#2e7d32">
+    .expenses-page .page-heading,
+    .expenses-page .page-heading h1,
+    .expenses-page .page-heading p {
+        text-align: center;
+    }
 
-<meta name="mobile-web-app-capable" content="yes">
+    .expenses-page .user-area {
+        min-width: 180px;
+        align-items: flex-end;
+        justify-self: end;
+        text-align: right;
+    }
 
-<meta name="apple-mobile-web-app-capable" content="yes">
+    .expense-summary {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+        margin-bottom: var(--app-section-gap);
+    }
 
-<meta
-  name="apple-mobile-web-app-status-bar-style"
-  content="default"
->
+    .expense-summary .card {
+        min-height: 156px;
+        padding: 22px;
+    }
 
-    <meta charset="UTF-8">
+    .expense-summary .card h2 {
+        margin-top: 13px;
+        font-size: clamp(24px, 2vw, 30px);
+    }
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    .expense-workspace {
+        display: grid;
+        grid-template-columns: minmax(300px, 0.78fr) minmax(0, 1.45fr);
+        gap: 24px;
+        align-items: start;
+    }
 
-    <title>Expenses | Expense Tracker</title>
+    .expense-form-card,
+    .expense-history-card {
+        min-width: 0;
+        margin-bottom: 0;
+    }
 
+    .expense-form-card {
+        position: sticky;
+        top: 24px;
+    }
 
-    <!-- FONT AWESOME -->
+    .expense-form-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 15px;
+        margin-bottom: 18px;
+    }
 
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-    >
+    .expense-form-card .primary-action-btn {
+        width: 100%;
+        min-height: 48px;
+        margin: 0;
+    }
 
+    .filter-box {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(180px, 220px);
+        gap: 12px;
+        margin-bottom: 20px;
+    }
 
-    <!-- MAIN CSS -->
+    .expense-history-card .table-responsive {
+        width: 100%;
+        overflow-x: auto;
+    }
 
-    <link rel="stylesheet" href="style.css">
+    .expense-history-card table {
+        width: 100%;
+        min-width: 680px;
+    }
 
+    .expense-history-card th,
+    .expense-history-card td {
+        text-align: left;
+        vertical-align: middle;
+    }
 
-    <style>
-        .expenses-page {
-            width: min(94%, 1280px);
-            max-width: 1280px;
-            margin: 24px auto;
-            padding: 28px;
-        }
+    .expense-history-card th:nth-child(3),
+    .expense-history-card td:nth-child(3) {
+        text-align: right;
+    }
 
-        .expenses-page .header {
-            display: grid;
-            grid-template-columns: auto 1fr auto;
-            align-items: center;
-            gap: 18px;
-            margin-bottom: 24px;
-        }
+    .expense-history-card th:last-child,
+    .expense-history-card td:last-child {
+        text-align: center;
+    }
 
-        .expenses-page .page-heading {
-            text-align: left;
-        }
+    .expense-history-card td button {
+        min-width: 82px;
+    }
 
-        .expenses-page .page-heading h1 {
-            text-align: left;
-            font-size: 30px;
-        }
-
-        .expenses-page .user-area {
-            min-width: 180px;
-        }
-
-        .expense-summary {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 18px;
-            margin-bottom: 24px;
-        }
-
-        .expense-summary .card {
-            min-height: 150px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 22px;
-        }
-
-        .expense-summary .card h2 {
-            margin-top: 10px;
-            font-size: 28px;
-        }
-
+    /* Stack the form and history sooner so tablet and narrow desktop
+       views do not look cramped. */
+    @media (max-width: 1150px) {
         .expense-workspace {
-            display: grid;
-            grid-template-columns: minmax(320px, 0.8fr) minmax(0, 1.35fr);
-            gap: 24px;
-            align-items: start;
-        }
-
-        .expense-form-card,
-        .expense-history-card {
-            margin-bottom: 0;
+            grid-template-columns: 1fr;
         }
 
         .expense-form-card {
-            position: sticky;
-            top: 24px;
+            position: static;
         }
 
         .expense-form-grid {
-            grid-template-columns: 1fr;
-            gap: 15px;
-            margin-bottom: 18px;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @media (max-width: 800px) {
+        .expenses-page .header {
+            grid-template-columns: auto minmax(0, 1fr);
         }
 
-        .expense-form-card .primary-action-btn {
-            width: auto;
-            min-width: 180px;
-            padding: 12px 20px;
-            margin-left: auto;
-        }
-
-        .filter-box {
-            display: grid;
-            grid-template-columns: minmax(0, 1fr) 220px;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .expense-history-card table {
-            min-width: 760px;
-        }
-
-        .expense-history-card th,
-        .expense-history-card td {
+        .expenses-page .page-heading,
+        .expenses-page .page-heading h1,
+        .expenses-page .page-heading p {
             text-align: left;
         }
 
-        .expense-history-card th:nth-child(3),
-        .expense-history-card td:nth-child(3) {
-            text-align: right;
+        .expenses-page .user-area {
+            grid-column: 1 / -1;
+            min-width: 0;
+            align-items: flex-start;
+            justify-self: start;
+            text-align: left;
         }
 
-        .expense-history-card th:last-child,
-        .expense-history-card td:last-child {
-            text-align: center;
+        .expense-summary {
+            grid-template-columns: 1fr;
         }
 
-        .expense-history-card td button {
-            min-width: 88px;
+        .expense-form-grid,
+        .filter-box {
+            grid-template-columns: 1fr;
         }
+    }
 
-        @media (max-width: 980px) {
-            .expense-workspace {
-                grid-template-columns: 1fr;
-            }
-
-            .expense-form-card {
-                position: static;
-            }
-
-            .expense-form-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
+    @media (max-width: 550px) {
+        .expenses-page {
+            width: calc(100% - 20px);
+            margin: 10px auto;
+            padding: 18px;
         }
+    }
+</style>
 
-        @media (max-width: 760px) {
-            .expenses-page {
-                width: calc(100% - 20px);
-                margin: 10px auto;
-                padding: 18px;
-            }
-
-            .expenses-page .header {
-                grid-template-columns: auto 1fr;
-            }
-
-            .expenses-page .page-heading {
-                text-align: left;
-            }
-
-            .expenses-page .user-area {
-                grid-column: 1 / -1;
-                min-width: 0;
-                align-items: flex-start;
-            }
-
-            .expense-summary {
-                grid-template-columns: 1fr;
-            }
-
-            .expense-form-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .filter-box {
-                grid-template-columns: 1fr;
-            }
-
-            .expense-form-card .primary-action-btn {
-                width: 100%;
-                margin-left: 0;
-            }
-        }
-    </style>
-
-</head>
-
-
-<body>
-
-
-
-<!-- ==========================
+ </head>
+ <body>
+  <!-- ==========================
      SIDEBAR
 ========================== -->
-
-<div class="sidebar" id="sidebar">
-
-
-    <div class="sidebar-brand">
-
-        <div class="brand-icon">
-
-            <i class="fa-solid fa-wallet"></i>
-
-        </div>
-
-
-        <div class="brand-text">
-
-            <h2>
-                Expense Tracker
-            </h2>
-
-            <p>
-                Track every peso
-            </p>
-
-        </div>
-
+  <aside aria-hidden="false" aria-label="Main navigation" class="sidebar" id="sidebar">
+   <div class="sidebar-brand">
+    <div class="brand-icon">
+     <i class="fa-solid fa-wallet">
+     </i>
     </div>
-
-
-
-
-    <div class="sidebar-profile">
-
-        <div class="profile-avatar">
-
-            <i class="fa-solid fa-user"></i>
-
-        </div>
-
-
-        <div class="profile-details">
-
-            <span class="profile-label">
-                Welcome
-            </span>
-
-            <strong id="sidebarUsername">
-                User
-            </strong>
-
-        </div>
-
+    <div class="brand-text">
+     <h2>
+      Expense Tracker
+     </h2>
+     <p>
+      Track every peso
+     </p>
     </div>
-
-
-
-
-    <nav class="sidebar-menu">
-
-
-        <a
-            href="index.html"
-            class="menu-link"
-        >
-
-            <i class="fa-solid fa-house"></i>
-
-            <span>
-                Dashboard
-            </span>
-
-        </a>
-
-
-
-        <a
-            href="expenses.html"
-            class="menu-link"
-        >
-
-            <i class="fa-solid fa-receipt"></i>
-
-            <span>
-                Expenses
-            </span>
-
-        </a>
-
-
-
-        <a
-            href="income.html"
-            class="menu-link"
-        >
-
-            <i class="fa-solid fa-coins"></i>
-
-            <span>
-                Income
-            </span>
-
-        </a>
-
-
-
-        <a
-            href="reports.html"
-            class="menu-link"
-        >
-
-            <i class="fa-solid fa-chart-pie"></i>
-
-            <span>
-                Reports
-            </span>
-
-        </a>
-
-
-
-        <a
-            href="settings.html"
-            class="menu-link"
-        >
-
-            <i class="fa-solid fa-gear"></i>
-
-            <span>
-                Settings
-            </span>
-
-        </a>
-
-
-    </nav>
-
-
-
-
-    <div class="sidebar-footer">
-
-        <button
-            type="button"
-            class="logout-btn"
-            onclick="logout()"
-        >
-
-            <i class="fa-solid fa-right-from-bracket"></i>
-
-            <span>
-                Logout
-            </span>
-
-        </button>
-
-
-        <p class="app-version">
-            Expense Tracker v1.0
-        </p>
-
+   </div>
+   <div class="sidebar-profile">
+    <div class="profile-avatar">
+     <i class="fa-solid fa-user">
+     </i>
     </div>
-
-
-</div>
-
-
-
-
-
-<!-- ==========================
+    <div class="profile-details">
+     <span class="profile-label">
+      Welcome
+     </span>
+     <strong id="sidebarUsername">
+      User
+     </strong>
+    </div>
+   </div>
+   <nav class="sidebar-menu">
+    <a class="menu-link" href="index.html">
+     <i class="fa-solid fa-house">
+     </i>
+     <span>
+      Dashboard
+     </span>
+    </a>
+    <a class="menu-link" href="expenses.html">
+     <i class="fa-solid fa-receipt">
+     </i>
+     <span>
+      Expenses
+     </span>
+    </a>
+    <a class="menu-link" href="income.html">
+     <i class="fa-solid fa-coins">
+     </i>
+     <span>
+      Income
+     </span>
+    </a>
+    <a class="menu-link" href="reports.html">
+     <i class="fa-solid fa-chart-pie">
+     </i>
+     <span>
+      Reports
+     </span>
+    </a>
+    <a class="menu-link" href="settings.html">
+     <i class="fa-solid fa-gear">
+     </i>
+     <span>
+      Settings
+     </span>
+    </a>
+   </nav>
+   <div class="sidebar-footer">
+    <button class="logout-btn" id="logoutButton" type="button">
+     <i class="fa-solid fa-right-from-bracket">
+     </i>
+     <span>
+      Logout
+     </span>
+    </button>
+    <p class="app-version">
+     Expense Tracker v1.0
+    </p>
+   </div>
+  </aside>
+  <!-- ==========================
      OVERLAY
 ========================== -->
-
-<div
-    class="overlay"
-    id="overlay"
-    onclick="closeSidebar()"
-></div>
-
-
-
-
-
-<!-- ==========================
+  <div class="overlay" id="overlay">
+  </div>
+  <!-- ==========================
      MAIN CONTAINER
 ========================== -->
-
-<div class="container expenses-page">
-
-
-
-
-
-<!-- ==========================
+  <main class="container expenses-page">
+   <!-- ==========================
      HEADER
 ========================== -->
-
-<div class="header">
-
-
-    <button
-        type="button"
-        class="menu-btn"
-        onclick="openSidebar()"
-        aria-label="Open navigation menu"
-    >
-
-        <i class="fa-solid fa-bars"></i>
-
+   <header class="header">
+    <button aria-label="Open navigation menu" class="menu-btn" id="menuButton" type="button">
+     <i class="fa-solid fa-bars">
+     </i>
     </button>
-
-
-
     <div class="page-heading">
-
-        <h1>
-            Expenses
-        </h1>
-
-        <p>
-            Add, search and manage your expense records.
-        </p>
-
+     <h1>
+      Expenses
+     </h1>
+     <p>
+      Add, search and manage your expense records.
+     </p>
     </div>
-
-
-
     <div class="user-area">
-
-        <span id="welcomeUser"></span>
-
+     <span id="welcomeUser">
+     </span>
     </div>
-
-
-</div>
-
-
-
-
-
-<!-- ==========================
+   </header>
+   <!-- ==========================
      EXPENSE SUMMARY
 ========================== -->
-
-<div class="dashboard expense-summary">
-
-    <div class="card">
-
-        <div class="summary-icon">
-
-            <i class="fa-solid fa-wallet"></i>
-
-        </div>
-
-        <h3>
-            Total Expenses
-        </h3>
-
-        <h2 id="totalAmount">
-            ₱0.00
-        </h2>
-
-    </div>
-
-
-    <div class="card">
-
-        <div class="summary-icon">
-
-            <i class="fa-solid fa-receipt"></i>
-
-        </div>
-
-        <h3>
-            Transactions
-        </h3>
-
-        <h2 id="transactionCount">
-            0
-        </h2>
-
-    </div>
-
-
-    <div class="card">
-
-        <div class="summary-icon">
-
-            <i class="fa-solid fa-chart-line"></i>
-
-        </div>
-
-        <h3>
-            Average Expense
-        </h3>
-
-        <h2 id="averageAmount">
-            ₱0.00
-        </h2>
-
-    </div>
-
-</div>
-
-
-
-
-
-<!-- ==========================
+   <section class="dashboard expense-summary" aria-label="Expense summary">
+    <article class="card">
+     <div class="summary-icon">
+      <i class="fa-solid fa-wallet">
+      </i>
+     </div>
+     <h3>
+      Total Expenses
+     </h3>
+     <h2 id="totalAmount">
+      ₱0.00
+     </h2>
+    </article>
+    <article class="card">
+     <div class="summary-icon">
+      <i class="fa-solid fa-receipt">
+      </i>
+     </div>
+     <h3>
+      Transactions
+     </h3>
+     <h2 id="transactionCount">
+      0
+     </h2>
+    </article>
+    <article class="card">
+     <div class="summary-icon">
+      <i class="fa-solid fa-chart-line">
+      </i>
+     </div>
+     <h3>
+      Average Expense
+     </h3>
+     <h2 id="averageAmount">
+      ₱0.00
+     </h2>
+    </article>
+   </section>
+   <!-- ==========================
      EXPENSE WORKSPACE
 ========================== -->
-
-<div class="expense-workspace">
-
-
+   <div class="expense-workspace">
     <!-- ADD EXPENSE -->
-
     <section class="content-card expense-form-card">
-
-        <div class="section-heading">
-
-            <div>
-
-                <h2>
-                    Add New Expense
-                </h2>
-
-                <p>
-                    Record a new expense quickly.
-                </p>
-
-            </div>
-
-            <div class="section-icon">
-
-                <i class="fa-solid fa-plus"></i>
-
-            </div>
-
-        </div>
-
-
-        <div class="expense-form-grid">
-
-            <div class="form-group">
-
-                <label for="expenseName">
-                    Expense Name
-                </label>
-
-                <input
-                    type="text"
-                    id="expenseName"
-                    placeholder="Example: Lunch"
-                    autocomplete="off"
-                >
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="expenseCategory">
-                    Category
-                </label>
-
-                <select id="expenseCategory">
-
-                    <option value="Food">
-                        Food
-                    </option>
-
-                    <option value="Transport">
-                        Transport
-                    </option>
-
-                    <option value="Bills">
-                        Bills
-                    </option>
-
-                    <option value="Shopping">
-                        Shopping
-                    </option>
-
-                    <option value="Others">
-                        Others
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="expenseAmount">
-                    Amount
-                </label>
-
-                <input
-                    type="number"
-                    id="expenseAmount"
-                    placeholder="0.00"
-                    min="0"
-                    step="0.01"
-                >
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="expenseDate">
-                    Date
-                </label>
-
-                <input
-                    type="date"
-                    id="expenseDate"
-                >
-
-            </div>
-
-        </div>
-
-
-        <button
-            type="button"
-            class="primary-action-btn"
-            onclick="addExpense()"
-        >
-
-            <i class="fa-solid fa-plus"></i>
-
-            Add Expense
-
-        </button>
-
+     <div class="section-heading">
+      <div>
+       <h2>
+        Add New Expense
+       </h2>
+       <p>
+        Record a new expense quickly.
+       </p>
+      </div>
+      <div class="section-icon">
+       <i class="fa-solid fa-plus">
+       </i>
+      </div>
+     </div>
+     <div class="expense-form-grid">
+      <div class="form-group">
+       <label for="expenseName">
+        Expense Name
+       </label>
+       <input autocomplete="off" id="expenseName" placeholder="Example: Lunch" type="text"/>
+      </div>
+      <div class="form-group">
+       <label for="expenseCategory">
+        Category
+       </label>
+       <select id="expenseCategory">
+        <option value="Food">
+         Food
+        </option>
+        <option value="Transport">
+         Transport
+        </option>
+        <option value="Bills">
+         Bills
+        </option>
+        <option value="Shopping">
+         Shopping
+        </option>
+        <option value="Others">
+         Others
+        </option>
+       </select>
+      </div>
+      <div class="form-group">
+       <label for="expenseAmount">
+        Amount
+       </label>
+       <input id="expenseAmount" min="0" placeholder="0.00" step="0.01" type="number"/>
+      </div>
+      <div class="form-group">
+       <label for="expenseDate">
+        Date
+       </label>
+       <input id="expenseDate" type="date"/>
+      </div>
+     </div>
+     <button class="primary-action-btn" onclick="addExpense()" type="button">
+      <i class="fa-solid fa-plus">
+      </i>
+      Add Expense
+     </button>
     </section>
-
-
-
     <!-- EXPENSE HISTORY -->
-
     <section class="content-card expense-history-card">
-
-        <div class="section-heading">
-
-            <div>
-
-                <h2>
-                    Expense History
-                </h2>
-
-                <p>
-                    Search, filter and manage your records.
-                </p>
-
-            </div>
-
-            <div class="section-icon">
-
-                <i class="fa-solid fa-clock-rotate-left"></i>
-
-            </div>
-
-        </div>
-
-
-        <div class="filter-box">
-
-            <div class="search-box">
-
-                <i class="fa-solid fa-magnifying-glass"></i>
-
-                <input
-                    type="text"
-                    id="searchExpense"
-                    placeholder="Search expense..."
-                    oninput="filterExpenses()"
-                    autocomplete="off"
-                >
-
-            </div>
-
-
-            <select
-                id="filterCategory"
-                onchange="filterExpenses()"
-            >
-
-                <option value="All">
-                    All Categories
-                </option>
-
-                <option value="Food">
-                    Food
-                </option>
-
-                <option value="Transport">
-                    Transport
-                </option>
-
-                <option value="Bills">
-                    Bills
-                </option>
-
-                <option value="Shopping">
-                    Shopping
-                </option>
-
-                <option value="Others">
-                    Others
-                </option>
-
-            </select>
-
-        </div>
-
-
-        <div class="table-responsive">
-
-            <table>
-
-                <thead>
-
-                    <tr>
-
-                        <th>
-                            Expense
-                        </th>
-
-                        <th>
-                            Category
-                        </th>
-
-                        <th>
-                            Amount
-                        </th>
-
-                        <th>
-                            Date
-                        </th>
-
-                        <th>
-                            Action
-                        </th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody id="expenseList"></tbody>
-
-            </table>
-
-        </div>
-
+     <div class="section-heading">
+      <div>
+       <h2>
+        Expense History
+       </h2>
+       <p>
+        Search, filter and manage your records.
+       </p>
+      </div>
+      <div class="section-icon">
+       <i class="fa-solid fa-clock-rotate-left">
+       </i>
+      </div>
+     </div>
+     <div class="filter-box">
+      <div class="search-box">
+       <i class="fa-solid fa-magnifying-glass">
+       </i>
+       <input autocomplete="off" id="searchExpense" oninput="filterExpenses()" placeholder="Search expense..." type="text"/>
+      </div>
+      <select id="filterCategory" onchange="filterExpenses()">
+       <option value="All">
+        All Categories
+       </option>
+       <option value="Food">
+        Food
+       </option>
+       <option value="Transport">
+        Transport
+       </option>
+       <option value="Bills">
+        Bills
+       </option>
+       <option value="Shopping">
+        Shopping
+       </option>
+       <option value="Others">
+        Others
+       </option>
+      </select>
+     </div>
+     <div class="table-responsive">
+      <table>
+       <thead>
+        <tr>
+         <th>
+          Expense
+         </th>
+         <th>
+          Category
+         </th>
+         <th>
+          Amount
+         </th>
+         <th>
+          Date
+         </th>
+         <th>
+          Action
+         </th>
+        </tr>
+       </thead>
+       <tbody id="expenseList">
+       </tbody>
+      </table>
+     </div>
     </section>
-
-</div>
-
-
-</div>
-
-
-
-
-
-<!-- ==========================
+   </div>
+  </main>
+  <!-- ==========================
      PAGE JAVASCRIPT
 ========================== -->
-
-<script>
-
-
-const username =
+  <script>
+   const username =
     localStorage.getItem("username");
 
 
@@ -954,17 +651,40 @@ document.addEventListener(
 
     }
 );
+  </script>
+  <script>
+   document.addEventListener("DOMContentLoaded", function () {
+    const menuButton = document.getElementById("menuButton");
+    const overlay = document.getElementById("overlay");
+    const logoutButton = document.getElementById("logoutButton");
 
+    if (menuButton) {
+        menuButton.addEventListener("click", function () {
+            if (typeof openSidebar === "function") {
+                openSidebar();
+            }
+        });
+    }
 
-</script>
+    if (overlay) {
+        overlay.addEventListener("click", function () {
+            if (typeof closeSidebar === "function") {
+                closeSidebar();
+            }
+        });
+    }
 
-
-
-<!-- APP SCRIPT -->
-
-<script src="script.js"></script>
-
-
-</body>
-
+    if (logoutButton) {
+        logoutButton.addEventListener("click", function () {
+            if (typeof logout === "function") {
+                logout();
+            }
+        });
+    }
+});
+  </script>
+  <!-- APP SCRIPT -->
+  <script defer="" src="script.js">
+  </script>
+ </body>
 </html>

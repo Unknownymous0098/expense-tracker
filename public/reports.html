@@ -3,7 +3,12 @@
 
 <head>
 
-    <link rel="manifest" href="/manifest.json">
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+>
 
 <meta name="theme-color" content="#2e7d32">
 
@@ -12,16 +17,11 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 
 <meta
-  name="apple-mobile-web-app-status-bar-style"
-  content="default"
+    name="apple-mobile-web-app-status-bar-style"
+    content="default"
 >
 
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+<link rel="manifest" href="/manifest.json">
 
     <title>Reports | Expense Tracker</title>
 
@@ -503,6 +503,96 @@
         }
 
     </style>
+
+
+<style id="uniform-page-fix">
+    .reports-page {
+        width: min(92%, var(--app-container-width, 1180px));
+        max-width: var(--app-container-width, 1180px);
+        margin: 28px auto;
+        padding: var(--app-container-padding, 30px);
+    }
+
+    .reports-page .header {
+        display: grid;
+        grid-template-columns: 180px minmax(0, 1fr) 180px;
+        align-items: center;
+        gap: 18px;
+        margin-bottom: 24px;
+    }
+
+    .reports-page .page-heading,
+    .reports-page .page-heading h1,
+    .reports-page .page-heading p {
+        text-align: center;
+    }
+
+    .reports-page .user-area {
+        min-width: 180px;
+        justify-self: end;
+        text-align: right;
+    }
+
+    @media (max-width: 800px) {
+        .reports-page .header {
+            grid-template-columns: auto minmax(0, 1fr);
+        }
+
+        .reports-page .page-heading,
+        .reports-page .page-heading h1,
+        .reports-page .page-heading p {
+            text-align: left;
+        }
+
+        .reports-page .user-area {
+            grid-column: 1 / -1;
+            min-width: 0;
+            justify-self: start;
+            text-align: left;
+        }
+    }
+
+    @media (max-width: 550px) {
+        .reports-page {
+            width: calc(100% - 20px);
+            margin: 10px auto;
+            padding: 18px;
+        }
+    }
+
+    
+    @media (max-width: 1100px) {
+        .reports-filter-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .reports-filter-grid button {
+            width: 100%;
+        }
+
+        .report-summary-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @media (max-width: 800px) {
+        .reports-chart-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .reports-filter-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @media (max-width: 550px) {
+        .reports-filter-grid,
+        .report-summary-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+</style>
 
 </head>
 

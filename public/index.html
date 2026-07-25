@@ -3,30 +3,33 @@
 
 <head>
 
-    <link rel="manifest" href="/manifest.json">
-
-<meta name="theme-color" content="#2e7d32">
-
-<meta name="mobile-web-app-capable" content="yes">
-
-<meta name="apple-mobile-web-app-capable" content="yes">
-
-<meta
-  name="apple-mobile-web-app-status-bar-style"
-  content="default"
->
-
     <meta charset="UTF-8">
 
     <meta
         name="viewport"
-        content="width=device-width, initial-scale=1.0"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     >
+
+    <meta name="theme-color" content="#2e7d32">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <meta
+        name="apple-mobile-web-app-status-bar-style"
+        content="default"
+    >
+
+    <meta
+        name="description"
+        content="View your income, expenses, balance and monthly financial activity."
+    >
+
+    <link rel="manifest" href="/manifest.json">
 
     <title>Dashboard | Expense Tracker</title>
 
 
-    <!-- FONT AWESOME ICONS -->
+    <!-- FONT AWESOME -->
 
     <link
         rel="stylesheet"
@@ -49,12 +52,17 @@
      SIDEBAR
 ========================== -->
 
-<div class="sidebar" id="sidebar">
+<aside
+    class="sidebar"
+    id="sidebar"
+    aria-label="Main navigation"
+    aria-hidden="true"
+>
 
 
     <div class="sidebar-brand">
 
-        <div class="brand-icon">
+        <div class="brand-icon" aria-hidden="true">
 
             <i class="fa-solid fa-wallet"></i>
 
@@ -80,7 +88,7 @@
 
     <div class="sidebar-profile">
 
-        <div class="profile-avatar">
+        <div class="profile-avatar" aria-hidden="true">
 
             <i class="fa-solid fa-user"></i>
 
@@ -104,7 +112,7 @@
 
 
 
-    <nav class="sidebar-menu">
+    <nav class="sidebar-menu" aria-label="Expense Tracker pages">
 
 
         <a
@@ -112,7 +120,7 @@
             class="menu-link"
         >
 
-            <i class="fa-solid fa-house"></i>
+            <i class="fa-solid fa-house" aria-hidden="true"></i>
 
             <span>
                 Dashboard
@@ -127,7 +135,7 @@
             class="menu-link"
         >
 
-            <i class="fa-solid fa-receipt"></i>
+            <i class="fa-solid fa-receipt" aria-hidden="true"></i>
 
             <span>
                 Expenses
@@ -142,7 +150,7 @@
             class="menu-link"
         >
 
-            <i class="fa-solid fa-coins"></i>
+            <i class="fa-solid fa-coins" aria-hidden="true"></i>
 
             <span>
                 Income
@@ -157,7 +165,7 @@
             class="menu-link"
         >
 
-            <i class="fa-solid fa-chart-pie"></i>
+            <i class="fa-solid fa-chart-pie" aria-hidden="true"></i>
 
             <span>
                 Reports
@@ -172,7 +180,7 @@
             class="menu-link"
         >
 
-            <i class="fa-solid fa-gear"></i>
+            <i class="fa-solid fa-gear" aria-hidden="true"></i>
 
             <span>
                 Settings
@@ -191,10 +199,13 @@
         <button
             type="button"
             class="logout-btn"
-            onclick="logout()"
+            id="logoutButton"
         >
 
-            <i class="fa-solid fa-right-from-bracket"></i>
+            <i
+                class="fa-solid fa-right-from-bracket"
+                aria-hidden="true"
+            ></i>
 
             <span>
                 Logout
@@ -210,7 +221,7 @@
     </div>
 
 
-</div>
+</aside>
 
 
 
@@ -223,7 +234,7 @@
 <div
     class="overlay"
     id="overlay"
-    onclick="closeSidebar()"
+    aria-hidden="true"
 ></div>
 
 
@@ -231,10 +242,10 @@
 
 
 <!-- ==========================
-     MAIN CONTAINER
+     MAIN CONTENT
 ========================== -->
 
-<div class="container dashboard-page">
+<main class="container dashboard-page">
 
 
 
@@ -244,18 +255,19 @@
      HEADER
 ========================== -->
 
-<div class="header">
+<header class="header">
 
 
     <button
         type="button"
         class="menu-btn"
         id="menuButton"
-        onclick="openSidebar()"
         aria-label="Open navigation menu"
+        aria-controls="sidebar"
+        aria-expanded="false"
     >
 
-        <i class="fa-solid fa-bars"></i>
+        <i class="fa-solid fa-bars" aria-hidden="true"></i>
 
     </button>
 
@@ -277,12 +289,12 @@
 
     <div class="user-area">
 
-        <span id="welcomeUser"></span>
+        <span id="welcomeUser" aria-live="polite"></span>
 
     </div>
 
 
-</div>
+</header>
 
 
 
@@ -292,12 +304,18 @@
      SUMMARY CARDS
 ========================== -->
 
-<div class="dashboard">
+<section
+    class="dashboard"
+    aria-label="Financial summary"
+>
 
 
-    <div class="card income-card">
+    <article class="card income-card">
 
-        <div class="summary-icon income-summary-icon">
+        <div
+            class="summary-icon income-summary-icon"
+            aria-hidden="true"
+        >
 
             <i class="fa-solid fa-arrow-trend-up"></i>
 
@@ -311,13 +329,16 @@
             ₱0.00
         </h2>
 
-    </div>
+    </article>
 
 
 
-    <div class="card expense-card">
+    <article class="card expense-card">
 
-        <div class="summary-icon expense-summary-icon">
+        <div
+            class="summary-icon expense-summary-icon"
+            aria-hidden="true"
+        >
 
             <i class="fa-solid fa-arrow-trend-down"></i>
 
@@ -331,13 +352,16 @@
             ₱0.00
         </h2>
 
-    </div>
+    </article>
 
 
 
-    <div class="card balance-card">
+    <article class="card balance-card">
 
-        <div class="summary-icon balance-icon">
+        <div
+            class="summary-icon balance-icon"
+            aria-hidden="true"
+        >
 
             <i class="fa-solid fa-wallet"></i>
 
@@ -351,13 +375,16 @@
             ₱0.00
         </h2>
 
-    </div>
+    </article>
 
 
 
-    <div class="card transaction-card">
+    <article class="card transaction-card">
 
-        <div class="summary-icon transaction-summary-icon">
+        <div
+            class="summary-icon transaction-summary-icon"
+            aria-hidden="true"
+        >
 
             <i class="fa-solid fa-arrow-right-arrow-left"></i>
 
@@ -371,11 +398,10 @@
             0
         </h2>
 
-    </div>
+    </article>
 
 
-</div>
-
+</section>
 
 
 
@@ -401,7 +427,7 @@
 
         </div>
 
-        <div class="section-icon">
+        <div class="section-icon" aria-hidden="true">
 
             <i class="fa-solid fa-calendar-days"></i>
 
@@ -414,7 +440,10 @@
 
         <article class="monthly-stat-card">
 
-            <div class="monthly-stat-icon monthly-income-icon">
+            <div
+                class="monthly-stat-icon monthly-income-icon"
+                aria-hidden="true"
+            >
 
                 <i class="fa-solid fa-arrow-trend-up"></i>
 
@@ -437,7 +466,10 @@
 
         <article class="monthly-stat-card">
 
-            <div class="monthly-stat-icon monthly-expense-icon">
+            <div
+                class="monthly-stat-icon monthly-expense-icon"
+                aria-hidden="true"
+            >
 
                 <i class="fa-solid fa-arrow-trend-down"></i>
 
@@ -460,7 +492,10 @@
 
         <article class="monthly-stat-card">
 
-            <div class="monthly-stat-icon monthly-balance-icon">
+            <div
+                class="monthly-stat-icon monthly-balance-icon"
+                aria-hidden="true"
+            >
 
                 <i class="fa-solid fa-scale-balanced"></i>
 
@@ -483,7 +518,10 @@
 
         <article class="monthly-stat-card">
 
-            <div class="monthly-stat-icon monthly-savings-icon">
+            <div
+                class="monthly-stat-icon monthly-savings-icon"
+                aria-hidden="true"
+            >
 
                 <i class="fa-solid fa-piggy-bank"></i>
 
@@ -506,7 +544,10 @@
 
         <article class="monthly-stat-card largest-category-card">
 
-            <div class="monthly-stat-icon monthly-category-icon">
+            <div
+                class="monthly-stat-icon monthly-category-icon"
+                aria-hidden="true"
+            >
 
                 <i class="fa-solid fa-tags"></i>
 
@@ -551,13 +592,20 @@
 
                 </div>
 
-                <i class="fa-solid fa-chart-column"></i>
+                <i
+                    class="fa-solid fa-chart-column"
+                    aria-hidden="true"
+                ></i>
 
             </div>
 
             <div class="analytics-chart-wrapper">
 
-                <canvas id="incomeExpenseChart"></canvas>
+                <canvas
+                    id="incomeExpenseChart"
+                    role="img"
+                    aria-label="Income versus expenses chart"
+                ></canvas>
 
             </div>
 
@@ -580,13 +628,20 @@
 
                 </div>
 
-                <i class="fa-solid fa-chart-line"></i>
+                <i
+                    class="fa-solid fa-chart-line"
+                    aria-hidden="true"
+                ></i>
 
             </div>
 
             <div class="analytics-chart-wrapper">
 
-                <canvas id="dailySpendingChart"></canvas>
+                <canvas
+                    id="dailySpendingChart"
+                    role="img"
+                    aria-label="Daily spending trend chart"
+                ></canvas>
 
             </div>
 
@@ -629,7 +684,7 @@
             </div>
 
 
-            <div class="section-icon">
+            <div class="section-icon" aria-hidden="true">
 
                 <i class="fa-solid fa-chart-pie"></i>
 
@@ -642,7 +697,11 @@
 
         <div class="dashboard-chart-wrapper">
 
-            <canvas id="expenseChart"></canvas>
+            <canvas
+                id="expenseChart"
+                role="img"
+                aria-label="Expenses by category chart"
+            ></canvas>
 
         </div>
 
@@ -658,7 +717,7 @@
     <section class="content-card quick-action-card">
 
 
-        <div class="quick-action-icon">
+        <div class="quick-action-icon" aria-hidden="true">
 
             <i class="fa-solid fa-receipt"></i>
 
@@ -682,7 +741,7 @@
 
             Open Expenses
 
-            <i class="fa-solid fa-arrow-right"></i>
+            <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
 
         </a>
 
@@ -726,7 +785,7 @@
 
             View All
 
-            <i class="fa-solid fa-arrow-right"></i>
+            <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
 
         </a>
 
@@ -735,7 +794,12 @@
 
 
 
-    <div class="table-responsive">
+    <div
+        class="table-responsive"
+        role="region"
+        aria-label="Recent expenses table"
+        tabindex="0"
+    >
 
 
         <table>
@@ -745,19 +809,19 @@
 
                 <tr>
 
-                    <th>
+                    <th scope="col">
                         Expense
                     </th>
 
-                    <th>
+                    <th scope="col">
                         Category
                     </th>
 
-                    <th>
+                    <th scope="col">
                         Amount
                     </th>
 
-                    <th>
+                    <th scope="col">
                         Date
                     </th>
 
@@ -779,9 +843,28 @@
 
 
 
-</div>
+</main>
 
 
+
+
+
+<!-- ==========================
+     CHART JS
+========================== -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/chart.js"
+    defer
+></script>
+
+
+
+<!-- ==========================
+     APP SCRIPT
+========================== -->
+
+<script src="script.js" defer></script>
 
 
 
@@ -791,6 +874,8 @@
 
 <script>
 
+"use strict";
+
 
 const username =
     localStorage.getItem("username");
@@ -798,7 +883,16 @@ const username =
 
 if (!username) {
 
-    window.location.href = "login.html";
+    window.location.replace("login.html");
+
+}
+
+
+
+
+function getElement(id) {
+
+    return document.getElementById(id);
 
 }
 
@@ -812,11 +906,11 @@ function displayLoggedInUser() {
 
 
     const welcomeUser =
-        document.getElementById("welcomeUser");
+        getElement("welcomeUser");
 
 
     const sidebarUsername =
-        document.getElementById("sidebarUsername");
+        getElement("sidebarUsername");
 
 
     if (welcomeUser) {
@@ -841,17 +935,53 @@ function displayLoggedInUser() {
 
 function openSidebar() {
 
-    document
-        .getElementById("sidebar")
-        .classList.add("active");
+    const sidebar =
+        getElement("sidebar");
 
 
-    document
-        .getElementById("overlay")
-        .classList.add("active");
+    const overlay =
+        getElement("overlay");
 
 
-    document.body.style.overflow = "hidden";
+    const menuButton =
+        getElement("menuButton");
+
+
+    if (!sidebar || !overlay) {
+
+        return;
+
+    }
+
+
+    sidebar.classList.add("active");
+
+    sidebar.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+
+    overlay.classList.add("active");
+
+    overlay.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+
+    if (menuButton) {
+
+        menuButton.setAttribute(
+            "aria-expanded",
+            "true"
+        );
+
+    }
+
+
+    document.body.style.overflow =
+        "hidden";
 
 }
 
@@ -860,17 +990,53 @@ function openSidebar() {
 
 function closeSidebar() {
 
-    document
-        .getElementById("sidebar")
-        .classList.remove("active");
+    const sidebar =
+        getElement("sidebar");
 
 
-    document
-        .getElementById("overlay")
-        .classList.remove("active");
+    const overlay =
+        getElement("overlay");
 
 
-    document.body.style.overflow = "";
+    const menuButton =
+        getElement("menuButton");
+
+
+    if (!sidebar || !overlay) {
+
+        return;
+
+    }
+
+
+    sidebar.classList.remove("active");
+
+    sidebar.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+
+    overlay.classList.remove("active");
+
+    overlay.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+
+    if (menuButton) {
+
+        menuButton.setAttribute(
+            "aria-expanded",
+            "false"
+        );
+
+    }
+
+
+    document.body.style.overflow =
+        "";
 
 }
 
@@ -889,15 +1055,29 @@ function highlightCurrentPage() {
         .querySelectorAll(".menu-link")
         .forEach(function (link) {
 
-            link.classList.remove("active-page");
-
-
-            if (
+            const isCurrentPage =
                 link.getAttribute("href") ===
-                currentPage
-            ) {
+                currentPage;
 
-                link.classList.add("active-page");
+
+            link.classList.toggle(
+                "active-page",
+                isCurrentPage
+            );
+
+
+            if (isCurrentPage) {
+
+                link.setAttribute(
+                    "aria-current",
+                    "page"
+                );
+
+            } else {
+
+                link.removeAttribute(
+                    "aria-current"
+                );
 
             }
 
@@ -911,7 +1091,9 @@ function highlightCurrentPage() {
 function logout() {
 
     const confirmed =
-        confirm("Are you sure you want to logout?");
+        window.confirm(
+            "Are you sure you want to logout?"
+        );
 
 
     if (!confirmed) {
@@ -926,9 +1108,104 @@ function logout() {
     localStorage.removeItem("username");
 
 
-    window.location.href = "login.html";
+    window.location.replace("login.html");
 
 }
+
+
+
+
+function registerServiceWorker() {
+
+    if (!("serviceWorker" in navigator)) {
+
+        return;
+
+    }
+
+
+    window.addEventListener(
+        "load",
+        function () {
+
+            navigator.serviceWorker
+                .register("/service-worker.js")
+                .then(function () {
+
+                    console.log(
+                        "Service worker registered."
+                    );
+
+                })
+                .catch(function (error) {
+
+                    console.error(
+                        "Service worker registration failed:",
+                        error
+                    );
+
+                });
+
+        }
+    );
+
+}
+
+
+
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const menuButton =
+            getElement("menuButton");
+
+
+        const overlay =
+            getElement("overlay");
+
+
+        const logoutButton =
+            getElement("logoutButton");
+
+
+        displayLoggedInUser();
+
+        highlightCurrentPage();
+
+
+        if (menuButton) {
+
+            menuButton.addEventListener(
+                "click",
+                openSidebar
+            );
+
+        }
+
+
+        if (overlay) {
+
+            overlay.addEventListener(
+                "click",
+                closeSidebar
+            );
+
+        }
+
+
+        if (logoutButton) {
+
+            logoutButton.addEventListener(
+                "click",
+                logout
+            );
+
+        }
+
+    }
+);
 
 
 
@@ -949,50 +1226,24 @@ document.addEventListener(
 
 
 
-document.addEventListener(
-    "DOMContentLoaded",
+window.addEventListener(
+    "resize",
     function () {
 
-        displayLoggedInUser();
+        if (window.innerWidth > 1050) {
 
-        highlightCurrentPage();
+            closeSidebar();
+
+        }
 
     }
 );
 
 
+registerServiceWorker();
+
 </script>
 
-
-
-
-<!-- CHART JS -->
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-
-
-<!-- APP SCRIPT -->
-
-<script src="script.js"></script>
-
-<script>
-    if ("serviceWorker" in navigator) {
-        window.addEventListener("load", function () {
-            navigator.serviceWorker
-                .register("/service-worker.js")
-                .then(function () {
-                    console.log("Service worker registered.");
-                })
-                .catch(function (error) {
-                    console.error(
-                        "Service worker registration failed:",
-                        error
-                    );
-                });
-        });
-    }
-</script>
 
 </body>
 

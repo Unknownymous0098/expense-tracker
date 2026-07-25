@@ -3,7 +3,12 @@
 <html lang="en">
 <head>
 
-    <link rel="manifest" href="/manifest.json">
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+>
 
 <meta name="theme-color" content="#2e7d32">
 
@@ -12,172 +17,189 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 
 <meta
-  name="apple-mobile-web-app-status-bar-style"
-  content="default"
+    name="apple-mobile-web-app-status-bar-style"
+    content="default"
 >
 
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link rel="manifest" href="/manifest.json">
+
 <title>Income | Expense Tracker</title>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"/>
-<link href="style.css" rel="stylesheet"/><style>
-        .income-page {
-            width: min(94%, 1280px);
-            max-width: 1280px;
-            margin: 24px auto;
-            padding: 28px;
-        }
+<link href="style.css" rel="stylesheet"/>
+<style>
+    /* Income page layout aligned with the Dashboard and Expenses pages. */
 
-        .income-page .header {
-            display: grid;
-            grid-template-columns: auto 1fr auto;
-            align-items: center;
-            gap: 18px;
-            margin-bottom: 24px;
-        }
+    .income-page {
+        width: min(92%, var(--app-container-width));
+        max-width: var(--app-container-width);
+        margin: 28px auto;
+        padding: var(--app-container-padding);
+    }
 
-        .income-page .page-heading {
-            text-align: center;
-        }
+    .income-page .header {
+        display: grid;
+        grid-template-columns: 180px minmax(0, 1fr) 180px;
+        align-items: center;
+        gap: 18px;
+        margin-bottom: 26px;
+    }
 
-        .income-page .page-heading h1 {
-            text-align: center;
-            font-size: 30px;
-        }
+    .income-page .page-heading,
+    .income-page .page-heading h1,
+    .income-page .page-heading p {
+        text-align: center;
+    }
 
-        .income-page .user-area {
-            min-width: 180px;
-        }
+    .income-page .user-area {
+        min-width: 180px;
+        align-items: flex-end;
+        justify-self: end;
+        text-align: right;
+    }
 
-        .income-summary {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 18px;
-            margin-bottom: 24px;
-        }
+    .income-summary {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+        margin-bottom: var(--app-section-gap);
+    }
 
-        .income-summary .card {
-            min-height: 150px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 22px;
-        }
+    .income-summary .card {
+        min-height: 156px;
+        padding: 22px;
+    }
 
-        .income-summary .card h2 {
-            margin-top: 10px;
-            font-size: 28px;
-        }
+    .income-summary .card h2 {
+        margin-top: 13px;
+        font-size: clamp(24px, 2vw, 30px);
+    }
 
+    .income-workspace {
+        display: grid;
+        grid-template-columns: minmax(300px, 0.78fr) minmax(0, 1.45fr);
+        gap: 24px;
+        align-items: start;
+    }
+
+    .income-form-card,
+    .income-history-card {
+        min-width: 0;
+        margin-bottom: 0;
+    }
+
+    .income-form-card {
+        position: sticky;
+        top: 24px;
+    }
+
+    .income-form-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 15px;
+        margin-bottom: 18px;
+    }
+
+    .income-form-card .primary-action-btn {
+        width: 100%;
+        min-height: 48px;
+        margin: 0;
+    }
+
+    .income-history-card .filter-box {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(180px, 220px);
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+    .income-history-card .table-responsive {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .income-history-card table {
+        width: 100%;
+        min-width: 680px;
+    }
+
+    .income-history-card th,
+    .income-history-card td {
+        text-align: left;
+        vertical-align: middle;
+    }
+
+    .income-history-card th:nth-child(3),
+    .income-history-card td:nth-child(3) {
+        text-align: right;
+    }
+
+    .income-history-card th:last-child,
+    .income-history-card td:last-child {
+        text-align: center;
+    }
+
+    .income-history-card td button {
+        min-width: 82px;
+    }
+
+    @media (max-width: 1150px) {
         .income-workspace {
-            display: grid;
-            grid-template-columns: minmax(320px, 0.8fr) minmax(0, 1.35fr);
-            gap: 24px;
-            align-items: start;
-        }
-
-        .income-form-card,
-        .income-history-card {
-            margin-bottom: 0;
+            grid-template-columns: 1fr;
         }
 
         .income-form-card {
-            position: sticky;
-            top: 24px;
+            position: static;
         }
 
         .income-form-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 15px;
-            margin-bottom: 18px;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @media (max-width: 800px) {
+        .income-page .header {
+            grid-template-columns: auto minmax(0, 1fr);
         }
 
-        .income-form-card .primary-action-btn {
-            width: auto;
-            min-width: 180px;
-            padding: 12px 20px;
-            margin-left: auto;
-        }
-
-        .income-history-card table {
-            min-width: 760px;
-        }
-
-        .income-history-card th,
-        .income-history-card td {
+        .income-page .page-heading,
+        .income-page .page-heading h1,
+        .income-page .page-heading p {
             text-align: left;
         }
 
-        .income-history-card th:nth-child(3),
-        .income-history-card td:nth-child(3) {
-            text-align: right;
+        .income-page .user-area {
+            grid-column: 1 / -1;
+            min-width: 0;
+            align-items: flex-start;
+            justify-self: start;
+            text-align: left;
         }
 
-        .income-history-card th:last-child,
-        .income-history-card td:last-child {
-            text-align: center;
+        .income-summary {
+            grid-template-columns: 1fr;
         }
 
-        .income-history-card td button {
-            min-width: 88px;
+        .income-form-grid,
+        .income-history-card .filter-box {
+            grid-template-columns: 1fr;
         }
+    }
 
-        @media (max-width: 980px) {
-            .income-workspace {
-                grid-template-columns: 1fr;
-            }
-
-            .income-form-card {
-                position: static;
-            }
-
-            .income-form-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
+    @media (max-width: 550px) {
+        .income-page {
+            width: calc(100% - 20px);
+            margin: 10px auto;
+            padding: 18px;
         }
-
-        @media (max-width: 760px) {
-            .income-page {
-                width: calc(100% - 20px);
-                margin: 10px auto;
-                padding: 18px;
-            }
-
-            .income-page .header {
-                grid-template-columns: auto 1fr;
-            }
-
-            .income-page .user-area {
-                grid-column: 1 / -1;
-                min-width: 0;
-                align-items: flex-start;
-            }
-
-            .income-summary {
-                grid-template-columns: 1fr;
-            }
-
-            .income-form-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .filter-box {
-                grid-template-columns: 1fr;
-            }
-
-            .income-form-card .primary-action-btn {
-                width: 100%;
-                margin-left: 0;
-            }
-        }
+    }
 </style>
+
 </head>
 <body>
 <!-- ==========================
      SIDEBAR
 ========================== -->
-<div class="sidebar" id="sidebar">
+<aside class="sidebar" id="sidebar" aria-label="Main Navigation" aria-hidden="true">
 <div class="sidebar-brand">
 <div class="brand-icon">
 <i class="fa-solid fa-wallet"></i>
@@ -237,7 +259,7 @@
 </a>
 </nav>
 <div class="sidebar-footer">
-<button class="logout-btn" onclick="logout()" type="button">
+<button class="logout-btn" id="logoutButton" type="button">
 <i class="fa-solid fa-right-from-bracket"></i>
 <span>
                 Logout
@@ -247,20 +269,20 @@
             Expense Tracker v1.0
         </p>
 </div>
-</div>
+</aside>
 <!-- ==========================
      OVERLAY
 ========================== -->
-<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+<div class="overlay" id="overlay" ></div>
 <!-- ==========================
      MAIN CONTAINER
 ========================== -->
-<div class="container income-page">
+<main class="container income-page">
 <!-- ==========================
      HEADER
 ========================== -->
-<div class="header">
-<button aria-label="Open navigation menu" class="menu-btn" onclick="openSidebar()" type="button">
+<header class="header">
+<button aria-label="Open navigation menu" class="menu-btn" id="menuButton" type="button">
 <i class="fa-solid fa-bars"></i>
 </button>
 <div class="page-heading">
@@ -274,12 +296,12 @@
 <div class="user-area">
 <span id="welcomeUser"></span>
 </div>
-</div>
+</header>
 <!-- ==========================
      INCOME SUMMARY
 ========================== -->
-<div class="dashboard income-summary">
-<div class="card income-card">
+<section class="dashboard income-summary" aria-label="Income summary">
+<article class="card income-card">
 <div class="summary-icon income-summary-icon">
 <i class="fa-solid fa-peso-sign"></i>
 </div>
@@ -289,8 +311,8 @@
 <h2 id="totalIncome">
             ₱0.00
         </h2>
-</div>
-<div class="card income-card">
+</article>
+<article class="card income-card">
 <div class="summary-icon income-summary-icon">
 <i class="fa-solid fa-list"></i>
 </div>
@@ -300,8 +322,8 @@
 <h2 id="incomeCount">
             0
         </h2>
-</div>
-<div class="card income-card">
+</article>
+<article class="card income-card">
 <div class="summary-icon income-summary-icon">
 <i class="fa-solid fa-chart-line"></i>
 </div>
@@ -312,7 +334,8 @@
             ₱0.00
         </h2>
 </div>
-</div>
+</article>
+</section>
 <!-- ==========================
      ADD INCOME
 ========================== -->
@@ -453,7 +476,7 @@
      INCOME HISTORY
 ========================== -->
 
-</div>
+</main>
 <!-- ==========================
      PAGE JAVASCRIPT
 ========================== -->
@@ -621,7 +644,64 @@ document.addEventListener(
 );
 
 </script>
-<script src="income.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const menuButton = document.getElementById("menuButton");
+    const overlay = document.getElementById("overlay");
+    const logoutButton = document.getElementById("logoutButton");
+    const sidebar = document.getElementById("sidebar");
+
+    function setSidebarAccessibility(isOpen) {
+        if (sidebar) {
+            sidebar.setAttribute("aria-hidden", String(!isOpen));
+        }
+
+        if (menuButton) {
+            menuButton.setAttribute("aria-expanded", String(isOpen));
+        }
+    }
+
+    if (menuButton) {
+        menuButton.setAttribute("aria-controls", "sidebar");
+        menuButton.setAttribute("aria-expanded", "false");
+
+        menuButton.addEventListener("click", function () {
+            if (typeof openSidebar === "function") {
+                openSidebar();
+                setSidebarAccessibility(true);
+            }
+        });
+    }
+
+    if (overlay) {
+        overlay.addEventListener("click", function () {
+            if (typeof closeSidebar === "function") {
+                closeSidebar();
+                setSidebarAccessibility(false);
+            }
+        });
+    }
+
+    if (logoutButton) {
+        logoutButton.addEventListener("click", function () {
+            if (typeof logout === "function") {
+                logout();
+            }
+        });
+    }
+
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+            setSidebarAccessibility(false);
+        }
+    });
+
+    setSidebarAccessibility(false);
+});
+</script>
+
+<script src="income.js" defer></script>
 
 <script>
     if ("serviceWorker" in navigator) {
