@@ -1,10 +1,12 @@
 const express = require("express");
 const sqlite3 = require("sqlite3").verbose();
 const bcrypt = require("bcrypt");
-const nodemailer = require("nodemailer");
+const { Resend } = require("resend");
 const crypto = require("crypto");
-
 const app = express();
+const resend = process.env.RESEND_API_KEY
+    ? new Resend(process.env.RESEND_API_KEY)
+    : null;
 const PORT = process.env.PORT || 3000;
 
 // =======================
@@ -131,52 +133,35 @@ app.use(express.static("public"));
 // EMAIL HELPERS
 // =======================
 
-function createMailTransporter() {
-    const smtpHost = process.env.SMTP_HOST;
-    const smtpPort = Number(process.env.SMTP_PORT || 587);
-    const smtpUser = process.env.SMTP_USER;
-    const smtpPass = process.env.SMTP_PASS;
-
-    if (!smtpHost || !smtpUser || !smtpPass) {
-        return null;
-    }
-
-    return nodemailer.createTransport({
-        host: smtpHost,
-        port: smtpPort,
-        secure: smtpPort === 465,
-        auth: {
-            user: smtpUser,
-            pass: smtpPass
-        }
-    });
-}
-
 function generateVerificationCode() {
     return crypto.randomInt(100000, 1000000).toString();
 }
 
 async function sendVerificationEmail(email, username, code) {
-    const transporter = createMailTransporter();
-
-    if (!transporter) {
+    if (!resend) {
         throw new Error(
-            "Email service is not configured. Add SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS and EMAIL_FROM."
+            "RESEND_API_KEY is not configured."
         );
     }
 
     const fromAddress =
         process.env.EMAIL_FROM ||
-        process.env.SMTP_USER;
+        "Expense Tracker <onboarding@resend.dev>";
 
-    await transporter.sendMail({
+    const result = await resend.emails.send({
         from: fromAddress,
-        to: email,
+        to: [email],
         subject: "Verify your Expense Tracker email",
         text:
-            `Hello ${username},\n\n` +
-            `Your Expense Tracker verification code is: ${code}\n\n` +
-            "This code expires in 10 minutes.\n\n" +
+            `Hello ${username},
+
+` +
+            `Your Expense Tracker verification code is: ${code}
+
+` +
+            "This code expires in 10 minutes.
+
+" +
             "If you did not create this account, you can ignore this message.",
         html:
             `<p>Hello ${escapeHtml(username)},</p>` +
@@ -185,6 +170,22 @@ async function sendVerificationEmail(email, username, code) {
             "<p>This code expires in 10 minutes.</p>" +
             "<p>If you did not create this account, you can ignore this message.</p>"
     });
+
+    if (result.error) {
+        console.error("Resend API error:", result.error);
+
+        throw new Error(
+            result.error.message ||
+            "Unable to send verification email."
+        );
+    }
+
+    console.log(
+        "Verification email sent:",
+        result.data && result.data.id
+            ? result.data.id
+            : "success"
+    );
 }
 
 function escapeHtml(value) {
@@ -304,7 +305,7 @@ app.post("/register", async function (req, res) {
                         return res.status(500).json({
                             success: false,
                             message:
-                                "The account could not be completed because the verification email was not sent. Check the server email settings."
+                                "The account could not be completed because the verification email was not sent. Check the Resend configuration."
                         });
                     }
                 };
@@ -599,7 +600,7 @@ app.post("/resend-verification", function (req, res) {
                         return res.status(500).json({
                             success: false,
                             message:
-                                "Unable to send the verification email. Check the server email settings."
+                                "Unable to send the verification email. Check the Resend configuration."
                         });
                     }
                 }
