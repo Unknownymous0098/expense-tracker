@@ -153,15 +153,9 @@ async function sendVerificationEmail(email, username, code) {
         to: [email],
         subject: "Verify your Expense Tracker email",
         text:
-            `Hello ${username},
-
-` +
-            `Your Expense Tracker verification code is: ${code}
-
-` +
-            "This code expires in 10 minutes.
-
-" +
+            `Hello ${username},\n\n` +
+            `Your Expense Tracker verification code is: ${code}\n\n` +
+            "This code expires in 10 minutes.\n\n" +
             "If you did not create this account, you can ignore this message.",
         html:
             `<p>Hello ${escapeHtml(username)},</p>` +
