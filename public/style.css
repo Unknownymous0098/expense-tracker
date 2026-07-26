@@ -3047,3 +3047,159 @@ body.dark-mode .auth-modal-icon {
     color: #ffffff;
 }
 
+
+/* =====================================================
+   DARK MODE — PAGE-SPECIFIC COMPONENTS
+===================================================== */
+
+html.dark-mode {
+    color-scheme: dark;
+}
+
+html.dark-mode body {
+    color-scheme: dark;
+}
+
+/* Reports */
+body.dark-mode .report-summary-card,
+body.dark-mode .report-chart-card,
+body.dark-mode .report-wide-chart {
+    color: var(--color-text);
+    background:
+        linear-gradient(
+            135deg,
+            rgba(32, 49, 38, 0.98),
+            rgba(25, 39, 30, 0.96)
+        );
+    border-color: var(--color-border);
+    box-shadow: var(--shadow-medium);
+}
+
+body.dark-mode .report-summary-card h2 {
+    color: #f1f5f2;
+}
+
+body.dark-mode .report-summary-card h3,
+body.dark-mode .reports-table-header h2 {
+    color: #b7e4bd;
+}
+
+body.dark-mode .reports-table-header p,
+body.dark-mode .report-period-label,
+body.dark-mode .report-empty-state {
+    color: var(--color-text-soft);
+}
+
+body.dark-mode .report-reset-btn {
+    color: #b7e4bd;
+    background: #1b3021;
+    border-color: #36533e;
+}
+
+body.dark-mode .report-reset-btn:hover,
+body.dark-mode .report-reset-btn:focus-visible {
+    color: #ffffff;
+    background: #2e7d32;
+}
+
+/* Settings */
+body.dark-mode .settings-option,
+body.dark-mode .data-action-box,
+body.dark-mode .theme-option label,
+body.dark-mode .about-card {
+    color: var(--color-text);
+    background: #223528;
+    border-color: #38513e;
+}
+
+body.dark-mode .settings-option-info strong,
+body.dark-mode .data-action-box h3,
+body.dark-mode .about-row strong,
+body.dark-mode .about-description h3,
+body.dark-mode .about-footer strong {
+    color: #dcfce7;
+}
+
+body.dark-mode .settings-option-info span,
+body.dark-mode .data-action-box p,
+body.dark-mode .about-row span,
+body.dark-mode .about-description p,
+body.dark-mode .about-footer span,
+body.dark-mode .about-tech {
+    color: #a7b5aa;
+}
+
+body.dark-mode .about-divider,
+body.dark-mode .about-row {
+    border-color: #38513e;
+}
+
+body.dark-mode .about-tech span {
+    color: #b7e4bd;
+    background: #1b3021;
+}
+
+body.dark-mode .settings-card input[readonly] {
+    color: #a7b5aa;
+    background: #18251d;
+}
+
+body.dark-mode .secondary-settings-btn {
+    color: #b7e4bd;
+    background: #1b3021;
+    border-color: #36533e;
+}
+
+body.dark-mode .secondary-settings-btn:hover,
+body.dark-mode .secondary-settings-btn:focus-visible {
+    color: #ffffff;
+    background: #2e7d32;
+}
+
+/* Registration verification */
+body.dark-mode .verification-panel {
+    color: var(--color-text);
+    background: #1b3021;
+    border-color: #36533e;
+}
+
+body.dark-mode .verification-panel h2 {
+    color: #dcfce7;
+}
+
+body.dark-mode .verification-panel p {
+    color: var(--color-text-soft);
+}
+
+/* Keep status colors readable */
+body.dark-mode .transaction-type.income {
+    color: #bbf7d0;
+    background: rgba(20, 83, 45, 0.55);
+}
+
+body.dark-mode .transaction-type.expense {
+    color: #fecaca;
+    background: rgba(127, 29, 29, 0.5);
+}
+
+/* Smooth but subtle theme transition */
+body,
+.container,
+.content-card,
+.card,
+input,
+select,
+textarea,
+.auth-card,
+.auth-modal-card,
+.report-summary-card,
+.settings-option,
+.data-action-box,
+.theme-option label {
+    transition:
+        color 0.2s ease,
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+

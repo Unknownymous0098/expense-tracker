@@ -518,44 +518,39 @@ function saveThemeSetting() {
 
 function applyStoredTheme() {
 
+    if (
+        typeof window.applyExpenseTrackerTheme ===
+        "function"
+    ) {
+        window.applyExpenseTrackerTheme();
+        return;
+    }
 
+    /*
+        Fallback in case theme.js did not load.
+    */
     const theme =
         localStorage.getItem(
             "expenseTrackerTheme"
         ) || "light";
 
-
-    let useDarkMode =
-        false;
-
-
-
-    if (theme === "dark") {
-
-        useDarkMode =
-            true;
-
-    }
-
-
-
-    if (theme === "system") {
-
-        useDarkMode =
+    const useDarkMode =
+        theme === "dark" ||
+        (
+            theme === "system" &&
             window.matchMedia(
                 "(prefers-color-scheme: dark)"
-            ).matches;
+            ).matches
+        );
 
-    }
-
-
+    document.documentElement.classList.toggle(
+        "dark-mode",
+        useDarkMode
+    );
 
     document.body.classList.toggle(
-
         "dark-mode",
-
         useDarkMode
-
     );
 
 }
