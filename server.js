@@ -2,11 +2,17 @@ require("dotenv").config();
 const express = require("express");
 const sqlite3 = require("sqlite3").verbose();
 const bcrypt = require("bcrypt");
-const { Resend } = require("resend");
+const nodemailer = require("nodemailer");
 const crypto = require("crypto");
 const app = express();
-const resend = process.env.RESEND_API_KEY
-    ? new Resend(process.env.RESEND_API_KEY)
+const mailTransporter = process.env.GMAIL_USER && process.env.GMAIL_APP_PASSWORD
+    ? nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: process.env.GMAIL_USER,
+            pass: process.env.GMAIL_APP_PASSWORD
+        }
+    })
     : null;
 const PORT = process.env.PORT || 3000;
 
@@ -171,19 +177,19 @@ function generateVerificationCode() {
 }
 
 async function sendVerificationEmail(email, username, code) {
-    if (!resend) {
+    if (!mailTransporter) {
         throw new Error(
-            "RESEND_API_KEY is not configured."
+            "GMAIL_USER or GMAIL_APP_PASSWORD is not configured."
         );
     }
 
     const fromAddress =
         process.env.EMAIL_FROM ||
-        "Expense Tracker <onboarding@resend.dev>";
+        `Expense Tracker <${process.env.GMAIL_USER}>`;
 
-    const result = await resend.emails.send({
+    const info = await mailTransporter.sendMail({
         from: fromAddress,
-        to: [email],
+        to: email,
         subject: "Verify your Expense Tracker email",
         text:
             `Hello ${username},\n\n` +
@@ -198,36 +204,23 @@ async function sendVerificationEmail(email, username, code) {
             "<p>If you did not create this account, you can ignore this message.</p>"
     });
 
-    if (result.error) {
-        console.error("Resend API error:", result.error);
-
-        throw new Error(
-            result.error.message ||
-            "Unable to send verification email."
-        );
-    }
-
-    console.log(
-        "Verification email sent:",
-        result.data && result.data.id
-            ? result.data.id
-            : "success"
-    );
+    console.log("Verification email sent:", info.messageId);
 }
 
-
 async function sendPasswordResetEmail(email, username, code) {
-    if (!resend) {
-        throw new Error("RESEND_API_KEY is not configured.");
+    if (!mailTransporter) {
+        throw new Error(
+            "GMAIL_USER or GMAIL_APP_PASSWORD is not configured."
+        );
     }
 
     const fromAddress =
         process.env.EMAIL_FROM ||
-        "Expense Tracker <onboarding@resend.dev>";
+        `Expense Tracker <${process.env.GMAIL_USER}>`;
 
-    const result = await resend.emails.send({
+    const info = await mailTransporter.sendMail({
         from: fromAddress,
-        to: [email],
+        to: email,
         subject: "Reset your Expense Tracker password",
         text:
             `Hello ${username},\n\n` +
@@ -242,12 +235,7 @@ async function sendPasswordResetEmail(email, username, code) {
             "<p>If you did not request a password reset, you can ignore this message.</p>"
     });
 
-    if (result.error) {
-        console.error("Resend password reset error:", result.error);
-        throw new Error(result.error.message || "Unable to send password reset email.");
-    }
-
-    console.log("Password reset email sent:", result.data?.id || "success");
+    console.log("Password reset email sent:", info.messageId);
 }
 
 function escapeHtml(value) {
@@ -367,7 +355,7 @@ app.post("/register", async function (req, res) {
                         return res.status(500).json({
                             success: false,
                             message:
-                                "The account could not be completed because the verification email was not sent. Check the Resend configuration."
+                                "The account could not be completed because the verification email was not sent. Check the Gmail email configuration."
                         });
                     }
                 };
@@ -662,7 +650,7 @@ app.post("/resend-verification", function (req, res) {
                         return res.status(500).json({
                             success: false,
                             message:
-                                "Unable to send the verification email. Check the Resend configuration."
+                                "Unable to send the verification email. Check the Gmail email configuration."
                         });
                     }
                 }
@@ -792,7 +780,7 @@ app.post("/forgot-password", function (req, res) {
                         return res.status(500).json({
                             success: false,
                             message:
-                                "Unable to send the reset email. Check the Resend configuration."
+                                "Unable to send the reset email. Check the Gmail email configuration."
                         });
                     }
                 }

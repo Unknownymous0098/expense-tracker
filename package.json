@@ -27,7 +27,6 @@
     "express-session": "^1.19.0",
     "nodemailer": "^7.0.3",
     "pg": "^8.16.3",
-    "resend": "^6.18.0",
     "sqlite3": "^5.1.7"
   },
   "devDependencies": {
