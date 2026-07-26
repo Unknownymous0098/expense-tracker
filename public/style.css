@@ -2460,3 +2460,590 @@ canvas {
 
 /* FORGOT PASSWORD MODAL */
 .auth-form-options{display:flex;justify-content:flex-end;margin-top:-7px}.auth-text-button{min-height:auto;padding:4px 0;color:var(--color-primary);background:transparent;border:none;border-radius:0;box-shadow:none;font-size:13px;font-weight:700}.auth-text-button:hover,.auth-text-button:focus-visible{color:var(--color-primary-dark);background:transparent;text-decoration:underline;transform:none}body.modal-open{overflow:hidden}.auth-modal{position:fixed;inset:0;z-index:3000;display:none;align-items:center;justify-content:center;padding:20px}.auth-modal.active{display:flex}.auth-modal-backdrop{position:absolute;inset:0;background:rgba(12,25,16,.68);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}.auth-modal-card{position:relative;z-index:1;width:min(100%,460px);max-height:calc(100vh - 40px);padding:30px;overflow-y:auto;background:rgba(255,255,255,.98);border:1px solid rgba(46,125,50,.15);border-radius:22px;box-shadow:0 28px 70px rgba(10,45,18,.28)}.auth-modal-close{position:absolute;top:13px;right:13px;width:40px;height:40px;min-height:40px;padding:0;color:#64748b;background:#f1f5f9;border:none;border-radius:50%;font-size:18px}.auth-modal-heading{margin-bottom:22px;padding-right:34px;text-align:center}.auth-modal-icon{width:56px;height:56px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;color:#fff;background:linear-gradient(135deg,#43a047,#2e7d32);border-radius:16px;font-size:23px}.auth-modal-heading h2{margin:0;color:var(--color-primary-dark);font-size:25px}.auth-modal-heading p{margin:8px 0 0;color:var(--color-text-soft);font-size:13px}.secondary-auth-btn{width:100%;min-height:50px;display:flex;align-items:center;justify-content:center;gap:9px;color:var(--color-primary);background:#e8f5e9;border:1px solid #c8e6c9;border-radius:13px;font-weight:700}.secondary-auth-btn:hover,.secondary-auth-btn:focus-visible{color:#fff;background:var(--color-primary)}.reset-password-form{margin-top:22px;padding-top:22px;border-top:1px solid var(--color-border)}.reset-password-form[hidden]{display:none}@media(max-width:520px){.auth-modal{align-items:flex-start;padding:10px}.auth-modal-card{max-height:calc(100vh - 20px);margin-top:10px;padding:26px 18px;border-radius:18px}.auth-modal-heading h2{font-size:22px}}
+
+/* =====================================================
+   FORGOT PASSWORD MODAL — CENTERING FIX
+===================================================== */
+
+.auth-modal,
+.auth-modal.active {
+    align-items: center;
+    justify-content: center;
+
+    padding:
+        max(16px, env(safe-area-inset-top, 0px))
+        max(16px, env(safe-area-inset-right, 0px))
+        max(16px, env(safe-area-inset-bottom, 0px))
+        max(16px, env(safe-area-inset-left, 0px));
+}
+
+.auth-modal-card {
+    width: min(100%, 460px);
+    max-height: min(90vh, 720px);
+
+    margin: 0;
+    padding: 32px 30px;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    animation: forgotPasswordModalPop 0.22s ease-out;
+}
+
+.auth-modal-heading {
+    width: 100%;
+
+    margin-bottom: 22px;
+    padding: 0 42px;
+
+    text-align: center;
+}
+
+.auth-modal-heading h2,
+.auth-modal-heading p {
+    text-align: center;
+}
+
+@keyframes forgotPasswordModalPop {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@media (max-width: 520px) {
+    .auth-modal,
+    .auth-modal.active {
+        align-items: center;
+        justify-content: center;
+
+        padding:
+            max(10px, env(safe-area-inset-top, 0px))
+            max(10px, env(safe-area-inset-right, 0px))
+            max(10px, env(safe-area-inset-bottom, 0px))
+            max(10px, env(safe-area-inset-left, 0px));
+    }
+
+    .auth-modal-card {
+        width: min(100%, 430px);
+        max-height: calc(100dvh - 20px);
+
+        margin: 0;
+        padding: 28px 18px;
+
+        border-radius: 18px;
+    }
+
+    .auth-modal-heading {
+        padding: 0 38px;
+    }
+
+    .auth-modal-heading h2 {
+        font-size: 22px;
+    }
+}
+
+
+/* =====================================================
+   COMPLETE DARK MODE
+   Applied when JavaScript adds: body.dark-mode
+===================================================== */
+
+body.dark-mode {
+    --color-primary: #66bb6a;
+    --color-primary-dark: #a5d6a7;
+    --color-primary-light: #4caf50;
+
+    --color-success: #4ade80;
+    --color-danger: #f87171;
+    --color-warning: #fbbf24;
+    --color-info: #60a5fa;
+    --color-purple: #c084fc;
+
+    --color-text: #f3f4f6;
+    --color-text-soft: #b6c2ba;
+    --color-border: #33463a;
+    --color-surface: #18231c;
+    --color-surface-soft: #111a15;
+
+    --shadow-small: 0 5px 16px rgba(0, 0, 0, 0.28);
+    --shadow-medium: 0 10px 28px rgba(0, 0, 0, 0.32);
+    --shadow-large: 0 20px 55px rgba(0, 0, 0, 0.42);
+
+    color-scheme: dark;
+    color: var(--color-text);
+
+    background:
+        radial-gradient(
+            circle at 10% 15%,
+            rgba(76, 175, 80, 0.14) 0,
+            rgba(76, 175, 80, 0) 32%
+        ),
+        radial-gradient(
+            circle at 88% 12%,
+            rgba(46, 125, 50, 0.13) 0,
+            rgba(46, 125, 50, 0) 30%
+        ),
+        radial-gradient(
+            circle at 78% 85%,
+            rgba(27, 94, 32, 0.17) 0,
+            rgba(27, 94, 32, 0) 34%
+        ),
+        linear-gradient(
+            135deg,
+            #0b120e 0%,
+            #111a15 48%,
+            #0d1711 100%
+        );
+}
+
+body.dark-mode::before {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(76, 175, 80, 0.17),
+            rgba(46, 125, 50, 0.03)
+        );
+}
+
+body.dark-mode::after {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(46, 125, 50, 0.16),
+            rgba(27, 94, 32, 0.03)
+        );
+}
+
+
+/* Main app surfaces */
+
+body.dark-mode .container,
+body.dark-mode .dashboard-page,
+body.dark-mode .expenses-page,
+body.dark-mode .income-page,
+body.dark-mode .reports-page,
+body.dark-mode .settings-page {
+    color: var(--color-text);
+    background: rgba(18, 28, 22, 0.9);
+    border-color: rgba(118, 155, 128, 0.18);
+    box-shadow: var(--shadow-large);
+}
+
+body.dark-mode .content-card,
+body.dark-mode .expense-form-card,
+body.dark-mode .expense-history-card,
+body.dark-mode .income-form-card,
+body.dark-mode .income-history-card,
+body.dark-mode .monthly-overview,
+body.dark-mode .analytics-chart-card,
+body.dark-mode .monthly-stat-card,
+body.dark-mode .chart-box {
+    color: var(--color-text);
+    background: rgba(24, 35, 28, 0.96);
+    border-color: var(--color-border);
+    box-shadow: var(--shadow-medium);
+}
+
+
+/* Headings and text */
+
+body.dark-mode h1,
+body.dark-mode .page-heading h1,
+body.dark-mode .header > h1,
+body.dark-mode .section-heading h2,
+body.dark-mode .quick-action-card h2,
+body.dark-mode .analytics-chart-heading h3,
+body.dark-mode .chart-box h2,
+body.dark-mode .auth-brand h1,
+body.dark-mode .auth-modal-heading h2 {
+    color: #b7e4bd;
+}
+
+body.dark-mode p,
+body.dark-mode label,
+body.dark-mode span,
+body.dark-mode small,
+body.dark-mode strong,
+body.dark-mode td,
+body.dark-mode .form-help,
+body.dark-mode .page-heading p,
+body.dark-mode .section-heading p,
+body.dark-mode .quick-action-card p,
+body.dark-mode .analytics-chart-heading p,
+body.dark-mode .auth-brand p,
+body.dark-mode .auth-switch-text,
+body.dark-mode .auth-modal-heading p {
+    color: inherit;
+}
+
+body.dark-mode .page-heading p,
+body.dark-mode .section-heading p,
+body.dark-mode .quick-action-card p,
+body.dark-mode .analytics-chart-heading p,
+body.dark-mode .monthly-stat-card span,
+body.dark-mode .monthly-stat-card small,
+body.dark-mode .empty-table-message,
+body.dark-mode .auth-brand p,
+body.dark-mode .auth-switch-text,
+body.dark-mode .auth-modal-heading p,
+body.dark-mode .form-help {
+    color: var(--color-text-soft);
+}
+
+body.dark-mode #welcomeUser,
+body.dark-mode .dashboard-action-link,
+body.dark-mode .view-all-link,
+body.dark-mode .auth-switch-text a,
+body.dark-mode .auth-text-button {
+    color: #81c784;
+}
+
+
+/* Summary cards */
+
+body.dark-mode .card,
+body.dark-mode .dashboard > .card,
+body.dark-mode .expense-summary .card,
+body.dark-mode .income-summary .card,
+body.dark-mode .income-card {
+    color: var(--color-text);
+    background:
+        linear-gradient(
+            135deg,
+            rgba(32, 49, 38, 0.98),
+            rgba(25, 39, 30, 0.96)
+        );
+    border-color: rgba(118, 155, 128, 0.18);
+}
+
+body.dark-mode .card h2,
+body.dark-mode .dashboard > .card h2,
+body.dark-mode .expense-summary .card h2,
+body.dark-mode .income-summary .card h2,
+body.dark-mode .income-card h2 {
+    color: #f1f5f2;
+}
+
+body.dark-mode .card h3,
+body.dark-mode .dashboard > .card h3,
+body.dark-mode .expense-summary .card h3,
+body.dark-mode .income-summary .card h3,
+body.dark-mode .income-card h3 {
+    color: #9bd3a3;
+}
+
+
+/* Forms */
+
+body.dark-mode .form-group label,
+body.dark-mode .auth-form label {
+    color: #e5ece7;
+}
+
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode textarea,
+body.dark-mode .auth-form input {
+    color: #f3f4f6;
+    background: #111a15;
+    border-color: #3b4d40;
+}
+
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder,
+body.dark-mode .auth-form input::placeholder {
+    color: #7f9184;
+}
+
+body.dark-mode input:focus,
+body.dark-mode select:focus,
+body.dark-mode textarea:focus,
+body.dark-mode .auth-form input:focus {
+    color: #ffffff;
+    background: #162219;
+    border-color: #66bb6a;
+    box-shadow:
+        0 0 0 3px
+        rgba(102, 187, 106, 0.2);
+}
+
+body.dark-mode input:disabled,
+body.dark-mode select:disabled,
+body.dark-mode textarea:disabled {
+    color: #9ca3af;
+    background: #1b261f;
+}
+
+body.dark-mode select option {
+    color: #f3f4f6;
+    background: #111a15;
+}
+
+body.dark-mode .input-with-icon > i,
+body.dark-mode .password-leading-icon,
+body.dark-mode .search-box i {
+    color: #9fb0a3;
+}
+
+body.dark-mode .show-password {
+    color: #81c784;
+}
+
+body.dark-mode .show-password:hover,
+body.dark-mode .show-password:focus-visible {
+    color: #c8e6c9;
+    background: rgba(129, 199, 132, 0.12);
+}
+
+
+/* Tables */
+
+body.dark-mode table {
+    color: var(--color-text);
+    background: transparent;
+}
+
+body.dark-mode th {
+    color: #ffffff;
+    background: #2f7f3b;
+}
+
+body.dark-mode td {
+    color: #e5ece7;
+    border-bottom-color: #314239;
+}
+
+body.dark-mode tbody tr:hover {
+    background: #1e3025;
+}
+
+body.dark-mode .table-responsive,
+body.dark-mode .table-container {
+    background: transparent;
+}
+
+
+/* Icons and supporting elements */
+
+body.dark-mode .section-icon,
+body.dark-mode .quick-action-icon,
+body.dark-mode .summary-icon {
+    color: #81c784;
+    background: rgba(102, 187, 106, 0.14);
+}
+
+body.dark-mode .expense-summary-icon,
+body.dark-mode .monthly-expense-icon {
+    color: #fca5a5;
+    background: rgba(248, 113, 113, 0.14);
+}
+
+body.dark-mode .balance-icon,
+body.dark-mode .monthly-balance-icon {
+    color: #93c5fd;
+    background: rgba(96, 165, 250, 0.14);
+}
+
+body.dark-mode .transaction-summary-icon,
+body.dark-mode .monthly-category-icon {
+    color: #d8b4fe;
+    background: rgba(192, 132, 252, 0.14);
+}
+
+body.dark-mode .income-summary-icon,
+body.dark-mode .income-section-icon,
+body.dark-mode .monthly-income-icon {
+    color: #86efac;
+    background: rgba(74, 222, 128, 0.14);
+}
+
+body.dark-mode .monthly-savings-icon {
+    color: #fde68a;
+    background: rgba(251, 191, 36, 0.14);
+}
+
+body.dark-mode .dashboard-action-link {
+    color: #b7e4bd;
+    background: rgba(102, 187, 106, 0.13);
+}
+
+body.dark-mode .dashboard-action-link:hover,
+body.dark-mode .view-all-link:hover {
+    color: #dcfce7;
+}
+
+
+/* Sidebar */
+
+body.dark-mode .sidebar {
+    background:
+        linear-gradient(
+            180deg,
+            #173b20 0%,
+            #102a17 100%
+        );
+    box-shadow:
+        8px 0 28px
+        rgba(0, 0, 0, 0.45);
+}
+
+body.dark-mode .sidebar-profile {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.09);
+}
+
+body.dark-mode .profile-avatar {
+    color: #a5d6a7;
+    background: #1d2d22;
+}
+
+body.dark-mode .sidebar .menu-link.active-page {
+    color: #d8f3dc;
+    background: #243b2a;
+}
+
+body.dark-mode .sidebar .menu-link.active-page::before {
+    background: #81c784;
+}
+
+
+/* Buttons */
+
+body.dark-mode button:not(.logout-btn):not(.auth-modal-close):not(.show-password):not(.auth-text-button) {
+    color: #ffffff;
+}
+
+body.dark-mode .secondary-auth-btn {
+    color: #b7e4bd;
+    background: #1b3021;
+    border-color: #36533e;
+}
+
+body.dark-mode .secondary-auth-btn:hover,
+body.dark-mode .secondary-auth-btn:focus-visible {
+    color: #ffffff;
+    background: #2e7d32;
+}
+
+
+/* Authentication pages */
+
+body.dark-mode.auth-page,
+body.dark-mode .auth-page {
+    color: var(--color-text);
+    background:
+        radial-gradient(
+            circle at top left,
+            rgba(76, 175, 80, 0.14),
+            transparent 38%
+        ),
+        linear-gradient(
+            135deg,
+            #0b120e,
+            #111a15
+        );
+}
+
+body.dark-mode .auth-card {
+    color: var(--color-text);
+    background: rgba(20, 31, 24, 0.97);
+    border-color: #314239;
+    box-shadow:
+        0 24px 60px
+        rgba(0, 0, 0, 0.42);
+}
+
+
+/* Forgot password modal */
+
+body.dark-mode .auth-modal-backdrop {
+    background: rgba(3, 8, 5, 0.78);
+}
+
+body.dark-mode .auth-modal-card {
+    color: var(--color-text);
+    background: rgba(20, 31, 24, 0.99);
+    border-color: #385040;
+    box-shadow:
+        0 28px 70px
+        rgba(0, 0, 0, 0.58);
+}
+
+body.dark-mode .auth-modal-close {
+    color: #d1d5db;
+    background: #26362c;
+}
+
+body.dark-mode .auth-modal-close:hover,
+body.dark-mode .auth-modal-close:focus-visible {
+    color: #ffffff;
+    background: #34483a;
+}
+
+body.dark-mode .reset-password-form {
+    border-top-color: #34463b;
+}
+
+
+/* Messages */
+
+body.dark-mode .auth-message.error,
+body.dark-mode .settings-message.error {
+    color: #fecaca;
+    background: rgba(127, 29, 29, 0.45);
+    border-color: #7f1d1d;
+}
+
+body.dark-mode .auth-message.success,
+body.dark-mode .settings-message.success {
+    color: #bbf7d0;
+    background: rgba(20, 83, 45, 0.5);
+    border-color: #166534;
+}
+
+
+/* Scrollbars */
+
+body.dark-mode,
+body.dark-mode * {
+    scrollbar-color: #486251 #17221b;
+}
+
+body.dark-mode *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+body.dark-mode *::-webkit-scrollbar-track {
+    background: #17221b;
+}
+
+body.dark-mode *::-webkit-scrollbar-thumb {
+    background: #486251;
+    border: 2px solid #17221b;
+    border-radius: 999px;
+}
+
+body.dark-mode *::-webkit-scrollbar-thumb:hover {
+    background: #5d7964;
+}
+
+
+/* Preserve white text where required */
+
+body.dark-mode .sidebar,
+body.dark-mode .sidebar *,
+body.dark-mode .menu-btn,
+body.dark-mode .logout-btn,
+body.dark-mode th,
+body.dark-mode .auth-submit-btn,
+body.dark-mode .auth-modal-icon {
+    color: #ffffff;
+}
+
