@@ -2,6 +2,55 @@
 <html lang="en">
 
 <head>
+<style id="theme-paint-bootstrap">
+html, body {
+    min-height: 100%;
+    background-color: #eef8f0;
+}
+html.dark-mode,
+html.dark-mode body {
+    background-color: #0b120e !important;
+    color-scheme: dark;
+}
+</style>
+<script id="theme-bootstrap">
+(function () {
+    try {
+        var theme =
+            localStorage.getItem("expenseTrackerTheme") || "light";
+
+        var dark =
+            theme === "dark" ||
+            (
+                theme === "system" &&
+                window.matchMedia &&
+                window.matchMedia(
+                    "(prefers-color-scheme: dark)"
+                ).matches
+            );
+
+        document.documentElement.classList.toggle(
+            "dark-mode",
+            dark
+        );
+
+        document.documentElement.dataset.theme =
+            dark ? "dark" : "light";
+
+        document.documentElement.style.backgroundColor =
+            dark ? "#0b120e" : "#eef8f0";
+
+        document.documentElement.style.colorScheme =
+            dark ? "dark" : "light";
+    }
+    catch (error) {
+        document.documentElement.style.backgroundColor =
+            "#eef8f0";
+    }
+})();
+</script>
+
+<script src="theme.js" defer></script>
 
 <meta charset="UTF-8">
 
@@ -24,30 +73,6 @@
 <link rel="manifest" href="/manifest.json">
 
     <title>Settings | Expense Tracker</title>
-
-    <script>
-        (function () {
-            const savedTheme =
-                localStorage.getItem("expenseTrackerTheme") || "light";
-
-            const useDarkMode =
-                savedTheme === "dark" ||
-                (
-                    savedTheme === "system" &&
-                    window.matchMedia(
-                        "(prefers-color-scheme: dark)"
-                    ).matches
-                );
-
-            document.documentElement.classList.toggle(
-                "dark-mode",
-                useDarkMode
-            );
-
-            document.documentElement.dataset.theme =
-                useDarkMode ? "dark" : "light";
-        })();
-    </script>
 
     <link
         rel="stylesheet"
@@ -1045,7 +1070,6 @@ ABOUT CARD
     }
 </style>
 
-    <script src="theme.js" defer></script>
 </head>
 
 
