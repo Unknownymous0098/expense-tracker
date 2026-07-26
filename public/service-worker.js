@@ -1,4 +1,4 @@
-const CACHE_NAME = "expense-tracker-v3-zero-flash";
+const CACHE_NAME = "expense-tracker-v4-clean-ui";
 
 const APP_FILES = [
     "/",

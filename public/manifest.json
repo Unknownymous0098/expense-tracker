@@ -1,22 +1,14 @@
 {
-  "name": "Expense Tracker",
-  "short_name": "Expenses",
+  "name": "Expense Tracker v2",
+  "short_name": "Expense Tracker",
   "description": "Track income, expenses, reports and budgets.",
-
   "id": "/",
-
   "start_url": "/login.html",
-
   "scope": "/",
-
   "display": "standalone",
-
   "orientation": "portrait-primary",
-
   "background_color": "#f4f7f5",
-
   "theme_color": "#2e7d32",
-
   "icons": [
     {
       "src": "/images/icon-192.png",
