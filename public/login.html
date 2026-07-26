@@ -21,14 +21,36 @@
 
     <title>Login | Expense Tracker</title>
 
+    <script>
+        (function () {
+            const savedTheme =
+                localStorage.getItem("expenseTrackerTheme") || "light";
+
+            const useDarkMode =
+                savedTheme === "dark" ||
+                (
+                    savedTheme === "system" &&
+                    window.matchMedia(
+                        "(prefers-color-scheme: dark)"
+                    ).matches
+                );
+
+            document.documentElement.classList.toggle(
+                "dark-mode",
+                useDarkMode
+            );
+
+            document.documentElement.dataset.theme =
+                useDarkMode ? "dark" : "light";
+        })();
+    </script>
+
     <link rel="stylesheet" href="style.css">
-
-    <script src="theme.js"></script>
-
-    <link
+<link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     >
+    <script src="theme.js" defer></script>
 </head>
 
 <body class="auth-page">

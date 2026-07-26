@@ -24,10 +24,32 @@
 <link rel="manifest" href="/manifest.json">
 
 <title>Income | Expense Tracker</title>
+    <script>
+        (function () {
+            const savedTheme =
+                localStorage.getItem("expenseTrackerTheme") || "light";
+
+            const useDarkMode =
+                savedTheme === "dark" ||
+                (
+                    savedTheme === "system" &&
+                    window.matchMedia(
+                        "(prefers-color-scheme: dark)"
+                    ).matches
+                );
+
+            document.documentElement.classList.toggle(
+                "dark-mode",
+                useDarkMode
+            );
+
+            document.documentElement.dataset.theme =
+                useDarkMode ? "dark" : "light";
+        })();
+    </script>
+
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"/>
 <link href="style.css" rel="stylesheet"/>
-
-    <script src="theme.js"></script>
 <style>
     /* Income page layout aligned with the Dashboard and Expenses pages. */
 
@@ -196,6 +218,7 @@
     }
 </style>
 
+    <script src="theme.js" defer></script>
 </head>
 <body>
 <!-- ==========================

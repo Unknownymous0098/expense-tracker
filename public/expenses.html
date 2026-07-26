@@ -12,12 +12,33 @@
    Expenses | Expense Tracker
   </title>
   <!-- FONT AWESOME -->
+    <script>
+        (function () {
+            const savedTheme =
+                localStorage.getItem("expenseTrackerTheme") || "light";
+
+            const useDarkMode =
+                savedTheme === "dark" ||
+                (
+                    savedTheme === "system" &&
+                    window.matchMedia(
+                        "(prefers-color-scheme: dark)"
+                    ).matches
+                );
+
+            document.documentElement.classList.toggle(
+                "dark-mode",
+                useDarkMode
+            );
+
+            document.documentElement.dataset.theme =
+                useDarkMode ? "dark" : "light";
+        })();
+    </script>
+
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"/>
   <!-- MAIN CSS -->
   <link href="style.css" rel="stylesheet"/>
-
-    <script src="theme.js"></script>
-  
 <style>
     /* Keep the Expenses page visually consistent with the Dashboard. */
 
@@ -188,7 +209,8 @@
     }
 </style>
 
- </head>
+     <script src="theme.js" defer></script>
+</head>
  <body>
   <!-- ==========================
      SIDEBAR

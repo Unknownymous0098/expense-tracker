@@ -8,6 +8,26 @@
 ========================================================= */
 
 
+
+/* =====================================================
+   EARLY THEME PAINT
+   Prevents a white flash before body.dark-mode is applied.
+===================================================== */
+
+html {
+    min-height: 100%;
+    background: #eef8f0;
+}
+
+html.dark-mode {
+    color-scheme: dark;
+    background: #0b120e;
+}
+
+html.dark-mode body {
+    background-color: #0b120e;
+}
+
 /* =====================
    DESIGN TOKENS
 ===================== */

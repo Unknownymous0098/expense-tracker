@@ -25,16 +25,37 @@
 
     <title>Settings | Expense Tracker</title>
 
+    <script>
+        (function () {
+            const savedTheme =
+                localStorage.getItem("expenseTrackerTheme") || "light";
+
+            const useDarkMode =
+                savedTheme === "dark" ||
+                (
+                    savedTheme === "system" &&
+                    window.matchMedia(
+                        "(prefers-color-scheme: dark)"
+                    ).matches
+                );
+
+            document.documentElement.classList.toggle(
+                "dark-mode",
+                useDarkMode
+            );
+
+            document.documentElement.dataset.theme =
+                useDarkMode ? "dark" : "light";
+        })();
+    </script>
+
     <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     >
 
     <link rel="stylesheet" href="style.css">
-
-    <script src="theme.js"></script>
-
-    <style>
+<style>
 
         .settings-page {
             max-width: 1280px;
@@ -1024,6 +1045,7 @@ ABOUT CARD
     }
 </style>
 
+    <script src="theme.js" defer></script>
 </head>
 
 
