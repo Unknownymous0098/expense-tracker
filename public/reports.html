@@ -634,6 +634,57 @@ html.dark-mode body {
 
 </style>
 
+
+<style id="mobile-title-centering-fallback">
+@media (max-width: 800px) {
+    .header {
+        display: grid !important;
+        grid-template-columns: 52px minmax(0, 1fr) 52px !important;
+        align-items: center !important;
+        column-gap: 10px !important;
+        row-gap: 8px !important;
+    }
+
+    .header .menu-btn {
+        grid-column: 1 !important;
+        grid-row: 1 !important;
+        justify-self: start !important;
+    }
+
+    .header .page-heading {
+        grid-column: 2 !important;
+        grid-row: 1 !important;
+        width: 100% !important;
+        text-align: center !important;
+    }
+
+    .header .page-heading h1,
+    .header .page-heading p {
+        width: 100% !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        text-align: center !important;
+    }
+
+    .header .user-area {
+        grid-column: 1 / -1 !important;
+        grid-row: 2 !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        padding-left: 0 !important;
+        justify-self: center !important;
+        align-items: center !important;
+        text-align: center !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .header {
+        grid-template-columns: 44px minmax(0, 1fr) 44px !important;
+    }
+}
+</style>
+
 </head>
 
 
