@@ -656,51 +656,123 @@ app.post("/resend-verification", function (req, res) {
 // =======================
 
 app.post("/forgot-password", function (req, res) {
-    const email = String(req.body.email || "").trim().toLowerCase();
+    const email =
+        String(req.body.email || "")
+            .trim()
+            .toLowerCase();
 
     if (!email || !isValidEmail(email)) {
-        return res.status(400).json({ success: false, message: "Enter a valid email address." });
+        return res.status(400).json({
+            success: false,
+            message: "Enter a valid email address."
+        });
     }
 
     db.get(
-        `SELECT id, username, email_verified FROM users WHERE email = ?`,
+        `
+        SELECT id, username, email, email_verified
+        FROM users
+        WHERE LOWER(email) = LOWER(?)
+        `,
         [email],
         async function (lookupError, user) {
             if (lookupError) {
-                console.error("Forgot password lookup error:", lookupError);
-                return res.status(500).json({ success: false, message: "Unable to process the request." });
-            }
+                console.error(
+                    "Forgot password lookup error:",
+                    lookupError
+                );
 
-            if (!user || user.email_verified !== 1) {
-                return res.json({
-                    success: true,
-                    message: "If a verified account exists for that email, a reset code was sent."
+                return res.status(500).json({
+                    success: false,
+                    message: "Unable to process the request."
                 });
             }
 
-            const resetCode = generateVerificationCode();
-            const resetExpires = Date.now() + 10 * 60 * 1000;
+            console.log(
+                "Forgot password account lookup:",
+                user
+                    ? {
+                        id: user.id,
+                        email: user.email,
+                        email_verified: user.email_verified
+                    }
+                    : "not found"
+            );
+
+            // Keep the response generic when no account exists.
+            if (!user) {
+                return res.json({
+                    success: true,
+                    message:
+                        "If an account exists for that email, a reset code was sent."
+                });
+            }
+
+            const resetCode =
+                generateVerificationCode();
+
+            const resetExpires =
+                Date.now() + 10 * 60 * 1000;
 
             db.run(
-                `UPDATE users SET reset_code = ?, reset_expires = ? WHERE id = ?`,
-                [resetCode, resetExpires, user.id],
+                `
+                UPDATE users
+                SET reset_code = ?,
+                    reset_expires = ?
+                WHERE id = ?
+                `,
+                [
+                    resetCode,
+                    resetExpires,
+                    user.id
+                ],
                 async function (updateError) {
                     if (updateError) {
-                        console.error("Forgot password update error:", updateError);
-                        return res.status(500).json({ success: false, message: "Unable to create a reset code." });
+                        console.error(
+                            "Forgot password update error:",
+                            updateError
+                        );
+
+                        return res.status(500).json({
+                            success: false,
+                            message:
+                                "Unable to create a reset code."
+                        });
                     }
 
                     try {
-                        await sendPasswordResetEmail(email, user.username, resetCode);
+                        await sendPasswordResetEmail(
+                            user.email,
+                            user.username,
+                            resetCode
+                        );
+
                         return res.json({
                             success: true,
-                            message: "If a verified account exists for that email, a reset code was sent."
+                            message:
+                                "A 6-digit reset code was sent to your email."
                         });
-                    } catch (mailError) {
-                        console.error("Forgot password email error:", mailError);
+                    }
+                    catch (mailError) {
+                        console.error(
+                            "Forgot password email error:",
+                            mailError
+                        );
+
+                        db.run(
+                            `
+                            UPDATE users
+                            SET reset_code = NULL,
+                                reset_expires = NULL
+                            WHERE id = ?
+                            `,
+                            [user.id]
+                        );
+
                         return res.status(500).json({
                             success: false,
-                            message: "Unable to send the reset email. Check the Resend configuration."
+                            message:
+                                "Unable to send the reset email. Check the Resend configuration."
                         });
                     }
                 }
@@ -729,7 +801,7 @@ app.post("/reset-password", function (req, res) {
     }
 
     db.get(
-        `SELECT id, reset_code, reset_expires FROM users WHERE email = ?`,
+        `SELECT id, reset_code, reset_expires FROM users WHERE LOWER(email) = LOWER(?)`,
         [email],
         async function (lookupError, user) {
             if (lookupError) {
@@ -746,18 +818,52 @@ app.post("/reset-password", function (req, res) {
                 return res.status(400).json({ success: false, message: "Incorrect reset code." });
             }
 
-            const hashedPassword = await bcrypt.hash(newPassword, 10);
-            db.run(
-                `UPDATE users SET password = ?, reset_code = NULL, reset_expires = NULL WHERE id = ?`,
-                [hashedPassword, user.id],
-                function (updateError) {
-                    if (updateError) {
-                        console.error("Reset password update error:", updateError);
-                        return res.status(500).json({ success: false, message: "Unable to save the new password." });
+            try {
+                const hashedPassword =
+                    await bcrypt.hash(newPassword, 10);
+
+                db.run(
+                    `
+                    UPDATE users
+                    SET password = ?,
+                        reset_code = NULL,
+                        reset_expires = NULL
+                    WHERE id = ?
+                    `,
+                    [hashedPassword, user.id],
+                    function (updateError) {
+                        if (updateError) {
+                            console.error(
+                                "Reset password update error:",
+                                updateError
+                            );
+
+                            return res.status(500).json({
+                                success: false,
+                                message:
+                                    "Unable to save the new password."
+                            });
+                        }
+
+                        return res.json({
+                            success: true,
+                            message:
+                                "Password reset successfully. You can now log in."
+                        });
                     }
-                    return res.json({ success: true, message: "Password reset successfully. You can now log in." });
-                }
-            );
+                );
+            }
+            catch (hashError) {
+                console.error(
+                    "Reset password hashing error:",
+                    hashError
+                );
+
+                return res.status(500).json({
+                    success: false,
+                    message: "Unable to reset the password."
+                });
+            }
         }
     );
 });
