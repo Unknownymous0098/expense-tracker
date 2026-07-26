@@ -70,7 +70,9 @@ function createTables() {
                 password TEXT NOT NULL,
                 email_verified INTEGER NOT NULL DEFAULT 0,
                 verification_code TEXT,
-                verification_expires INTEGER
+                verification_expires INTEGER,
+                reset_code TEXT,
+                reset_expires INTEGER
             )
         `);
 
@@ -114,6 +116,16 @@ function createTables() {
         addColumnIfMissing(
             "users",
             "verification_expires",
+            "INTEGER"
+        );
+        addColumnIfMissing(
+            "users",
+            "reset_code",
+            "TEXT"
+        );
+        addColumnIfMissing(
+            "users",
+            "reset_expires",
             "INTEGER"
         );
 
@@ -181,6 +193,41 @@ async function sendVerificationEmail(email, username, code) {
             ? result.data.id
             : "success"
     );
+}
+
+
+async function sendPasswordResetEmail(email, username, code) {
+    if (!resend) {
+        throw new Error("RESEND_API_KEY is not configured.");
+    }
+
+    const fromAddress =
+        process.env.EMAIL_FROM ||
+        "Expense Tracker <onboarding@resend.dev>";
+
+    const result = await resend.emails.send({
+        from: fromAddress,
+        to: [email],
+        subject: "Reset your Expense Tracker password",
+        text:
+            `Hello ${username},\n\n` +
+            `Your password reset code is: ${code}\n\n` +
+            "This code expires in 10 minutes.\n\n" +
+            "If you did not request a password reset, you can ignore this message.",
+        html:
+            `<p>Hello ${escapeHtml(username)},</p>` +
+            "<p>Your Expense Tracker password reset code is:</p>" +
+            `<p style="font-size:28px;font-weight:700;letter-spacing:6px">${code}</p>` +
+            "<p>This code expires in 10 minutes.</p>" +
+            "<p>If you did not request a password reset, you can ignore this message.</p>"
+    });
+
+    if (result.error) {
+        console.error("Resend password reset error:", result.error);
+        throw new Error(result.error.message || "Unable to send password reset email.");
+    }
+
+    console.log("Password reset email sent:", result.data?.id || "success");
 }
 
 function escapeHtml(value) {
@@ -598,6 +645,117 @@ app.post("/resend-verification", function (req, res) {
                                 "Unable to send the verification email. Check the Resend configuration."
                         });
                     }
+                }
+            );
+        }
+    );
+});
+
+// =======================
+// FORGOT PASSWORD
+// =======================
+
+app.post("/forgot-password", function (req, res) {
+    const email = String(req.body.email || "").trim().toLowerCase();
+
+    if (!email || !isValidEmail(email)) {
+        return res.status(400).json({ success: false, message: "Enter a valid email address." });
+    }
+
+    db.get(
+        `SELECT id, username, email_verified FROM users WHERE email = ?`,
+        [email],
+        async function (lookupError, user) {
+            if (lookupError) {
+                console.error("Forgot password lookup error:", lookupError);
+                return res.status(500).json({ success: false, message: "Unable to process the request." });
+            }
+
+            if (!user || user.email_verified !== 1) {
+                return res.json({
+                    success: true,
+                    message: "If a verified account exists for that email, a reset code was sent."
+                });
+            }
+
+            const resetCode = generateVerificationCode();
+            const resetExpires = Date.now() + 10 * 60 * 1000;
+
+            db.run(
+                `UPDATE users SET reset_code = ?, reset_expires = ? WHERE id = ?`,
+                [resetCode, resetExpires, user.id],
+                async function (updateError) {
+                    if (updateError) {
+                        console.error("Forgot password update error:", updateError);
+                        return res.status(500).json({ success: false, message: "Unable to create a reset code." });
+                    }
+
+                    try {
+                        await sendPasswordResetEmail(email, user.username, resetCode);
+                        return res.json({
+                            success: true,
+                            message: "If a verified account exists for that email, a reset code was sent."
+                        });
+                    } catch (mailError) {
+                        console.error("Forgot password email error:", mailError);
+                        return res.status(500).json({
+                            success: false,
+                            message: "Unable to send the reset email. Check the Resend configuration."
+                        });
+                    }
+                }
+            );
+        }
+    );
+});
+
+// =======================
+// RESET PASSWORD
+// =======================
+
+app.post("/reset-password", function (req, res) {
+    const email = String(req.body.email || "").trim().toLowerCase();
+    const code = String(req.body.code || "").trim();
+    const newPassword = String(req.body.newPassword || "");
+
+    if (!email || !isValidEmail(email)) {
+        return res.status(400).json({ success: false, message: "Enter a valid email address." });
+    }
+    if (!/^\d{6}$/.test(code)) {
+        return res.status(400).json({ success: false, message: "Enter the 6-digit reset code." });
+    }
+    if (newPassword.length < 6) {
+        return res.status(400).json({ success: false, message: "New password must contain at least 6 characters." });
+    }
+
+    db.get(
+        `SELECT id, reset_code, reset_expires FROM users WHERE email = ?`,
+        [email],
+        async function (lookupError, user) {
+            if (lookupError) {
+                console.error("Reset password lookup error:", lookupError);
+                return res.status(500).json({ success: false, message: "Unable to reset the password." });
+            }
+            if (!user) {
+                return res.status(400).json({ success: false, message: "Invalid or expired reset request." });
+            }
+            if (!user.reset_expires || Date.now() > Number(user.reset_expires)) {
+                return res.status(410).json({ success: false, message: "The reset code has expired. Request a new code." });
+            }
+            if (user.reset_code !== code) {
+                return res.status(400).json({ success: false, message: "Incorrect reset code." });
+            }
+
+            const hashedPassword = await bcrypt.hash(newPassword, 10);
+            db.run(
+                `UPDATE users SET password = ?, reset_code = NULL, reset_expires = NULL WHERE id = ?`,
+                [hashedPassword, user.id],
+                function (updateError) {
+                    if (updateError) {
+                        console.error("Reset password update error:", updateError);
+                        return res.status(500).json({ success: false, message: "Unable to save the new password." });
+                    }
+                    return res.json({ success: true, message: "Password reset successfully. You can now log in." });
                 }
             );
         }
