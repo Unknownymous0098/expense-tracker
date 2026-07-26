@@ -1,4 +1,4 @@
-const CACHE_NAME = "expense-tracker-v4-clean-ui";
+const CACHE_NAME = "expense-tracker-v5-mobile-header";
 
 const APP_FILES = [
     "/",

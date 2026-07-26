@@ -1,23 +1,34 @@
-EXPENSE TRACKER V2 CLEAN PROJECT
+EXPENSE TRACKER V2.1 — MOBILE HEADER REDESIGN
 
-This package cleans the uploaded front-end files and permanently fixes the missing mobile page subtitles.
+Edited files
+- index.html
+- expenses.html
+- income.html
+- reports.html
+- settings.html
+- style.css
+- service-worker.js
 
-Changes:
-- Unified mobile header on Dashboard, Expenses, Income, Reports and Settings
-- Page subtitle remains visible on mobile
-- Centered title and welcome text
-- Removed obsolete embedded mobile patch blocks
-- Standardized username/session display
-- Updated service-worker cache to expense-tracker-v4-clean-ui
+Changes
+- Added/confirmed a descriptive subtitle on every main page
+- Reduced the large blank area in the mobile header
+- Centered page titles and subtitles consistently
+- Converted the Welcome message into a compact pill
+- Kept the hamburger button aligned at the upper-left
+- Preserved desktop layout and dark mode
+- Bumped the PWA cache to force the updated CSS to load
 
-Installation:
-1. Back up your current public folder.
-2. Extract this ZIP and copy all files into public.
-3. Keep your existing images folder.
-4. Run: git add .
-5. Run: git commit -m "Clean Expense Tracker v2 mobile UI"
-6. Run: git push origin main
-7. Wait for Render to deploy.
-8. Remove and reinstall the mobile PWA once to clear the old service worker.
+How to install
+1. Extract this ZIP.
+2. Copy the files into your project's public folder.
+3. Keep your existing server.js, package.json, database and images folder.
+4. Push the update:
 
-Not included because they were not uploaded in this batch: server.js, package.json, database files, and images.
+   git add .
+   git commit -m "Redesign compact mobile headers"
+   git push origin main
+
+5. Wait for Render to finish deploying.
+6. Open the website in Chrome and refresh.
+7. For an installed PWA, close it completely and reopen it.
+8. If the old design remains, uninstall the PWA once and reinstall it.

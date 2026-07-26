@@ -999,6 +999,23 @@ ABOUT CARD
 (function(){"use strict";var id=localStorage.getItem("userId");if(!id){location.replace("login.html");return;}var u=localStorage.getItem("username")||localStorage.getItem("userName")||localStorage.getItem("displayName")||localStorage.getItem("name")||"";u=String(u).trim();if(!u||u==="User"){["userId","username","userName","displayName","name"].forEach(function(k){localStorage.removeItem(k)});location.replace("login.html");return;}localStorage.setItem("username",u);document.addEventListener("DOMContentLoaded",function(){var w=document.getElementById("welcomeUser"),s=document.getElementById("sidebarUsername");if(w)w.textContent="Welcome, "+u;if(s)s.textContent=u;});})();
 </script>
 
+
+<style id="v21-mobile-header-cache-fallback">
+@media (max-width:720px){
+  .header .page-heading p{
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+    height:auto!important;
+    max-height:none!important;
+    overflow:visible!important;
+    margin:6px auto 0!important;
+    text-align:center!important;
+    white-space:normal!important;
+  }
+}
+</style>
+
 </head>
 
 
@@ -1194,9 +1211,7 @@ ABOUT CARD
                 Settings
             </h1>
 
-            <p>
-                Customize your account and application preferences.
-            </p>
+            <p>Customize your account and application preferences.</p>
 
         </div>
 
