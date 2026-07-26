@@ -2,55 +2,47 @@
 <html lang="en">
 
 <head>
+<meta name="color-scheme" content="light dark">
 <style id="theme-paint-bootstrap">
+:root {
+    color-scheme: light;
+    background: #eef8f0;
+}
 html, body {
     min-height: 100%;
     background-color: #eef8f0;
 }
-html.dark-mode,
+html.dark-mode {
+    color-scheme: dark;
+    background: #0b120e !important;
+}
 html.dark-mode body {
     background-color: #0b120e !important;
-    color-scheme: dark;
 }
 </style>
 <script id="theme-bootstrap">
 (function () {
     try {
-        var theme =
-            localStorage.getItem("expenseTrackerTheme") || "light";
-
+        var key = "expenseTrackerTheme";
+        var saved = localStorage.getItem(key) || "light";
+        var systemDark =
+            window.matchMedia &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches;
         var dark =
-            theme === "dark" ||
-            (
-                theme === "system" &&
-                window.matchMedia &&
-                window.matchMedia(
-                    "(prefers-color-scheme: dark)"
-                ).matches
-            );
+            saved === "dark" ||
+            (saved === "system" && systemDark);
 
-        document.documentElement.classList.toggle(
-            "dark-mode",
-            dark
-        );
-
-        document.documentElement.dataset.theme =
-            dark ? "dark" : "light";
-
-        document.documentElement.style.backgroundColor =
-            dark ? "#0b120e" : "#eef8f0";
-
-        document.documentElement.style.colorScheme =
-            dark ? "dark" : "light";
-    }
-    catch (error) {
-        document.documentElement.style.backgroundColor =
-            "#eef8f0";
+        var root = document.documentElement;
+        root.classList.toggle("dark-mode", dark);
+        root.dataset.theme = dark ? "dark" : "light";
+        root.style.backgroundColor = dark ? "#0b120e" : "#eef8f0";
+        root.style.colorScheme = dark ? "dark" : "light";
+    } catch (error) {
+        document.documentElement.style.backgroundColor = "#eef8f0";
     }
 })();
 </script>
-
-<script src="theme.js" defer></script>
+<script src="/theme.js" defer></script>
 
 <meta charset="UTF-8">
 
@@ -226,7 +218,7 @@ html.dark-mode body {
             width: 100%;
         }
 
-        body.dark-mode .delete-account-field label {
+        html.dark-mode body .delete-account-field label {
             color: #dcfce7;
         }
 
@@ -643,7 +635,7 @@ html.dark-mode body {
 
         /* Dark mode */
 
-        body.dark-mode {
+        html.dark-mode body {
 
             background: #132017;
 
@@ -652,7 +644,7 @@ html.dark-mode body {
         }
 
 
-        body.dark-mode .container {
+        html.dark-mode body .container {
 
             background: rgba(24, 39, 28, 0.92);
 
@@ -661,7 +653,7 @@ html.dark-mode body {
         }
 
 
-        body.dark-mode .content-card {
+        html.dark-mode body .content-card {
 
             background: #1c2c20;
 
@@ -670,30 +662,30 @@ html.dark-mode body {
         }
 
 
-        body.dark-mode .section-heading h2,
-        body.dark-mode .data-action-box h3,
-        body.dark-mode .settings-option-info strong,
-        body.dark-mode .about-row strong {
+        html.dark-mode body .section-heading h2,
+        html.dark-mode body .data-action-box h3,
+        html.dark-mode body .settings-option-info strong,
+        html.dark-mode body .about-row strong {
 
             color: #dcfce7;
 
         }
 
 
-        body.dark-mode .section-heading p,
-        body.dark-mode .settings-option-info span,
-        body.dark-mode .data-action-box p,
-        body.dark-mode .about-row span,
-        body.dark-mode .page-heading p {
+        html.dark-mode body .section-heading p,
+        html.dark-mode body .settings-option-info span,
+        html.dark-mode body .data-action-box p,
+        html.dark-mode body .about-row span,
+        html.dark-mode body .page-heading p {
 
             color: #a7b5aa;
 
         }
 
 
-        body.dark-mode .settings-option,
-        body.dark-mode .data-action-box,
-        body.dark-mode .theme-option label {
+        html.dark-mode body .settings-option,
+        html.dark-mode body .data-action-box,
+        html.dark-mode body .theme-option label {
 
             background: #223528;
 
@@ -702,8 +694,8 @@ html.dark-mode body {
         }
 
 
-        body.dark-mode input,
-        body.dark-mode select {
+        html.dark-mode body input,
+        html.dark-mode body select {
 
             background: #17271c;
 
@@ -714,7 +706,7 @@ html.dark-mode body {
         }
 
 
-        body.dark-mode .theme-option input:checked + label {
+        html.dark-mode body .theme-option input:checked + label {
 
             background: #294832;
 
@@ -724,14 +716,14 @@ html.dark-mode body {
 
         }
 
-        body.dark-mode .settings-option input[type="checkbox"] {
+        html.dark-mode body .settings-option input[type="checkbox"] {
 
             background: #526158;
 
         }
 
 
-        body.dark-mode .settings-option input[type="checkbox"]:checked {
+        html.dark-mode body .settings-option input[type="checkbox"]:checked {
 
             background: #66bb6a;
 
@@ -1061,11 +1053,11 @@ ABOUT CARD
         outline-offset: 3px;
     }
 
-    body.dark-mode .switch-track {
+    html.dark-mode body .switch-track {
         background: #526158;
     }
 
-    body.dark-mode .switch-control input[type="checkbox"]:checked + .switch-track {
+    html.dark-mode body .switch-control input[type="checkbox"]:checked + .switch-track {
         background: #66bb6a;
     }
 </style>

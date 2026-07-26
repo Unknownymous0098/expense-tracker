@@ -1,25 +1,32 @@
 /* =====================================================
-   NO-FLASH ROOT BACKGROUND
+   FINAL ZERO-FLASH THEME FOUNDATION
+   The dark class is placed on <html> before CSS loads.
 ===================================================== */
+:root {
+    color-scheme: light;
+    background-color: #eef8f0;
+}
+
 html {
     min-height: 100%;
     background-color: #eef8f0;
 }
 
 html.dark-mode {
-    background-color: #0b120e !important;
     color-scheme: dark;
+    background-color: #0b120e !important;
 }
 
 html.dark-mode body {
-    background-color: #0b120e;
+    background-color: #0b120e !important;
 }
 
-/* Keep the page canvas dark during navigation and loading. */
-@media (prefers-color-scheme: dark) {
-    html[data-theme="dark"] {
-        background-color: #0b120e !important;
-    }
+/* Disable background movement during cross-page navigation. */
+html.is-navigating *,
+html.is-navigating *::before,
+html.is-navigating *::after {
+    animation: none !important;
+    transition: none !important;
 }
 
 /* =========================================================
@@ -2575,10 +2582,10 @@ canvas {
 
 /* =====================================================
    COMPLETE DARK MODE
-   Applied when JavaScript adds: body.dark-mode
+   Applied when JavaScript adds: html.dark-mode body
 ===================================================== */
 
-body.dark-mode {
+html.dark-mode body {
     --color-primary: #66bb6a;
     --color-primary-dark: #a5d6a7;
     --color-primary-light: #4caf50;
@@ -2626,7 +2633,7 @@ body.dark-mode {
         );
 }
 
-body.dark-mode::before {
+html.dark-mode body::before {
     background:
         linear-gradient(
             145deg,
@@ -2635,7 +2642,7 @@ body.dark-mode::before {
         );
 }
 
-body.dark-mode::after {
+html.dark-mode body::after {
     background:
         linear-gradient(
             145deg,
@@ -2647,27 +2654,27 @@ body.dark-mode::after {
 
 /* Main app surfaces */
 
-body.dark-mode .container,
-body.dark-mode .dashboard-page,
-body.dark-mode .expenses-page,
-body.dark-mode .income-page,
-body.dark-mode .reports-page,
-body.dark-mode .settings-page {
+html.dark-mode body .container,
+html.dark-mode body .dashboard-page,
+html.dark-mode body .expenses-page,
+html.dark-mode body .income-page,
+html.dark-mode body .reports-page,
+html.dark-mode body .settings-page {
     color: var(--color-text);
     background: rgba(18, 28, 22, 0.9);
     border-color: rgba(118, 155, 128, 0.18);
     box-shadow: var(--shadow-large);
 }
 
-body.dark-mode .content-card,
-body.dark-mode .expense-form-card,
-body.dark-mode .expense-history-card,
-body.dark-mode .income-form-card,
-body.dark-mode .income-history-card,
-body.dark-mode .monthly-overview,
-body.dark-mode .analytics-chart-card,
-body.dark-mode .monthly-stat-card,
-body.dark-mode .chart-box {
+html.dark-mode body .content-card,
+html.dark-mode body .expense-form-card,
+html.dark-mode body .expense-history-card,
+html.dark-mode body .income-form-card,
+html.dark-mode body .income-history-card,
+html.dark-mode body .monthly-overview,
+html.dark-mode body .analytics-chart-card,
+html.dark-mode body .monthly-stat-card,
+html.dark-mode body .chart-box {
     color: var(--color-text);
     background: rgba(24, 35, 28, 0.96);
     border-color: var(--color-border);
@@ -2677,65 +2684,65 @@ body.dark-mode .chart-box {
 
 /* Headings and text */
 
-body.dark-mode h1,
-body.dark-mode .page-heading h1,
-body.dark-mode .header > h1,
-body.dark-mode .section-heading h2,
-body.dark-mode .quick-action-card h2,
-body.dark-mode .analytics-chart-heading h3,
-body.dark-mode .chart-box h2,
-body.dark-mode .auth-brand h1,
-body.dark-mode .auth-modal-heading h2 {
+html.dark-mode body h1,
+html.dark-mode body .page-heading h1,
+html.dark-mode body .header > h1,
+html.dark-mode body .section-heading h2,
+html.dark-mode body .quick-action-card h2,
+html.dark-mode body .analytics-chart-heading h3,
+html.dark-mode body .chart-box h2,
+html.dark-mode body .auth-brand h1,
+html.dark-mode body .auth-modal-heading h2 {
     color: #b7e4bd;
 }
 
-body.dark-mode p,
-body.dark-mode label,
-body.dark-mode span,
-body.dark-mode small,
-body.dark-mode strong,
-body.dark-mode td,
-body.dark-mode .form-help,
-body.dark-mode .page-heading p,
-body.dark-mode .section-heading p,
-body.dark-mode .quick-action-card p,
-body.dark-mode .analytics-chart-heading p,
-body.dark-mode .auth-brand p,
-body.dark-mode .auth-switch-text,
-body.dark-mode .auth-modal-heading p {
+html.dark-mode body p,
+html.dark-mode body label,
+html.dark-mode body span,
+html.dark-mode body small,
+html.dark-mode body strong,
+html.dark-mode body td,
+html.dark-mode body .form-help,
+html.dark-mode body .page-heading p,
+html.dark-mode body .section-heading p,
+html.dark-mode body .quick-action-card p,
+html.dark-mode body .analytics-chart-heading p,
+html.dark-mode body .auth-brand p,
+html.dark-mode body .auth-switch-text,
+html.dark-mode body .auth-modal-heading p {
     color: inherit;
 }
 
-body.dark-mode .page-heading p,
-body.dark-mode .section-heading p,
-body.dark-mode .quick-action-card p,
-body.dark-mode .analytics-chart-heading p,
-body.dark-mode .monthly-stat-card span,
-body.dark-mode .monthly-stat-card small,
-body.dark-mode .empty-table-message,
-body.dark-mode .auth-brand p,
-body.dark-mode .auth-switch-text,
-body.dark-mode .auth-modal-heading p,
-body.dark-mode .form-help {
+html.dark-mode body .page-heading p,
+html.dark-mode body .section-heading p,
+html.dark-mode body .quick-action-card p,
+html.dark-mode body .analytics-chart-heading p,
+html.dark-mode body .monthly-stat-card span,
+html.dark-mode body .monthly-stat-card small,
+html.dark-mode body .empty-table-message,
+html.dark-mode body .auth-brand p,
+html.dark-mode body .auth-switch-text,
+html.dark-mode body .auth-modal-heading p,
+html.dark-mode body .form-help {
     color: var(--color-text-soft);
 }
 
-body.dark-mode #welcomeUser,
-body.dark-mode .dashboard-action-link,
-body.dark-mode .view-all-link,
-body.dark-mode .auth-switch-text a,
-body.dark-mode .auth-text-button {
+html.dark-mode body #welcomeUser,
+html.dark-mode body .dashboard-action-link,
+html.dark-mode body .view-all-link,
+html.dark-mode body .auth-switch-text a,
+html.dark-mode body .auth-text-button {
     color: #81c784;
 }
 
 
 /* Summary cards */
 
-body.dark-mode .card,
-body.dark-mode .dashboard > .card,
-body.dark-mode .expense-summary .card,
-body.dark-mode .income-summary .card,
-body.dark-mode .income-card {
+html.dark-mode body .card,
+html.dark-mode body .dashboard > .card,
+html.dark-mode body .expense-summary .card,
+html.dark-mode body .income-summary .card,
+html.dark-mode body .income-card {
     color: var(--color-text);
     background:
         linear-gradient(
@@ -2746,49 +2753,49 @@ body.dark-mode .income-card {
     border-color: rgba(118, 155, 128, 0.18);
 }
 
-body.dark-mode .card h2,
-body.dark-mode .dashboard > .card h2,
-body.dark-mode .expense-summary .card h2,
-body.dark-mode .income-summary .card h2,
-body.dark-mode .income-card h2 {
+html.dark-mode body .card h2,
+html.dark-mode body .dashboard > .card h2,
+html.dark-mode body .expense-summary .card h2,
+html.dark-mode body .income-summary .card h2,
+html.dark-mode body .income-card h2 {
     color: #f1f5f2;
 }
 
-body.dark-mode .card h3,
-body.dark-mode .dashboard > .card h3,
-body.dark-mode .expense-summary .card h3,
-body.dark-mode .income-summary .card h3,
-body.dark-mode .income-card h3 {
+html.dark-mode body .card h3,
+html.dark-mode body .dashboard > .card h3,
+html.dark-mode body .expense-summary .card h3,
+html.dark-mode body .income-summary .card h3,
+html.dark-mode body .income-card h3 {
     color: #9bd3a3;
 }
 
 
 /* Forms */
 
-body.dark-mode .form-group label,
-body.dark-mode .auth-form label {
+html.dark-mode body .form-group label,
+html.dark-mode body .auth-form label {
     color: #e5ece7;
 }
 
-body.dark-mode input,
-body.dark-mode select,
-body.dark-mode textarea,
-body.dark-mode .auth-form input {
+html.dark-mode body input,
+html.dark-mode body select,
+html.dark-mode body textarea,
+html.dark-mode body .auth-form input {
     color: #f3f4f6;
     background: #111a15;
     border-color: #3b4d40;
 }
 
-body.dark-mode input::placeholder,
-body.dark-mode textarea::placeholder,
-body.dark-mode .auth-form input::placeholder {
+html.dark-mode body input::placeholder,
+html.dark-mode body textarea::placeholder,
+html.dark-mode body .auth-form input::placeholder {
     color: #7f9184;
 }
 
-body.dark-mode input:focus,
-body.dark-mode select:focus,
-body.dark-mode textarea:focus,
-body.dark-mode .auth-form input:focus {
+html.dark-mode body input:focus,
+html.dark-mode body select:focus,
+html.dark-mode body textarea:focus,
+html.dark-mode body .auth-form input:focus {
     color: #ffffff;
     background: #162219;
     border-color: #66bb6a;
@@ -2797,30 +2804,30 @@ body.dark-mode .auth-form input:focus {
         rgba(102, 187, 106, 0.2);
 }
 
-body.dark-mode input:disabled,
-body.dark-mode select:disabled,
-body.dark-mode textarea:disabled {
+html.dark-mode body input:disabled,
+html.dark-mode body select:disabled,
+html.dark-mode body textarea:disabled {
     color: #9ca3af;
     background: #1b261f;
 }
 
-body.dark-mode select option {
+html.dark-mode body select option {
     color: #f3f4f6;
     background: #111a15;
 }
 
-body.dark-mode .input-with-icon > i,
-body.dark-mode .password-leading-icon,
-body.dark-mode .search-box i {
+html.dark-mode body .input-with-icon > i,
+html.dark-mode body .password-leading-icon,
+html.dark-mode body .search-box i {
     color: #9fb0a3;
 }
 
-body.dark-mode .show-password {
+html.dark-mode body .show-password {
     color: #81c784;
 }
 
-body.dark-mode .show-password:hover,
-body.dark-mode .show-password:focus-visible {
+html.dark-mode body .show-password:hover,
+html.dark-mode body .show-password:focus-visible {
     color: #c8e6c9;
     background: rgba(129, 199, 132, 0.12);
 }
@@ -2828,84 +2835,84 @@ body.dark-mode .show-password:focus-visible {
 
 /* Tables */
 
-body.dark-mode table {
+html.dark-mode body table {
     color: var(--color-text);
     background: transparent;
 }
 
-body.dark-mode th {
+html.dark-mode body th {
     color: #ffffff;
     background: #2f7f3b;
 }
 
-body.dark-mode td {
+html.dark-mode body td {
     color: #e5ece7;
     border-bottom-color: #314239;
 }
 
-body.dark-mode tbody tr:hover {
+html.dark-mode body tbody tr:hover {
     background: #1e3025;
 }
 
-body.dark-mode .table-responsive,
-body.dark-mode .table-container {
+html.dark-mode body .table-responsive,
+html.dark-mode body .table-container {
     background: transparent;
 }
 
 
 /* Icons and supporting elements */
 
-body.dark-mode .section-icon,
-body.dark-mode .quick-action-icon,
-body.dark-mode .summary-icon {
+html.dark-mode body .section-icon,
+html.dark-mode body .quick-action-icon,
+html.dark-mode body .summary-icon {
     color: #81c784;
     background: rgba(102, 187, 106, 0.14);
 }
 
-body.dark-mode .expense-summary-icon,
-body.dark-mode .monthly-expense-icon {
+html.dark-mode body .expense-summary-icon,
+html.dark-mode body .monthly-expense-icon {
     color: #fca5a5;
     background: rgba(248, 113, 113, 0.14);
 }
 
-body.dark-mode .balance-icon,
-body.dark-mode .monthly-balance-icon {
+html.dark-mode body .balance-icon,
+html.dark-mode body .monthly-balance-icon {
     color: #93c5fd;
     background: rgba(96, 165, 250, 0.14);
 }
 
-body.dark-mode .transaction-summary-icon,
-body.dark-mode .monthly-category-icon {
+html.dark-mode body .transaction-summary-icon,
+html.dark-mode body .monthly-category-icon {
     color: #d8b4fe;
     background: rgba(192, 132, 252, 0.14);
 }
 
-body.dark-mode .income-summary-icon,
-body.dark-mode .income-section-icon,
-body.dark-mode .monthly-income-icon {
+html.dark-mode body .income-summary-icon,
+html.dark-mode body .income-section-icon,
+html.dark-mode body .monthly-income-icon {
     color: #86efac;
     background: rgba(74, 222, 128, 0.14);
 }
 
-body.dark-mode .monthly-savings-icon {
+html.dark-mode body .monthly-savings-icon {
     color: #fde68a;
     background: rgba(251, 191, 36, 0.14);
 }
 
-body.dark-mode .dashboard-action-link {
+html.dark-mode body .dashboard-action-link {
     color: #b7e4bd;
     background: rgba(102, 187, 106, 0.13);
 }
 
-body.dark-mode .dashboard-action-link:hover,
-body.dark-mode .view-all-link:hover {
+html.dark-mode body .dashboard-action-link:hover,
+html.dark-mode body .view-all-link:hover {
     color: #dcfce7;
 }
 
 
 /* Sidebar */
 
-body.dark-mode .sidebar {
+html.dark-mode body .sidebar {
     background:
         linear-gradient(
             180deg,
@@ -2917,40 +2924,40 @@ body.dark-mode .sidebar {
         rgba(0, 0, 0, 0.45);
 }
 
-body.dark-mode .sidebar-profile {
+html.dark-mode body .sidebar-profile {
     background: rgba(255, 255, 255, 0.08);
     border-color: rgba(255, 255, 255, 0.09);
 }
 
-body.dark-mode .profile-avatar {
+html.dark-mode body .profile-avatar {
     color: #a5d6a7;
     background: #1d2d22;
 }
 
-body.dark-mode .sidebar .menu-link.active-page {
+html.dark-mode body .sidebar .menu-link.active-page {
     color: #d8f3dc;
     background: #243b2a;
 }
 
-body.dark-mode .sidebar .menu-link.active-page::before {
+html.dark-mode body .sidebar .menu-link.active-page::before {
     background: #81c784;
 }
 
 
 /* Buttons */
 
-body.dark-mode button:not(.logout-btn):not(.auth-modal-close):not(.show-password):not(.auth-text-button) {
+html.dark-mode body button:not(.logout-btn):not(.auth-modal-close):not(.show-password):not(.auth-text-button) {
     color: #ffffff;
 }
 
-body.dark-mode .secondary-auth-btn {
+html.dark-mode body .secondary-auth-btn {
     color: #b7e4bd;
     background: #1b3021;
     border-color: #36533e;
 }
 
-body.dark-mode .secondary-auth-btn:hover,
-body.dark-mode .secondary-auth-btn:focus-visible {
+html.dark-mode body .secondary-auth-btn:hover,
+html.dark-mode body .secondary-auth-btn:focus-visible {
     color: #ffffff;
     background: #2e7d32;
 }
@@ -2958,8 +2965,8 @@ body.dark-mode .secondary-auth-btn:focus-visible {
 
 /* Authentication pages */
 
-body.dark-mode.auth-page,
-body.dark-mode .auth-page {
+html.dark-mode body.auth-page,
+html.dark-mode body .auth-page {
     color: var(--color-text);
     background:
         radial-gradient(
@@ -2974,7 +2981,7 @@ body.dark-mode .auth-page {
         );
 }
 
-body.dark-mode .auth-card {
+html.dark-mode body .auth-card {
     color: var(--color-text);
     background: rgba(20, 31, 24, 0.97);
     border-color: #314239;
@@ -2986,11 +2993,11 @@ body.dark-mode .auth-card {
 
 /* Forgot password modal */
 
-body.dark-mode .auth-modal-backdrop {
+html.dark-mode body .auth-modal-backdrop {
     background: rgba(3, 8, 5, 0.78);
 }
 
-body.dark-mode .auth-modal-card {
+html.dark-mode body .auth-modal-card {
     color: var(--color-text);
     background: rgba(20, 31, 24, 0.99);
     border-color: #385040;
@@ -2999,33 +3006,33 @@ body.dark-mode .auth-modal-card {
         rgba(0, 0, 0, 0.58);
 }
 
-body.dark-mode .auth-modal-close {
+html.dark-mode body .auth-modal-close {
     color: #d1d5db;
     background: #26362c;
 }
 
-body.dark-mode .auth-modal-close:hover,
-body.dark-mode .auth-modal-close:focus-visible {
+html.dark-mode body .auth-modal-close:hover,
+html.dark-mode body .auth-modal-close:focus-visible {
     color: #ffffff;
     background: #34483a;
 }
 
-body.dark-mode .reset-password-form {
+html.dark-mode body .reset-password-form {
     border-top-color: #34463b;
 }
 
 
 /* Messages */
 
-body.dark-mode .auth-message.error,
-body.dark-mode .settings-message.error {
+html.dark-mode body .auth-message.error,
+html.dark-mode body .settings-message.error {
     color: #fecaca;
     background: rgba(127, 29, 29, 0.45);
     border-color: #7f1d1d;
 }
 
-body.dark-mode .auth-message.success,
-body.dark-mode .settings-message.success {
+html.dark-mode body .auth-message.success,
+html.dark-mode body .settings-message.success {
     color: #bbf7d0;
     background: rgba(20, 83, 45, 0.5);
     border-color: #166534;
@@ -3034,40 +3041,40 @@ body.dark-mode .settings-message.success {
 
 /* Scrollbars */
 
-body.dark-mode,
-body.dark-mode * {
+html.dark-mode body,
+html.dark-mode body * {
     scrollbar-color: #486251 #17221b;
 }
 
-body.dark-mode *::-webkit-scrollbar {
+html.dark-mode body *::-webkit-scrollbar {
     width: 10px;
     height: 10px;
 }
 
-body.dark-mode *::-webkit-scrollbar-track {
+html.dark-mode body *::-webkit-scrollbar-track {
     background: #17221b;
 }
 
-body.dark-mode *::-webkit-scrollbar-thumb {
+html.dark-mode body *::-webkit-scrollbar-thumb {
     background: #486251;
     border: 2px solid #17221b;
     border-radius: 999px;
 }
 
-body.dark-mode *::-webkit-scrollbar-thumb:hover {
+html.dark-mode body *::-webkit-scrollbar-thumb:hover {
     background: #5d7964;
 }
 
 
 /* Preserve white text where required */
 
-body.dark-mode .sidebar,
-body.dark-mode .sidebar *,
-body.dark-mode .menu-btn,
-body.dark-mode .logout-btn,
-body.dark-mode th,
-body.dark-mode .auth-submit-btn,
-body.dark-mode .auth-modal-icon {
+html.dark-mode body .sidebar,
+html.dark-mode body .sidebar *,
+html.dark-mode body .menu-btn,
+html.dark-mode body .logout-btn,
+html.dark-mode body th,
+html.dark-mode body .auth-submit-btn,
+html.dark-mode body .auth-modal-icon {
     color: #ffffff;
 }
 
@@ -3085,9 +3092,9 @@ html.dark-mode body {
 }
 
 /* Reports */
-body.dark-mode .report-summary-card,
-body.dark-mode .report-chart-card,
-body.dark-mode .report-wide-chart {
+html.dark-mode body .report-summary-card,
+html.dark-mode body .report-chart-card,
+html.dark-mode body .report-wide-chart {
     color: var(--color-text);
     background:
         linear-gradient(
@@ -3099,109 +3106,109 @@ body.dark-mode .report-wide-chart {
     box-shadow: var(--shadow-medium);
 }
 
-body.dark-mode .report-summary-card h2 {
+html.dark-mode body .report-summary-card h2 {
     color: #f1f5f2;
 }
 
-body.dark-mode .report-summary-card h3,
-body.dark-mode .reports-table-header h2 {
+html.dark-mode body .report-summary-card h3,
+html.dark-mode body .reports-table-header h2 {
     color: #b7e4bd;
 }
 
-body.dark-mode .reports-table-header p,
-body.dark-mode .report-period-label,
-body.dark-mode .report-empty-state {
+html.dark-mode body .reports-table-header p,
+html.dark-mode body .report-period-label,
+html.dark-mode body .report-empty-state {
     color: var(--color-text-soft);
 }
 
-body.dark-mode .report-reset-btn {
+html.dark-mode body .report-reset-btn {
     color: #b7e4bd;
     background: #1b3021;
     border-color: #36533e;
 }
 
-body.dark-mode .report-reset-btn:hover,
-body.dark-mode .report-reset-btn:focus-visible {
+html.dark-mode body .report-reset-btn:hover,
+html.dark-mode body .report-reset-btn:focus-visible {
     color: #ffffff;
     background: #2e7d32;
 }
 
 /* Settings */
-body.dark-mode .settings-option,
-body.dark-mode .data-action-box,
-body.dark-mode .theme-option label,
-body.dark-mode .about-card {
+html.dark-mode body .settings-option,
+html.dark-mode body .data-action-box,
+html.dark-mode body .theme-option label,
+html.dark-mode body .about-card {
     color: var(--color-text);
     background: #223528;
     border-color: #38513e;
 }
 
-body.dark-mode .settings-option-info strong,
-body.dark-mode .data-action-box h3,
-body.dark-mode .about-row strong,
-body.dark-mode .about-description h3,
-body.dark-mode .about-footer strong {
+html.dark-mode body .settings-option-info strong,
+html.dark-mode body .data-action-box h3,
+html.dark-mode body .about-row strong,
+html.dark-mode body .about-description h3,
+html.dark-mode body .about-footer strong {
     color: #dcfce7;
 }
 
-body.dark-mode .settings-option-info span,
-body.dark-mode .data-action-box p,
-body.dark-mode .about-row span,
-body.dark-mode .about-description p,
-body.dark-mode .about-footer span,
-body.dark-mode .about-tech {
+html.dark-mode body .settings-option-info span,
+html.dark-mode body .data-action-box p,
+html.dark-mode body .about-row span,
+html.dark-mode body .about-description p,
+html.dark-mode body .about-footer span,
+html.dark-mode body .about-tech {
     color: #a7b5aa;
 }
 
-body.dark-mode .about-divider,
-body.dark-mode .about-row {
+html.dark-mode body .about-divider,
+html.dark-mode body .about-row {
     border-color: #38513e;
 }
 
-body.dark-mode .about-tech span {
+html.dark-mode body .about-tech span {
     color: #b7e4bd;
     background: #1b3021;
 }
 
-body.dark-mode .settings-card input[readonly] {
+html.dark-mode body .settings-card input[readonly] {
     color: #a7b5aa;
     background: #18251d;
 }
 
-body.dark-mode .secondary-settings-btn {
+html.dark-mode body .secondary-settings-btn {
     color: #b7e4bd;
     background: #1b3021;
     border-color: #36533e;
 }
 
-body.dark-mode .secondary-settings-btn:hover,
-body.dark-mode .secondary-settings-btn:focus-visible {
+html.dark-mode body .secondary-settings-btn:hover,
+html.dark-mode body .secondary-settings-btn:focus-visible {
     color: #ffffff;
     background: #2e7d32;
 }
 
 /* Registration verification */
-body.dark-mode .verification-panel {
+html.dark-mode body .verification-panel {
     color: var(--color-text);
     background: #1b3021;
     border-color: #36533e;
 }
 
-body.dark-mode .verification-panel h2 {
+html.dark-mode body .verification-panel h2 {
     color: #dcfce7;
 }
 
-body.dark-mode .verification-panel p {
+html.dark-mode body .verification-panel p {
     color: var(--color-text-soft);
 }
 
 /* Keep status colors readable */
-body.dark-mode .transaction-type.income {
+html.dark-mode body .transaction-type.income {
     color: #bbf7d0;
     background: rgba(20, 83, 45, 0.55);
 }
 
-body.dark-mode .transaction-type.expense {
+html.dark-mode body .transaction-type.expense {
     color: #fecaca;
     background: rgba(127, 29, 29, 0.5);
 }

@@ -140,7 +140,27 @@ createTables();
 // =======================
 
 app.use(express.json());
-app.use(express.static("public"));
+app.use(
+    express.static("public", {
+        etag: true,
+        setHeaders: function (res, filePath) {
+            if (filePath.endsWith(".html")) {
+                res.setHeader("Cache-Control", "no-cache");
+            } else if (
+                filePath.endsWith(".css") ||
+                filePath.endsWith(".js") ||
+                filePath.endsWith(".png") ||
+                filePath.endsWith(".jpg") ||
+                filePath.endsWith(".svg")
+            ) {
+                res.setHeader(
+                    "Cache-Control",
+                    "public, max-age=86400, must-revalidate"
+                );
+            }
+        }
+    })
+);
 
 // =======================
 // EMAIL HELPERS

@@ -1,129 +1,86 @@
 "use strict";
 
-/* =========================================================
-   EXPENSE TRACKER — GLOBAL THEME
-   Load this file on every HTML page.
-========================================================= */
-
 (function () {
     const STORAGE_KEY = "expenseTrackerTheme";
-    const systemTheme = window.matchMedia(
-        "(prefers-color-scheme: dark)"
-    );
+    const systemTheme = window.matchMedia("(prefers-color-scheme: dark)");
 
     function getTheme() {
-        const savedTheme =
-            localStorage.getItem(STORAGE_KEY);
-
-        if (
-            savedTheme === "light" ||
-            savedTheme === "dark" ||
-            savedTheme === "system"
-        ) {
-            return savedTheme;
-        }
-
-        return "light";
+        const value = localStorage.getItem(STORAGE_KEY);
+        return ["light", "dark", "system"].includes(value)
+            ? value
+            : "light";
     }
 
-    function useDarkMode(theme) {
-        return (
-            theme === "dark" ||
-            (
-                theme === "system" &&
-                systemTheme.matches
-            )
-        );
+    function shouldUseDark(theme) {
+        return theme === "dark" ||
+            (theme === "system" && systemTheme.matches);
     }
 
-    function updateThemeColor(isDark) {
-        const themeColor =
-            document.querySelector(
-                'meta[name="theme-color"]'
-            );
-
-        if (themeColor) {
-            themeColor.setAttribute(
-                "content",
-                isDark ? "#101a14" : "#2e7d32"
-            );
+    function updateThemeColor(dark) {
+        const meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) {
+            meta.setAttribute("content", dark ? "#0b120e" : "#2e7d32");
         }
     }
 
     function applyTheme() {
-        const dark =
-            useDarkMode(getTheme());
+        const theme = getTheme();
+        const dark = shouldUseDark(theme);
+        const root = document.documentElement;
 
-        document.documentElement.classList.toggle(
-            "dark-mode",
-            dark
-        );
+        root.classList.toggle("dark-mode", dark);
+        root.dataset.theme = dark ? "dark" : "light";
+        root.style.backgroundColor = dark ? "#0b120e" : "#eef8f0";
+        root.style.colorScheme = dark ? "dark" : "light";
 
         if (document.body) {
-            document.body.classList.toggle(
-                "dark-mode",
-                dark
-            );
+            document.body.classList.toggle("dark-mode", dark);
         }
-
-        document.documentElement.dataset.theme =
-            dark ? "dark" : "light";
 
         updateThemeColor(dark);
 
-        window.dispatchEvent(
-            new CustomEvent(
-                "expenseTrackerThemeChanged",
-                {
-                    detail: {
-                        darkMode: dark,
-                        theme: getTheme()
-                    }
-                }
-            )
-        );
+        window.dispatchEvent(new CustomEvent(
+            "expenseTrackerThemeChanged",
+            { detail: { darkMode: dark, theme } }
+        ));
     }
 
-    /* Apply to <html> immediately to reduce theme flashing. */
+    // Prevent animated light remnants while leaving the current document.
+    document.addEventListener("click", function (event) {
+        const link = event.target.closest("a[href]");
+        if (!link) return;
+
+        const url = new URL(link.href, location.href);
+        if (
+            url.origin === location.origin &&
+            url.pathname !== location.pathname &&
+            !link.hasAttribute("download") &&
+            link.target !== "_blank"
+        ) {
+            document.documentElement.classList.add("is-navigating");
+        }
+    });
+
+    window.addEventListener("pageshow", function () {
+        document.documentElement.classList.remove("is-navigating");
+        applyTheme();
+    });
+
+    document.addEventListener("DOMContentLoaded", applyTheme);
+    window.addEventListener("storage", function (event) {
+        if (event.key === STORAGE_KEY) applyTheme();
+    });
+
+    const onSystemChange = function () {
+        if (getTheme() === "system") applyTheme();
+    };
+
+    if (systemTheme.addEventListener) {
+        systemTheme.addEventListener("change", onSystemChange);
+    } else if (systemTheme.addListener) {
+        systemTheme.addListener(onSystemChange);
+    }
+
+    window.applyExpenseTrackerTheme = applyTheme;
     applyTheme();
-
-    document.addEventListener(
-        "DOMContentLoaded",
-        applyTheme
-    );
-
-    window.addEventListener(
-        "storage",
-        function (event) {
-            if (event.key === STORAGE_KEY) {
-                applyTheme();
-            }
-        }
-    );
-
-    function handleSystemThemeChange() {
-        if (getTheme() === "system") {
-            applyTheme();
-        }
-    }
-
-    if (
-        typeof systemTheme.addEventListener ===
-        "function"
-    ) {
-        systemTheme.addEventListener(
-            "change",
-            handleSystemThemeChange
-        );
-    } else if (
-        typeof systemTheme.addListener ===
-        "function"
-    ) {
-        systemTheme.addListener(
-            handleSystemThemeChange
-        );
-    }
-
-    window.applyExpenseTrackerTheme =
-        applyTheme;
 })();
