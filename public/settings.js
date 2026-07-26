@@ -264,77 +264,76 @@ function loadSettings() {
 // SAVE PROFILE
 // ==========================
 
-function saveProfileSettings(event) {
-
-
+async function saveProfileSettings(event) {
     event.preventDefault();
 
-
     const usernameInput =
-        document.getElementById(
-            "settingsUsername"
-        );
-
+        document.getElementById("settingsUsername");
 
     const newUsername =
         usernameInput.value.trim();
 
-
-    if (!newUsername) {
-
+    if (newUsername.length < 2) {
         showSettingsMessage(
-
-            "Please enter a display name.",
-
+            "Display name must contain at least 2 characters.",
             "error"
-
         );
 
-
         return;
-
     }
 
+    try {
+        const response = await fetch("/profile", {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                userId: Number(settingsUserId),
+                username: newUsername
+            })
+        });
 
-    localStorage.setItem(
+        const result = await response.json();
 
-        "username",
+        if (!response.ok || !result.success) {
+            throw new Error(
+                result.message ||
+                "Unable to update your profile."
+            );
+        }
 
-        newUsername
+        localStorage.setItem(
+            "username",
+            result.username
+        );
 
-    );
+        setSettingsText(
+            "welcomeUser",
+            "Welcome, " + result.username
+        );
 
+        setSettingsText(
+            "sidebarUsername",
+            result.username
+        );
 
-    setSettingsText(
+        showSettingsMessage(
+            result.message
+        );
+    } catch (error) {
+        console.error(
+            "Profile update error:",
+            error
+        );
 
-        "welcomeUser",
-
-        "Welcome, " +
-        newUsername
-
-    );
-
-
-    setSettingsText(
-
-        "sidebarUsername",
-
-        newUsername
-
-    );
-
-
-    showSettingsMessage(
-
-        "Profile settings saved successfully."
-
-    );
-
+        showSettingsMessage(
+            error.message ||
+            "Unable to update your profile.",
+            "error"
+        );
+    }
 }
-
-
-
-
 
 // ==========================
 // SAVE FINANCIAL SETTINGS

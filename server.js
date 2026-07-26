@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const sqlite3 = require("sqlite3").verbose();
 const bcrypt = require("bcrypt");
@@ -686,6 +687,68 @@ app.post("/login", async function (req, res) {
             message: "Server error."
         });
     }
+});
+
+// =======================
+// UPDATE PROFILE
+// =======================
+
+app.put("/profile", function (req, res) {
+    const userId = Number(req.body.userId);
+    const username = String(req.body.username || "").trim();
+
+    if (!Number.isInteger(userId) || userId <= 0) {
+        return res.status(400).json({
+            success: false,
+            message: "Invalid user ID."
+        });
+    }
+
+    if (username.length < 2) {
+        return res.status(400).json({
+            success: false,
+            message: "Display name must contain at least 2 characters."
+        });
+    }
+
+    if (username.length > 50) {
+        return res.status(400).json({
+            success: false,
+            message: "Display name must not exceed 50 characters."
+        });
+    }
+
+    db.run(
+        `
+        UPDATE users
+        SET username = ?
+        WHERE id = ?
+        `,
+        [username, userId],
+        function (err) {
+            if (err) {
+                console.error("Update profile error:", err);
+
+                return res.status(500).json({
+                    success: false,
+                    message: "Unable to update your profile."
+                });
+            }
+
+            if (this.changes === 0) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Account not found."
+                });
+            }
+
+            return res.json({
+                success: true,
+                username,
+                message: "Profile updated successfully."
+            });
+        }
+    );
 });
 
 // =======================
