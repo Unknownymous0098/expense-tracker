@@ -82,53 +82,36 @@ html.dark-mode body {
 
     <link rel="stylesheet" href="style.css">
 
-<style id="mobile-title-centering-fallback">
-@media (max-width: 800px) {
-    .header {
-        display: grid !important;
-        grid-template-columns: 52px minmax(0, 1fr) 52px !important;
-        align-items: center !important;
-        column-gap: 10px !important;
-        row-gap: 8px !important;
-    }
-
-    .header .menu-btn {
-        grid-column: 1 !important;
-        grid-row: 1 !important;
-        justify-self: start !important;
-    }
-
-    .header .page-heading {
-        grid-column: 2 !important;
-        grid-row: 1 !important;
-        width: 100% !important;
-        text-align: center !important;
-    }
-
-    .header .page-heading h1,
-    .header .page-heading p {
-        width: 100% !important;
-        margin-left: 0 !important;
-        margin-right: 0 !important;
-        text-align: center !important;
-    }
-
-    .header .user-area {
-        grid-column: 1 / -1 !important;
-        grid-row: 2 !important;
-        width: 100% !important;
-        min-width: 0 !important;
-        padding-left: 0 !important;
-        justify-self: center !important;
-        align-items: center !important;
-        text-align: center !important;
-    }
+<style id="unified-mobile-header">
+@media (max-width: 720px) {
+  .header,.expenses-page .header,.income-page .header,.reports-page .header,.settings-page .header {display:grid!important;grid-template-columns:52px minmax(0,1fr) 52px!important;align-items:center!important;column-gap:10px!important;row-gap:8px!important;margin-bottom:22px!important;}
+  .header .menu-btn {grid-column:1!important;grid-row:1!important;justify-self:start!important;}
+  .header .page-heading {grid-column:2!important;grid-row:1!important;min-width:0!important;width:100%!important;text-align:center!important;}
+  .header .page-heading h1 {margin:0!important;text-align:center!important;font-size:24px!important;line-height:1.2!important;}
+  .header .page-heading p {display:block!important;visibility:visible!important;opacity:1!important;margin:6px auto 0!important;max-width:34ch!important;text-align:center!important;font-size:12px!important;line-height:1.4!important;white-space:normal!important;}
+  .header .user-area {grid-column:1/-1!important;grid-row:2!important;width:100%!important;min-width:0!important;padding-left:0!important;justify-self:center!important;align-items:center!important;text-align:center!important;}
 }
+@media (max-width:480px){.header,.expenses-page .header,.income-page .header,.reports-page .header,.settings-page .header{grid-template-columns:44px minmax(0,1fr) 44px!important}.header .page-heading h1{font-size:22px!important}.header .page-heading p{font-size:11.5px!important}}
+</style>
 
-@media (max-width: 480px) {
-    .header {
-        grid-template-columns: 44px minmax(0, 1fr) 44px !important;
-    }
+<script id="unified-session-ui">
+(function(){"use strict";var id=localStorage.getItem("userId");if(!id){location.replace("login.html");return;}var u=localStorage.getItem("username")||localStorage.getItem("userName")||localStorage.getItem("displayName")||localStorage.getItem("name")||"";u=String(u).trim();if(!u||u==="User"){["userId","username","userName","displayName","name"].forEach(function(k){localStorage.removeItem(k)});location.replace("login.html");return;}localStorage.setItem("username",u);document.addEventListener("DOMContentLoaded",function(){var w=document.getElementById("welcomeUser"),s=document.getElementById("sidebarUsername");if(w)w.textContent="Welcome, "+u;if(s)s.textContent=u;});})();
+</script>
+
+
+<style id="v21-mobile-header-cache-fallback">
+@media (max-width:720px){
+  .header .page-heading p{
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+    height:auto!important;
+    max-height:none!important;
+    overflow:visible!important;
+    margin:6px auto 0!important;
+    text-align:center!important;
+    white-space:normal!important;
+  }
 }
 </style>
 
@@ -370,9 +353,7 @@ html.dark-mode body {
             Dashboard
         </h1>
 
-        <p>
-            Here is an overview of your income, expenses and current balance.
-        </p>
+        <p>Here is an overview of your income, expenses and current balance.</p>
 
     </div>
 

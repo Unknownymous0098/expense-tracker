@@ -1856,8 +1856,18 @@ canvas {
 
     .header .page-heading p,
     .expenses-page .page-heading p,
-    .income-page .page-heading p {
-        display: none;
+    .income-page .page-heading p,
+    .reports-page .page-heading p,
+    .settings-page .page-heading p {
+        display: block;
+        visibility: visible;
+        opacity: 1;
+        margin: 6px auto 0;
+        max-width: 34ch;
+        text-align: center;
+        font-size: 12px;
+        line-height: 1.4;
+        white-space: normal;
     }
 
     .header .user-area,
@@ -3326,4 +3336,181 @@ textarea,
     .settings-page .header {
         grid-template-columns: 44px minmax(0, 1fr) 44px !important;
     }
+}
+
+
+/* EXPENSE TRACKER V2: authoritative mobile header */
+@media (max-width:720px){
+.header,.expenses-page .header,.income-page .header,.reports-page .header,.settings-page .header{display:grid!important;grid-template-columns:52px minmax(0,1fr) 52px!important;align-items:center!important;gap:10px!important}
+.header .menu-btn{grid-column:1!important;grid-row:1!important;justify-self:start!important}
+.header .page-heading{grid-column:2!important;grid-row:1!important;width:100%!important;min-width:0!important;text-align:center!important}
+.header .page-heading h1{margin:0!important;text-align:center!important;font-size:24px!important}
+.header .page-heading p{display:block!important;visibility:visible!important;opacity:1!important;margin:6px auto 0!important;max-width:34ch!important;text-align:center!important;font-size:12px!important;line-height:1.4!important;white-space:normal!important}
+.header .user-area{grid-column:1/-1!important;grid-row:2!important;width:100%!important;min-width:0!important;padding-left:0!important;justify-self:center!important;align-items:center!important;text-align:center!important}
+}
+@media(max-width:480px){.header,.expenses-page .header,.income-page .header,.reports-page .header,.settings-page .header{grid-template-columns:44px minmax(0,1fr) 44px!important}.header .page-heading h1{font-size:22px!important}.header .page-heading p{font-size:11.5px!important}}
+
+
+/* =====================================================
+   EXPENSE TRACKER V2.1 — COMPACT MOBILE APP HEADER
+   Final override: consistent on every authenticated page.
+===================================================== */
+@media (max-width: 720px) {
+    .container,
+    .dashboard-page,
+    .expenses-page,
+    .income-page,
+    .reports-page,
+    .settings-page {
+        padding-top: 14px !important;
+    }
+
+    .header,
+    .expenses-page .header,
+    .income-page .header,
+    .reports-page .header,
+    .settings-page .header {
+        position: relative !important;
+        display: grid !important;
+        grid-template-columns: 46px minmax(0, 1fr) 46px !important;
+        grid-template-rows: auto auto !important;
+        align-items: start !important;
+        column-gap: 8px !important;
+        row-gap: 8px !important;
+        min-height: 0 !important;
+        margin: 0 0 18px !important;
+        padding: 4px 0 2px !important;
+    }
+
+    .header .menu-btn {
+        grid-column: 1 !important;
+        grid-row: 1 !important;
+        width: 46px !important;
+        height: 46px !important;
+        min-height: 46px !important;
+        justify-self: start !important;
+        align-self: start !important;
+        border-radius: 14px !important;
+        font-size: 20px !important;
+    }
+
+    .header .page-heading {
+        grid-column: 2 !important;
+        grid-row: 1 !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        align-self: start !important;
+        text-align: center !important;
+    }
+
+    .header .page-heading h1 {
+        width: 100% !important;
+        margin: 0 !important;
+        color: var(--color-primary) !important;
+        text-align: center !important;
+        font-size: clamp(24px, 7vw, 30px) !important;
+        line-height: 1.12 !important;
+        letter-spacing: -0.02em !important;
+    }
+
+    .header .page-heading p {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        width: 100% !important;
+        max-width: 38ch !important;
+        height: auto !important;
+        max-height: none !important;
+        margin: 6px auto 0 !important;
+        padding: 0 !important;
+        overflow: visible !important;
+        color: var(--color-text-soft) !important;
+        text-align: center !important;
+        font-size: 12px !important;
+        font-weight: 500 !important;
+        line-height: 1.4 !important;
+        white-space: normal !important;
+    }
+
+    .header .user-area {
+        grid-column: 1 / -1 !important;
+        grid-row: 2 !important;
+        display: flex !important;
+        width: auto !important;
+        min-width: 0 !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+        justify-self: center !important;
+        align-self: center !important;
+        align-items: center !important;
+        text-align: center !important;
+    }
+
+    #welcomeUser {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        min-height: 30px !important;
+        padding: 6px 12px !important;
+        color: var(--color-primary-dark) !important;
+        background: rgba(232, 245, 233, 0.9) !important;
+        border: 1px solid rgba(76, 175, 80, 0.18) !important;
+        border-radius: 999px !important;
+        font-size: 12px !important;
+        font-weight: 700 !important;
+        line-height: 1.2 !important;
+        box-shadow: 0 4px 14px rgba(46, 125, 50, 0.07) !important;
+    }
+
+    .report-period-label {
+        margin: -4px 0 18px !important;
+        padding: 0 8px !important;
+        text-align: center !important;
+        font-size: 12px !important;
+        line-height: 1.45 !important;
+    }
+
+    .dashboard,
+    .expense-summary,
+    .income-summary {
+        margin-top: 0 !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .header,
+    .expenses-page .header,
+    .income-page .header,
+    .reports-page .header,
+    .settings-page .header {
+        grid-template-columns: 44px minmax(0, 1fr) 44px !important;
+        column-gap: 6px !important;
+    }
+
+    .header .menu-btn {
+        width: 44px !important;
+        height: 44px !important;
+        min-height: 44px !important;
+    }
+
+    .header .page-heading h1 {
+        font-size: 23px !important;
+    }
+
+    .header .page-heading p {
+        max-width: 31ch !important;
+        font-size: 11.5px !important;
+    }
+
+    #welcomeUser {
+        padding: 5px 10px !important;
+        font-size: 11.5px !important;
+    }
+}
+
+/* Dark-mode header chip */
+html.dark-mode body #welcomeUser {
+    color: #dcfce7 !important;
+    background: rgba(41, 72, 50, 0.92) !important;
+    border-color: rgba(102, 187, 106, 0.25) !important;
 }
