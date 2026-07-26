@@ -1114,6 +1114,58 @@ ABOUT CARD
 }
 </style>
 
+
+<script id="mobile-session-username-fix">
+(function () {
+    "use strict";
+
+    var userId = localStorage.getItem("userId");
+    var username =
+        localStorage.getItem("username") ||
+        localStorage.getItem("userName") ||
+        localStorage.getItem("displayName") ||
+        localStorage.getItem("name");
+
+    if (!userId) {
+        window.location.replace("login.html");
+        return;
+    }
+
+    if (!username || !String(username).trim() || username === "User") {
+        /*
+         * An older mobile/PWA session may contain userId but not username.
+         * Clear that incomplete session and require one fresh login.
+         * login.html already saves both userId and username.
+         */
+        localStorage.removeItem("userId");
+        localStorage.removeItem("username");
+        localStorage.removeItem("userName");
+        localStorage.removeItem("displayName");
+        localStorage.removeItem("name");
+        window.location.replace("login.html");
+        return;
+    }
+
+    username = String(username).trim();
+
+    /* Normalize older storage-key names to one standard key. */
+    localStorage.setItem("username", username);
+
+    window.addEventListener("DOMContentLoaded", function () {
+        var welcome = document.getElementById("welcomeUser");
+        var sidebar = document.getElementById("sidebarUsername");
+
+        if (welcome) {
+            welcome.textContent = "Welcome, " + username;
+        }
+
+        if (sidebar) {
+            sidebar.textContent = username;
+        }
+    });
+})();
+</script>
+
 </head>
 
 
